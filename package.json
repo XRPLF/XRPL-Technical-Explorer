@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "mitt": "^2.1.0",
+    "rippled-ws-client": "^1.6.4",
     "vue": "^2.6.11"
   },
   "devDependencies": {

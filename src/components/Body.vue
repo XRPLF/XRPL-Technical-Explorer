@@ -1,6 +1,7 @@
 <template>
-  <main class="container">
-    <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
+  <main class="container-fluid">
+    Hi
+    <!-- <div class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm">
       <img class="me-3" src="/docs/5.0/assets/brand/bootstrap-logo-white.svg" alt="" width="48" height="38">
       <div class="lh-1">
         <h1 class="h6 mb-0 text-white lh-1">Bootstrap</h1>
@@ -77,7 +78,7 @@
       <small class="d-block text-end mt-3">
         <a href="#">All suggestions</a>
       </small>
-    </div>
+    </div> -->
   </main>
 </template>
 
@@ -85,6 +86,8 @@
 export default {
   name: 'Body',
   components: {
+  },
+  mounted () {
   }
 }
 </script>

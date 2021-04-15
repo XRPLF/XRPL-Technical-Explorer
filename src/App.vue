@@ -1,30 +1,14 @@
 <template>
   <div id="app">
     <Header />
-
-    <div class="nav-scroller bg-body shadow-sm">
-      <nav class="nav nav-underline" aria-label="Secondary navigation">
-        <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
-        <a class="nav-link" href="#">
-          Friends
-          <span class="badge bg-light text-dark rounded-pill align-text-bottom">27</span>
-        </a>
-        <a class="nav-link" href="#">Explore</a>
-        <a class="nav-link" href="#">Suggestions</a>
-        <a class="nav-link" href="#">Link</a>
-        <a class="nav-link" href="#">Link</a>
-        <a class="nav-link" href="#">Link</a>
-        <a class="nav-link" href="#">Link</a>
-        <a class="nav-link" href="#">Link</a>
-      </nav>
-    </div>
-
+    <Ledgers />
     <Body />
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
+import Ledgers from './components/Ledgers.vue'
 import Body from './components/Body.vue'
 // import Sample from './components/Sample.vue'
 
@@ -32,6 +16,7 @@ export default {
   name: 'App',
   components: {
     Header,
+    Ledgers,
     Body
     // Sample
   },
@@ -56,10 +41,28 @@ export default {
   }
 
   body {
-    padding-top: 56px;
+    padding-top: calc(56px + 2.75rem + 1em);
 
+    /**
+      Styles by Tristan (screenshot)
+    */
+    .blue { color: #183FB7; }
+    .blue-border { border-color: lighten(#183FB7, 45%); }
+    .blue-highlight { color: #7592F7; }
+    .bg-blue { background-color: #183FB7; color: white; }
+
+    .bg-card { background-color: #0C1637; }
+    .bg-card-header { background-color: #3D4256; }
+
+    .bg-light-card { background-color: #F5F7FF; }
+    .bg-light-card-header { background-color: #EBEDF9; }
+
+    /**
+      Bootstrap Template
+    */
     .nav-scroller {
-      position: relative;
+      position: fixed;
+      top: 56px;
       z-index: 2;
       height: 2.75rem;
       overflow-y: hidden;
