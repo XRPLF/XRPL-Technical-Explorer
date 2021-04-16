@@ -18,10 +18,10 @@
       </div>
       <span v-if="!connected" class="blue await-close ms-3 pt-2"><small>Connecting...</small></span>
       <span v-if="connected && ledgers.length === 0" class="blue await-close ms-3 pt-2"><small>Waiting for the next ledger to close...</small></span>
-      <a v-for="l in ledgers" v-bind:key="l.ledger_index" class="nav-link" href="#">
+      <router-link :to="String(l.ledger_index)" v-for="l in ledgers" v-bind:key="l.ledger_index" class="nav-link">
         <span :class="{'blue fw-bold': l.txn_count > 0, 'text-muted': l.txn_count === 0}">{{ l.ledger_index }}</span>
         <span v-if="l.txn_count > 0" class="badge bg-blue fw-bold ms-1 text-white rounded-pill align-text-bottom">{{ l.txn_count }}</span>
-      </a>
+      </router-link>
     </nav>
   </div>
 </template>

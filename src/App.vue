@@ -1,23 +1,20 @@
 <template>
   <div id="app">
     <Header />
-    <Ledgers />
-    <Body />
+    <LedgerNav />
+    <router-view/>
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-import Ledgers from './components/Ledgers.vue'
-import Body from './components/Body.vue'
-// import Sample from './components/Sample.vue'
+import LedgerNav from './components/LedgerNav.vue'
 
 export default {
   name: 'App',
   components: {
     Header,
-    Ledgers,
-    Body
+    LedgerNav
     // Sample
   },
   mounted () {

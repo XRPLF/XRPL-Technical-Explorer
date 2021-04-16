@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-blue" aria-label="Main navigation">
     <div class="container-fluid">
-      <a class="nes navbar-brand" href="#">Hooks Explorer</a>
+      <router-link class="nes nav navbar-brand" to="/">Hooks Explorer</router-link>
       <button class="navbar-toggler p-0 border-0" type="button" @click="navbarCollapsed = !navbarCollapsed" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>

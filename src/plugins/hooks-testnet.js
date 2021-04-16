@@ -9,48 +9,4 @@ export default {
     Vue.prototype.$events.emit('connected', WsUrl)
     Vue.prototype.$ws.on('ledger', ledger => Vue.prototype.$events.emit('ledger', ledger))
   }
-
-  // install (app) {
-  //   const connect = (url, options) => {
-  //     if (ws != null) {
-  //       return ws
-  //     }
-  //     return new Promise((resolve, reject) => {
-  //       new RippledWsClient(url, { NoUserAgent: true, ...options }).then(connection => {
-  //         ws = connection
-  //         resolve(connection)
-  //       }).catch(error => {
-  //         reject(error)
-  //       })
-  //     })
-  //   }
-
-  //   const getState = () => {
-  //     return ws.getState()
-  //   }
-
-  //   const close = () => {
-  //     ws.close().then(closeInfo => {
-  //       console.log('Closed', closeInfo)
-  //     }).catch(error => {
-  //       console.log('Close error', error)
-  //     })
-  //   }
-
-  //   const send = async (command) => {
-  //     return await ws.send(command)
-  //   }
-
-  //   const on = (event, fn) => {
-  //     ws.on(event, fn)
-  //   }
-
-  //   app.config.globalProperties.$ws = {
-  //     connect,
-  //     getState,
-  //     close,
-  //     send,
-  //     on
-  //   }
-  // }
 }
