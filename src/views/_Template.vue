@@ -1,10 +1,6 @@
 <template>
   <main class="container-fluid">
-    <h4 class="nes blue">Hi!</h4>
-    <code class="text-primary nes">Work in progress ;)</code>
-    <div class="mt-4">
-      Click a ledger or search for something (account, hash, ...)
-    </div>
+    Template
   </main>
 </template>
 
@@ -13,7 +9,7 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
-  name: 'Home',
+  name: 'Template',
   components: {
   },
   mounted () {

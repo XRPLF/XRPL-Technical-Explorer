@@ -31,7 +31,7 @@ export default {
       font-family: 'Press Start 2P', cursive;
     }
 
-    pre {
+    pre, .pre {
       font-family: 'Source Code Pro', monospace;
       font-weight: 600;
     }
