@@ -50,22 +50,26 @@ export default {
       this.loading = false
       this.found = data
 
+      let routed = false
       if (data.length === 1) {
         const entry = data[0]
 
         // Semi duplicate logic in Ambiguous.vue
-        if (entry.command === 'tx') {
+        if (entry.command === 'tx' && entry.result?.hash) {
           this.$router.replace('/tx/' + entry.result.hash)
+          routed = true
         }
-        if (entry.command === 'ledger_entry') {
+        if (entry.command === 'ledger_entry' && entry.result?.index) {
           this.$router.replace('/entry/' + entry.result.index)
+          routed = true
         }
-        if (entry.command === 'ledger') {
+        if (entry.command === 'ledger' && entry.result?.ledger?.seqNum) {
           this.$router.replace('/' + entry.result.ledger.seqNum)
+          routed = true
         }
       }
 
-      if (data.length === 0) {
+      if (data.length === 0 || !routed) {
         return this.$router.replace({ name: 'notfound' })
       }
     }
