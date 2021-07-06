@@ -7,6 +7,7 @@ import Transaction from '../views/Transaction.vue'
 import LedgerEntry from '../views/LedgerEntry.vue'
 import Account from '../views/Account.vue'
 import NotFound from '../views/NotFound.vue'
+import GenericData from '../views/GenericData.vue'
 
 Vue.use(VueRouter)
 
@@ -34,7 +35,49 @@ const routes = [
   {
     path: '/:account(r[a-zA-Z0-9]{15,})',
     name: 'account',
-    component: Account
+    component: Account,
+    children: [
+      {
+        name: 'account_tx',
+        path: 'tx',
+        component: GenericData,
+        meta: {
+          title: 'Transactions',
+          element: 'transactions',
+          map: 'tx'
+        }
+      },
+      {
+        name: 'account_lines',
+        path: 'lines',
+        component: GenericData,
+        meta: {
+          title: 'Account (Trust) Lines',
+          element: 'lines',
+          map: ''
+        }
+      },
+      {
+        name: 'account_objects',
+        path: 'objects',
+        component: GenericData,
+        meta: {
+          title: 'Account (Ledger) Objects',
+          element: 'account_objects',
+          map: ''
+        }
+      },
+      {
+        name: 'account_offers',
+        path: 'offers',
+        component: GenericData,
+        meta: {
+          title: 'Account (DEX) Offers',
+          element: 'offers',
+          map: ''
+        }
+      }
+    ]
   },
   {
     path: '/:hash([a-fA-F0-9]{64})',
