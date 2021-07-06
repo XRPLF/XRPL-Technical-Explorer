@@ -1,9 +1,6 @@
-# Hooks Testnet Explorer
+# XRP Ledger Technical Explorer
 
-Exploring the Hooks Testnet by XRPL Labs. Runs on: https://hooks-testnet-explorer.xrpl-labs.com
-
-- https://xrpl-hooks.readme.io
-- https://hooks-testnet.xrpl-labs.com
+A technical (geeky) JSON viewing explorer for the XRP Ledger.
 
 ## Project setup
 ```
@@ -23,4 +20,4 @@ npm run build
 ### Lints and fixes files
 ```
 npm run lint
-```a
+```
