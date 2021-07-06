@@ -53,7 +53,12 @@ export default {
         command: 'account_info',
         account: this.$router.currentRoute.params.account
       })
-      this.account = account.account_data
+
+      if (account?.account_data) {
+        this.account = account.account_data
+      } else {
+        return this.$router.replace({ name: 'notfound' })
+      }
     }
   },
   async mounted () {
