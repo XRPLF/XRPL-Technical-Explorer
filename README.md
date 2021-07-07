@@ -7,6 +7,13 @@ A technical (geeky) JSON viewing explorer for the XRP Ledger.
 npm install
 ```
 
+Configure alternative WebSocket endpoint with the env. variable:
+```
+VUE_APP_WSS_ENDPOINT
+```
+
+E.g. `VUE_APP_WSS_ENDPOINT=wss://hooks-testnet.xrpl-labs.com`
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
