@@ -68,9 +68,11 @@ export default {
   },
   computed: {
     nodeSelectLabel () {
-      if (process?.env?.VUE_APP_WSS_ENDPOINT) {
-        if (process.env.VUE_APP_WSS_ENDPOINT.match(/rippletest|\/testnet\.xrpl-labs/)) return 'Testnet (Change)'
-        if (process.env.VUE_APP_WSS_ENDPOINT.match(/hooks/)) return 'Hooks (Change)'
+      if (this.$net.test) {
+        return 'Testnet (Change)'
+      }
+      if (this.$net.hooks) {
+        return 'Hooks (Change)'
       }
       return 'Mainnet (Change)'
     },
