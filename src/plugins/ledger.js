@@ -49,7 +49,7 @@ export default {
               this.ledgers.push({ ledgerIndex, ledgerData: {} })
             }
 
-            const ledgerData = await this.$ws.send({ command: 'ledger', ledger, transactions: true, expand: true })
+            const ledgerData = await this.$ws.send({ command: 'ledger', ledger: Number(ledger), transactions: true, expand: true })
             // console.log(ledgerData)
             Object.assign(this.ledgers[this.ledgers.map(l => l.ledgerIndex).indexOf(ledgerIndex)], {
               ledgerData
