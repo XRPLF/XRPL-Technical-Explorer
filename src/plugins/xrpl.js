@@ -1,10 +1,8 @@
 import { XrplClient } from 'xrpl-client'
 
-// const WsUrl = 'wss://xrplcluster.com'
-
 export default {
   async install (Vue, options) {
-    Vue.prototype.$ws = new XrplClient()
+    Vue.prototype.$ws = new XrplClient(process?.env?.VUE_APP_WSS_ENDPOINT)
     Vue.prototype.$ws.on('ledger', ledger => Vue.prototype.$events.emit('ledger', ledger))
     console.info('Connecting @ `plugins/xrpl`')
     await Vue.prototype.$ws.ready()
