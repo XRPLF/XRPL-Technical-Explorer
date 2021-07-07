@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import JsonRenderer from '../views/JsonRenderer.vue'
-import Loading from '../views/Loading.vue'
+import JsonRenderer from '../components/JsonRenderer.vue'
+import Loading from '../components/Loading.vue'
 
 export default {
   name: 'Transaction',

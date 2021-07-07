@@ -2,12 +2,12 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Ledger from '../views/Ledger.vue'
-import ResolveHash from '../views/ResolveHash.vue'
+import ResolveHash from '../components/ResolveHash.vue'
 import Transaction from '../views/Transaction.vue'
 import LedgerEntry from '../views/LedgerEntry.vue'
 import Account from '../views/Account.vue'
 import NotFound from '../views/NotFound.vue'
-import GenericData from '../views/GenericData.vue'
+import GenericData from '../components/GenericData.vue'
 
 Vue.use(VueRouter)
 

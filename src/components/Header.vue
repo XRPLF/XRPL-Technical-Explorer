@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark" :class="{ 
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark" :class="{
     'bg-blue': nodeSelectLabel.match(/Main/),
     'bg-success': nodeSelectLabel.match(/Test/),
     'bg-info': nodeSelectLabel.match(/Hooks/)

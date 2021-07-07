@@ -14,17 +14,6 @@
         <JsonRenderer :data="selectedLedger" />
       </div><!-- selectedLedger.error -->
       <div v-else>
-        <!--
-          <code><small class="d-block mt-2"><small>validated</small></small><span class="ps-4 pre text-dark">{{ selectedLedger.validated }}</span></code><br />
-          <code><small class="d-block mt-2"><small>close_time_human</small></small><span class="ps-4 pre text-dark">{{ selectedLedger.ledger.close_time_human }}</span></code><br />
-          <code><small class="d-block mt-2"><small>hash</small></small><span class="ps-4 pre text-dark">{{ selectedLedger.ledger.hash }}</span></code><br />
-          <code><small class="d-block mt-2"><small>ledger_index</small></small><span class="ps-4 pre text-dark">{{ selectedLedger.ledger.ledger_index }}</span></code><br />
-          <code><small class="d-block mt-2"><small>totalCoins</small></small><span class="ps-4 pre text-dark">{{ selectedLedger.ledger.totalCoins }}</span></code><br />
-          <code><small class="d-block mt-2"><small>closed</small></small><span class="ps-4 pre text-dark">{{ selectedLedger.ledger.closed }}</span></code><br />
-          <code><small class="d-block mt-2"><small>accepted</small></small><span class="ps-4 pre text-dark">{{ selectedLedger.ledger.accepted }}</span></code><br />
-        -->
-
-        <!-- <h3 class="fw-bold h4 mt-4">Ledger</h3> -->
         <JsonRenderer :data="selectedLedgerWithoutTransactions" />
 
         <h3 class="fw-bold h4 mt-4">Transactions</h3>
@@ -38,8 +27,8 @@
 </template>
 
 <script>
-import JsonRenderer from '../views/JsonRenderer.vue'
-import Loading from '../views/Loading.vue'
+import JsonRenderer from '../components/JsonRenderer.vue'
+import Loading from '../components/Loading.vue'
 
 export default {
   name: 'Ledger',

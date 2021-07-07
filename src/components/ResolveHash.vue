@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Loading from '../views/Loading.vue'
+import Loading from '../components/Loading.vue'
 import Ambiguous from '../views/Ambiguous.vue'
 
 export default {
