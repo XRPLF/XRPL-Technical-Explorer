@@ -1,5 +1,9 @@
 <template>
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-blue" aria-label="Main navigation">
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark" :class="{ 
+    'bg-blue': nodeSelectLabel.match(/Main/),
+    'bg-success': nodeSelectLabel.match(/Test/),
+    'bg-info': nodeSelectLabel.match(/Hooks/)
+  }" aria-label="Main navigation">
     <div class="container-fluid">
       <router-link class="nes nav navbar-brand" to="/">XRP Ledger Explorer</router-link>
       <button class="navbar-toggler p-0 border-0" type="button" @click="navbarCollapsed = !navbarCollapsed" aria-label="Toggle navigation">
@@ -29,7 +33,7 @@
             </ul>
           </li> -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Select node</a>
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">{{ nodeSelectLabel }}</a>
             <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
               <li><a class="dropdown-item" href="https://explorer.xrplf.org"><b>Mainnet</b></a></li>
               <li><a class="dropdown-item" href="https://explorer-testnet.xrplf.org">Testnet</a></li>
@@ -57,6 +61,13 @@ export default {
     }
   },
   computed: {
+    nodeSelectLabel () {
+      if (process?.env?.VUE_APP_WSS_ENDPOINT) {
+        if (process.env.VUE_APP_WSS_ENDPOINT.match(/rippletest|\/testnet\.xrpl-labs/)) return 'Testnet (Change)'
+        if (process.env.VUE_APP_WSS_ENDPOINT.match(/hooks/)) return 'Hooks (Change)'
+      }
+      return 'Mainnet (Change)'
+    },
     validQuery () {
       const query = this.query.trim()
       if (query.match(/^r[a-zA-Z0-9]{15,}/)) {
