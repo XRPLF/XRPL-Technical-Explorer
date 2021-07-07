@@ -28,6 +28,14 @@
               <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
           </li> -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Select node</a>
+            <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
+              <li><a class="dropdown-item" href="https://explorer.xrplf.org"><b>Mainnet</b></a></li>
+              <li><a class="dropdown-item" href="https://explorer-testnet.xrplf.org">Testnet</a></li>
+              <li><a class="dropdown-item" href="https://hooks-testnet-explorer.xrpl-labs.com">Hooks Testnet</a></li>
+            </ul>
+          </li>
         </ul>
         <form class="d-flex" @submit="search">
           <input v-model="query" class="form-control border border-2 border-dark py-0 me-2" type="search" placeholder="Search" aria-label="Search">
