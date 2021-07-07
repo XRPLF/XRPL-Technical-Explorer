@@ -18,7 +18,7 @@ const routes = [
     component: Home
   },
   {
-    path: '/:ledger(\\d{1,20})',
+    path: '/:ledger([0-9]{5,20})',
     name: 'ledger',
     component: Ledger
   },
