@@ -31,7 +31,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">More</a>
             <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
               <li><a class="dropdown-item" href="https://hooks-testnet.xrpl-labs.com" target="_blank"><i class="fas fa-info-square"></i><span class="ps-2">About Hooks</span></a></li>
-              <li><a class="dropdown-item" href="https://github.com/XRPL-Labs/xrpld-hooks/tree/hooks-ssvm/hook-api-examples" target="_blank"><i class="fab fa-github-square"></i><span class="ps-2">Source code</span></a></li>
+              <li><a class="dropdown-item" href="https://github.com/XRPL-Labs/xrpld-hooks/tree/hooks-ssvm/hook-api-exambples" target="_blank"><i class="fab fa-github-square"></i><span class="ps-2">Source code</span></a></li>
               <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
           </li> -->
@@ -44,7 +44,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="https://github.com/XRPLF/XRPL-Technical-Explorer" target="_blank"><i class="fab fa-github-square"></i><span class="ps-2">Source</span></a>
+            <a class="nav-link" style="white-space: nowrap;" href="https://github.com/XRPLF/XRPL-Technical-Explorer" target="_blank"><i class="fab fa-github-square"></i><span class="ps-2">Source</span></a>
           </li>
         </ul>
         <form class="d-flex" @submit="search">
@@ -77,7 +77,16 @@ export default {
       return 'Mainnet (Change)'
     },
     validQuery () {
+      const commands = this.$router.options.routes.filter(r => {
+        return r?.meta?.isPublicCommand
+      }).map(r => r.name.split('_').slice(1).join('_'))
+
       const query = this.query.trim()
+
+      if (query.length < 2) {
+        return false
+      }
+
       if (query.match(/^r[a-zA-Z0-9]{15,}/)) {
         // XRPL account address
         return query
@@ -90,6 +99,10 @@ export default {
         // Ledger Index
         return query
       }
+      const possibleCommands = commands.filter(c => c.match(query.toLowerCase()))
+      if (possibleCommands.length > 0) {
+        return possibleCommands
+      }
 
       return false
     }
@@ -99,8 +112,40 @@ export default {
   methods: {
     search (e) {
       e.preventDefault()
-      if (this.validQuery) {
-        this.$router.push('/' + this.validQuery)
+      let navTo
+      const navQuery = {}
+
+      if (this.validQuery && typeof this.validQuery === 'string') {
+        navTo = '/' + this.validQuery
+      }
+      if (this.validQuery && Array.isArray(this.validQuery) && this.validQuery.length > 0) {
+        if (this.validQuery.length === 1) {
+          navTo = '/' + this.validQuery[0]
+        }
+        if (this.validQuery.length > 1) {
+          console.log(this.validQuery)
+          navTo = '/command'
+          Object.assign(navQuery, {
+            c: this.validQuery
+          })
+        }
+      }
+      console.log(navTo)
+      if (
+        navTo &&
+        (
+          this.$route.path !== navTo ||
+          JSON.stringify(navQuery) !== JSON.stringify(this?.$route?.query || {})
+        ) &&
+        !(
+          JSON.stringify(navQuery) === JSON.stringify(this?.$route?.query || {}) &&
+          this.$route.path === navTo
+        )
+      ) {
+        this.$router[Object.keys(navQuery).length > 0 ? 'replace' : 'push']({
+          path: navTo,
+          query: navQuery
+        })
       }
       return false
     }

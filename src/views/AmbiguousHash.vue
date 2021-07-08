@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: 'Ambiguous',
+  name: 'AmbiguousHash',
   props: ['entries'],
   methods: {
     l (entry) {

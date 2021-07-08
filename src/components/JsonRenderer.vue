@@ -34,8 +34,8 @@ export default {
         // Account
         newRoute = '/' + value
       }
-      if (String(value).match(/^[a-fA-F0-9]{64}$/)) {
-        // Account
+      if (String(value).match(/^[a-fA-F0-9]{64}$/) && !fieldName.toLowerCase().match(/marker/)) {
+        // Hash
         newRoute = '/' + value
       }
       if (String(value).match(/^[0-9]{5,}$/) && Number(value) >= 32570 && Number(value) <= this.$ws.getState().ledger.last) {

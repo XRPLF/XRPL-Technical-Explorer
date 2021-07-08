@@ -48,7 +48,7 @@ export default {
       const data = await this.$ws.send({
         command: this.$route.name,
         account: this.$router.currentRoute.params.account,
-        limit: 10,
+        limit: 20,
         marker
       })
 

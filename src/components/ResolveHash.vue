@@ -4,19 +4,19 @@
       <Loading />
     </div>
 
-    <Ambiguous v-if="found.length > 0" :entries="found" />
+    <AmbiguousHash v-if="found.length > 0" :entries="found" />
   </main>
 </template>
 
 <script>
 import Loading from '../components/Loading.vue'
-import Ambiguous from '../views/Ambiguous.vue'
+import AmbiguousHash from '../views/AmbiguousHash.vue'
 
 export default {
   name: 'ResolveHash',
   components: {
     Loading,
-    Ambiguous
+    AmbiguousHash
   },
   data () {
     return {
@@ -54,7 +54,7 @@ export default {
       if (data.length === 1) {
         const entry = data[0]
 
-        // Semi duplicate logic in Ambiguous.vue
+        // Semi duplicate logic in AmbiguousHash.vue
         if (entry.command === 'tx' && entry.result?.hash) {
           this.$router.replace('/tx/' + entry.result.hash)
           routed = true

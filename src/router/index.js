@@ -7,7 +7,9 @@ import Transaction from '../views/Transaction.vue'
 import LedgerEntry from '../views/LedgerEntry.vue'
 import Account from '../views/Account.vue'
 import NotFound from '../views/NotFound.vue'
+import CustomCommand from '../views/CustomCommand.vue'
 import GenericData from '../components/GenericData.vue'
+import publicCommands from '../plugins/commands'
 
 Vue.use(VueRouter)
 
@@ -84,6 +86,22 @@ const routes = [
     name: 'hash',
     component: ResolveHash
   },
+  {
+    path: '/command',
+    name: 'custom_command',
+    component: CustomCommand
+  },
+  ...Object.keys(publicCommands).map(command => {
+    return {
+      path: '/' + command,
+      name: 'command_' + command,
+      component: CustomCommand,
+      meta: {
+        isPublicCommand: true,
+        template: publicCommands[command]
+      }
+    }
+  }),
   {
     path: '/404',
     alias: '*',
