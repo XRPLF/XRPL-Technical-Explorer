@@ -6,7 +6,7 @@
       </button>
       <ul class="dropdown-menu nes mt-2">
         <li v-if="$net.live"><a class="dropdown-item" target="_blank" :href="'https://bithomp.com/explorer/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>Bithomp.com</small></a></li>
-        <li v-if="$net.live"><a class="dropdown-item" target="_blank" :href="'https://xrpscan.com/account/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>XRP Scan.com</small></a></li>
+        <li v-if="$net.live"><a class="dropdown-item" target="_blank" :href="'https://xrpscan.com/account/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>XRPScan.com</small></a></li>
         <li v-if="$net.live"><a class="dropdown-item" target="_blank" :href="'https://xrplorer.com/account/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>XRPlorer.com</small></a></li>
         <li v-if="$net.live"><a class="dropdown-item" target="_blank" :href="'https://xrpintel.com/account/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpintel.com</small></a></li>
         <li v-if="$net.live"><a class="dropdown-item" target="_blank" :href="'https://livenet.xrpl.org/accounts/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpl.org</small></a></li>
