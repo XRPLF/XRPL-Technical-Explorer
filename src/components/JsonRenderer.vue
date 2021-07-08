@@ -34,7 +34,7 @@ export default {
         // Account
         newRoute = '/' + value
       }
-      if (String(value).match(/^[a-fA-F0-9]{64}$/) && !fieldName.toLowerCase().match(/marker/)) {
+      if (String(value).match(/^[a-fA-F0-9]{64}$/) && !fieldName.toLowerCase().match(/marker|account_hash|transaction_hash/)) {
         // Hash
         newRoute = '/' + value
       }
