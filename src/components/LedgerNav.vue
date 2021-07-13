@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed-top nav-scroller bg-body shadow-sm">
+  <div class="fixed-top nav-scroller bg-body shadow-sm" style="z-index: 10">
     <nav class="nav nav-underline" aria-label="Secondary navigation">
       <div class="ms-2 pe-3" v-show="$ledger.list.length > 0">
         <i class="pinned-ledgers fas fa-thumbtack d-inline mt-3 float-start text-dark"></i>
