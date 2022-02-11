@@ -133,8 +133,8 @@ export default {
       }
 
       const data = await this.$ws.send({
-        ...customCommand,
-        marker
+        marker,
+        ...customCommand
       })
       console.log('marker', this.$route.name, data?.marker)
       if (data?.marker || marker) {
