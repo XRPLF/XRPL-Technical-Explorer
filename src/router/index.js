@@ -103,6 +103,17 @@ const routes = [
     }
   }),
   {
+    path: '/ledger_entry/:hash([a-fA-F0-9]{64})',
+    name: 'command_ledger_entry',
+    component: CustomCommand,
+    meta: {
+      isPublicCommand: true,
+      template: publicCommands.ledger_entry,
+      replaceProp: 'index',
+      replaceParam: 'hash'
+    }
+  },
+  {
     path: '/404',
     alias: '*',
     name: 'notfound',

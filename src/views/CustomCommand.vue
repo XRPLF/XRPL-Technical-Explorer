@@ -86,6 +86,9 @@ export default {
     }
   },
   computed: {
+    paramToTemplate () {
+      return this.$route.meta?.replaceProp && this.$route.meta?.replaceParam && this.$route.params?.[this.$route.meta.replaceParam]
+    },
     possibleCommands () {
       if (this.$route?.query?.c) {
         return this.$router.options.routes.filter(r => {
@@ -108,8 +111,14 @@ export default {
     prepare () {
       this.command = JSON.stringify({
         command: this.commandName,
-        ...(this.$router.options.routes.filter(r => r.name === this.$route.name)[0]?.meta?.template || {})
+        ...(this.$router.options.routes.filter(r => r.name === this.$route.name)[0]?.meta?.template || {}),
+        ...(this.paramToTemplate ? {
+          [this.$route.meta.replaceProp]: this.$route.params[this.$route.meta.replaceParam]
+        } : {})
       }, null, 2)
+      if (this.paramToTemplate) {
+        this.get()
+      }
     },
     async get (marker) {
       this.loading = true
