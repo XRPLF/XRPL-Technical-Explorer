@@ -14,6 +14,7 @@
 <script>
 // TODO: MEMO decoding, etc.
 
+import crypto from 'crypto'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 
@@ -34,9 +35,16 @@ export default {
         // Account
         newRoute = '/' + value
       }
-      if (String(value).match(/^[a-fA-F0-9]{64}$/) && !fieldName.toLowerCase().match(/marker|account_hash|transaction_hash/)) {
+      if (String(value).match(/^[a-fA-F0-9]{64}$/) && !fieldName.match(/marker|account_hash|transaction_hash/)) {
         // Hash
-        newRoute = '/' + value
+        if (fieldName === 'hookhash') {
+          newRoute = '/' + crypto.createHash('SHA512')
+            .update(Buffer.from('0044' + value, 'hex'))
+            .digest().slice(0, 32).toString('hex')
+            .toUpperCase()
+        } else {
+          newRoute = '/' + value
+        }
       }
       if (String(value).match(/^[0-9]{5,}$/) && Number(value) >= 32570 && Number(value) <= this.$ws.getState().ledger.last) {
         // Ledger Index
