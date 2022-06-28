@@ -37,7 +37,7 @@ export default {
       }
       if (String(value).match(/^[a-fA-F0-9]{64}$/) && !fieldName.match(/marker|account_hash|transaction_hash/)) {
         // Hash
-        if (fieldName === 'hookhash') {
+        if (fieldName === 'hookhash' || fieldName === 'emithookhash') {
           newRoute = '/' + crypto.createHash('SHA512')
             .update(Buffer.from('0044' + value, 'hex'))
             .digest().slice(0, 32).toString('hex')
