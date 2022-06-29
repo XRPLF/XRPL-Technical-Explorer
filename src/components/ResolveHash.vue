@@ -11,6 +11,7 @@
 <script>
 import Loading from '../components/Loading.vue'
 import AmbiguousHash from '../views/AmbiguousHash.vue'
+import { hookHashToLedgerObjectHash } from '../plugins/helpers'
 
 export default {
   name: 'ResolveHash',
@@ -29,6 +30,7 @@ export default {
       console.log(this.$router.currentRoute?.params?.hash)
       // Either TX, Ledger, Object or not found
       const hashTypes = [
+        { command: 'ledger_entry', key: 'index', valueHelper: hookHashToLedgerObjectHash },
         { command: 'ledger_entry', key: 'index' },
         { command: 'ledger', key: 'ledger_hash' },
         { command: 'tx', key: 'transaction' }
@@ -36,7 +38,10 @@ export default {
 
       const data = (await Promise.all(hashTypes.map(hashType => {
         const { command, key } = hashType
-        return this.$ws.send({ command, [key]: this.$router.currentRoute?.params?.hash })
+        const value = typeof hashType?.valueHelper === 'function'
+          ? hashType.valueHelper(this.$router.currentRoute?.params?.hash || '')
+          : this.$router.currentRoute?.params?.hash || ''
+        return this.$ws.send({ command, [key]: value })
       })))
         .map((result, i) => {
           return {

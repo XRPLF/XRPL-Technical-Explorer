@@ -14,9 +14,9 @@
 <script>
 // TODO: MEMO decoding, etc.
 
-import crypto from 'crypto'
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
+import { hookHashToLedgerObjectHash } from '../plugins/helpers'
 
 export default {
   name: 'JsonRenderer',
@@ -38,10 +38,7 @@ export default {
       if (String(value).match(/^[a-fA-F0-9]{64}$/) && !fieldName.match(/marker|account_hash|transaction_hash/)) {
         // Hash
         if (fieldName === 'hookhash' || fieldName === 'emithookhash') {
-          newRoute = '/' + crypto.createHash('SHA512')
-            .update(Buffer.from('0044' + value, 'hex'))
-            .digest().slice(0, 32).toString('hex')
-            .toUpperCase()
+          newRoute = '/' + hookHashToLedgerObjectHash(value)
         } else {
           newRoute = '/' + value
         }
