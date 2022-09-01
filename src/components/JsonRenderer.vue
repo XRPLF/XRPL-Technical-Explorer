@@ -35,6 +35,7 @@ export default {
         // Account
         newRoute = '/' + value
       }
+
       if (String(value).match(/^[a-fA-F0-9]{64}$/) && !fieldName.match(/marker|account_hash|transaction_hash/)) {
         // Hash
         if (fieldName === 'hookhash' || fieldName === 'emithookhash') {
@@ -48,6 +49,12 @@ export default {
         if (!fieldName.match(/sequence/)) {
           newRoute = '/' + value
         }
+      }
+
+      if (fieldName.match(/hooknamespace/) && this.data?.Account) {
+        // Hook Namespace
+        newRoute = '/namespace/' + this.data.Account + '/' + value
+        console.log('Hook Namespace', { newRoute })
       }
 
       if (newRoute) {

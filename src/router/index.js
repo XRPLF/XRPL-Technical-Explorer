@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Ledger from '../views/Ledger.vue'
 import ResolveHash from '../components/ResolveHash.vue'
 import Transaction from '../views/Transaction.vue'
+import HookNamespace from '../views/HookNamespace.vue'
 import LedgerEntry from '../views/LedgerEntry.vue'
 import Account from '../views/Account.vue'
 import NotFound from '../views/NotFound.vue'
@@ -112,6 +113,11 @@ const routes = [
       replaceProp: 'index',
       replaceParam: 'hash'
     }
+  },
+  {
+    path: '/namespace/:account(r[a-zA-Z0-9]{15,})/:namespace_id([a-fA-F0-9]{64})',
+    name: 'hooknamespace',
+    component: HookNamespace
   },
   {
     path: '/404',
