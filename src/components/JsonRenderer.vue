@@ -57,6 +57,10 @@ export default {
         console.log('Hook Namespace', { newRoute })
       }
 
+      if (fieldName.match(/hookstate/)) {
+        return
+      }
+
       if (newRoute) {
         // Check if not there yet
         if (this.$router.currentRoute.path !== newRoute) {
