@@ -57,7 +57,7 @@ export default {
         console.log('Hook Namespace', { newRoute })
       }
 
-      if (fieldName.match(/hookstate/)) {
+      if (fieldName.match(/hookstate|nftokenid/)) {
         return
       }
 
