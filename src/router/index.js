@@ -66,7 +66,7 @@ const routes = [
         component: GenericData,
         meta: {
           title: 'Account NFTs',
-          element: 'nfts',
+          element: 'account_nfts',
           map: ''
         }
       },
