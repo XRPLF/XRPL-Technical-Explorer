@@ -61,6 +61,16 @@ const routes = [
         }
       },
       {
+        name: 'account_nfts',
+        path: 'nfts',
+        component: GenericData,
+        meta: {
+          title: 'Account NFTs',
+          element: 'nfts',
+          map: ''
+        }
+      },
+      {
         name: 'account_objects',
         path: 'objects',
         component: GenericData,

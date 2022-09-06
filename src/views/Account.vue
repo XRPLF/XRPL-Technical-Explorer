@@ -30,6 +30,7 @@
 
     <router-link :to="'/' + $route.params.account + '/tx'" :class="{ 'is-success text-dark': $route.name === 'account_tx', 'is-primary': $route.name !== 'account_tx' }" class="nes-btn py-0 me-3 mt-2 fw-bold">Transactions</router-link>
     <router-link :to="'/' + $route.params.account + '/lines'" :class="{ 'is-success text-dark': $route.name === 'account_lines', 'is-primary': $route.name !== 'account_lines' }" class="nes-btn py-0 me-3 mt-2 fw-bold">Lines</router-link>
+    <router-link :to="'/' + $route.params.account + '/nfts'" :class="{ 'is-success text-dark': $route.name === 'account_nfts', 'is-primary': $route.name !== 'account_nfts' }" class="nes-btn py-0 me-3 mt-2 fw-bold">NFTs</router-link>
     <router-link :to="'/' + $route.params.account + '/objects'" :class="{ 'is-success text-dark': $route.name === 'account_objects', 'is-primary': $route.name !== 'account_objects' }" class="nes-btn py-0 me-3 mt-2 fw-bold">Objects</router-link>
     <router-link :to="'/' + $route.params.account + '/offers'" :class="{ 'is-success text-dark': $route.name === 'account_offers', 'is-primary': $route.name !== 'account_offers' }" class="nes-btn py-0 me-3 mt-2 fw-bold">Offers</router-link>
 

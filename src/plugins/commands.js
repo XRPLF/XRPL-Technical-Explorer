@@ -22,6 +22,10 @@ export default {
     command: 'account_lines',
     account: 'r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59'
   },
+  account_nfts: {
+    command: 'account_nfts',
+    account: 'r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59'
+  },
   account_objects: {
     command: 'account_objects',
     account: 'r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59',
