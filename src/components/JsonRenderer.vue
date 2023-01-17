@@ -1,12 +1,13 @@
 <template>
   <div>
     <vue-json-pretty
-      :showLength="true"
-      :collapsedOnClickBrackets="true"
-      :showLine="true"
-      :showDoubleQuotes="false"
+      ref="json"
+      :show-length="true"
+      :collapsed-on-click-brackets="true"
+      :show-line="true"
+      :show-double-quotes="false"
       :data="data"
-      @click="click"
+      @node-click="click"
     />
   </div>
 </template>
@@ -25,8 +26,9 @@ export default {
     VueJsonPretty
   },
   methods: {
-    click (event, value) {
-      const fieldName = event.split('.').reverse()[0].toLowerCase()
+    click (event) {
+      const value = event.content
+      const fieldName = event.path.split('.').reverse()[0].toLowerCase()
       console.log('JSON click event', event, fieldName, value)
 
       let newRoute

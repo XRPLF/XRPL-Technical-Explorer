@@ -115,7 +115,7 @@ const routes = [
   }),
   {
     path: '/ledger_entry/:hash([a-fA-F0-9]{64})',
-    name: 'command_ledger_entry',
+    name: '_command_ledger_entry',
     component: CustomCommand,
     meta: {
       isPublicCommand: true,

@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark" :class="{
     'bg-blue': nodeSelectLabel.match(/Main/),
     'bg-success': nodeSelectLabel.match(/Test/),
-    'bg-info': nodeSelectLabel.match(/Hooks/)
+    'bg-info': nodeSelectLabel.match(/Hooks|custom-node/)
   }" aria-label="Main navigation">
     <div class="container-fluid">
       <router-link class="nes nav navbar-brand" to="/">
@@ -15,33 +15,13 @@
 
       <div class="navbar-collapse offcanvas-collapse" :class="{open: navbarCollapsed}">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <!-- <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
-          </li> -->
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">Notifications</a>
-          </li> -->
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">Profile</a>
-          </li> -->
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">Switch account</a>
-          </li> -->
-          <!-- <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">More</a>
-            <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
-              <li><a class="dropdown-item" href="https://hooks-testnet.xrpl-labs.com" target="_blank"><i class="fas fa-info-square"></i><span class="ps-2">About Hooks</span></a></li>
-              <li><a class="dropdown-item" href="https://github.com/XRPL-Labs/xrpld-hooks/tree/hooks-ssvm/hook-api-exambples" target="_blank"><i class="fab fa-github-square"></i><span class="ps-2">Source code</span></a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li> -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">{{ nodeSelectLabel }}</a>
             <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
               <li><a class="dropdown-item" href="https://explorer.xrplf.org"><b>Mainnet</b></a></li>
               <li><a class="dropdown-item" href="https://explorer-testnet.xrplf.org">Testnet</a></li>
-              <li><a class="dropdown-item" href="https://hooks-testnet-explorer.xrpl-labs.com">Hooks Testnet V1</a></li>
               <li><a class="dropdown-item" href="https://hooks-testnet-v2-explorer.xrpl-labs.com">Hooks Testnet V2</a></li>
+              <li><a class="dropdown-item" href="https://hooks-betanet-explorer.xrpl-labs.com">Hooks Private Beta</a></li>
             </ul>
           </li>
           <li class="nav-item">
@@ -79,7 +59,7 @@ export default {
     },
     validQuery () {
       const commands = this.$router.options.routes.filter(r => {
-        return r?.meta?.isPublicCommand
+        return r?.meta?.isPublicCommand && r.name.slice(0, 1) !== '_'
       }).map(r => r.name.split('_').slice(1).join('_'))
 
       const query = this.query.trim()
@@ -126,6 +106,7 @@ export default {
         if (this.validQuery.length > 1) {
           console.log(this.validQuery)
           navTo = '/command'
+          // console.log(this.validQuery)
           Object.assign(navQuery, {
             c: this.validQuery
           })

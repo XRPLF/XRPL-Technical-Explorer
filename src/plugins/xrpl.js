@@ -9,7 +9,7 @@ export default {
     const net = {
       live: endpoint === '' || endpoint.match(/xrplcluster|xrpl\.ws|xrpl\.link|s[12]\.ripple\.com/),
       test: endpoint.match(/rippletest|\/testnet\.xrpl-labs/),
-      hooks: endpoint.match(/hooks/)
+      hooks: endpoint.match(/hooks|custom-node/)
     }
 
     Vue.prototype.$net = net
