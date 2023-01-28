@@ -20,8 +20,8 @@
             <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
               <li><a class="dropdown-item" href="https://explorer.xrplf.org"><b>Mainnet</b></a></li>
               <li><a class="dropdown-item" href="https://explorer-testnet.xrplf.org">Testnet</a></li>
+              <li><a class="dropdown-item" href="https://hooks-testnet-v3-explorer.xrpl-labs.com">Hooks Testnet V3</a></li>
               <li><a class="dropdown-item" href="https://hooks-testnet-v2-explorer.xrpl-labs.com">Hooks Testnet V2</a></li>
-              <li><a class="dropdown-item" href="https://hooks-betanet-explorer.xrpl-labs.com">Hooks Private Beta</a></li>
             </ul>
           </li>
           <li class="nav-item">
