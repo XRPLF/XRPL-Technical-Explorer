@@ -8,12 +8,15 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "apexcharts": "^3.37.1",
     "core-js": "^3.6.5",
     "jsonlint": "^1.6.3",
     "jsonlint-mod": "^1.7.6",
     "mitt": "^2.1.0",
     "vue": "^2.6.11",
+    "vue-apexcharts": "^1.6.2",
     "vue-codemirror": "^4.0.6",
+    "vue-ctk-date-time-picker": "^2.5.0",
     "vue-json-pretty": "^1.8.1",
     "vue-router": "^3.2.0",
     "xrpl-client": "^1.8.0"
