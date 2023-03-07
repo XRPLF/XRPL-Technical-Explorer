@@ -42,7 +42,7 @@ export default {
           if (this.ledgers.filter(l => l.ledgerIndex === ledgerIndex).length > 0) {
             console.log('Skip hydrating: known', ledger)
           } else {
-            console.log('Hydrate', ledger)
+            // console.log('Hydrate', ledger)
 
             const existingRecordIndex = this.ledgers.map(l => l.ledgerIndex).indexOf(ledgerIndex)
             if (existingRecordIndex < 0) {
@@ -55,7 +55,7 @@ export default {
               ledgerData
             })
 
-            console.log('Hydrated', ledger)
+            // console.log('Hydrated', ledger)
             return ledgerData
           }
         }
