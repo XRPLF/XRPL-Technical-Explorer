@@ -21,7 +21,7 @@ import { hookHashToLedgerObjectHash } from '../plugins/helpers'
 
 export default {
   name: 'JsonRenderer',
-  props: ['data'],
+  props: ['data', '_blank'],
   components: {
     VueJsonPretty
   },
@@ -67,7 +67,11 @@ export default {
         // Check if not there yet
         if (this.$router.currentRoute.path !== newRoute) {
           console.log('Navigate', this.$router.currentRoute.path, newRoute)
-          this.$router.push(newRoute)
+          if (this._blank) {
+            window.open(newRoute, '_blank')
+          } else {
+            this.$router.push(newRoute)
+          }
         }
       }
     }

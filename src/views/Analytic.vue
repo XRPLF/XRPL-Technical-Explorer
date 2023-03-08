@@ -5,9 +5,9 @@
     </main>
     <main v-if="connected" class="container-fluid">
       <div class="d-flex float-end">
-        <button v-if="paused" @click="paused=!paused" class="py-0 px-2 ml-2 nes-btn is-success">Play</button>
-        <button v-if="!paused" @click="paused=!paused" class="py-0 px-2 ml-2 nes-btn is-warning">Paused</button>
-        <button @click="clearAll" class="nes-btn">Clear All</button>
+        <button v-if="paused" @click="paused=!paused" class="py-0 nes-btn is-success">Play</button>
+        <button v-if="!paused" @click="paused=!paused" class="py-0 nes-btn is-warning">Paused</button>
+        <button @click="clearAll" class=" py-0 nes-btn">Clear All</button>
       </div>
       <form class="d-flex" @submit="addPinLedger">
         <input v-model="fromIndex" class="border border-2 border-dark py-0 me-2" type="search" style="width:120px;"
@@ -20,25 +20,39 @@
       <hr />
 
       <h4 class="nes blue">Analytic</h4>
-      <div v-if="progressbar.max" class="d-flex">
-        <label for="loading" style="align-self:center;margin-bottom:0">Loading ledger progress:</label>
-        <progress id="loading" style="align-self:center" :value="progressbar.value" :max="progressbar.max"></progress>
+      <div class="d-flex" v-if="progressbar.max">
+        <label for="loading" class="nes" style="align-self:center;margin-bottom:0">Loading:</label>
+        <progress id="loading" class="nes-progress is-pattern" style="align-self:center" :value="progressbar.value" :max="progressbar.max"></progress>
       </div>
       <div class="d-flex">
         <VueApexCharts width="400" height="400" type="donut" :options="donut.chartOptions" :series="donut.series" ref="donut"></VueApexCharts>
         <VueApexCharts width="500" height="400" type="bar" :options="bar.options" :series="bar.series" ref="bar"></VueApexCharts>
       </div>
+
+      <hr />
+
+      <div class="d-flex justify-content-between" v-if="selectedTxs.length">
+        <h5 class="nes blue" style="align-self:center">Selected Transactions</h5>
+        <h5 class="nes blue" style="align-self:center">: {{txViewIndex + 1}} of {{selectedTxs.length}}</h5>
+        <div>
+          <button class="py-0 nes-btn is-primary" @click="transactionPrev" :disabled="txViewIndex===0" :class="{ 'is-disabled': txViewIndex===0 }">prev</button>
+          <button class="py-0 nes-btn is-primary" @click="transactionNext" :disabled="txViewIndex+1===selectedTxs.length" :class="{ 'is-disabled': txViewIndex+1===selectedTxs.length }">next</button>
+        </div>
+      </div>
+      <JsonRenderer v-if="selectedTxs.length" :data="selectedTxs[txViewIndex]" :_blank="true" />
     </main>
   </div>
 </template>
 
 <script>
 import VueApexCharts from 'vue-apexcharts'
+import JsonRenderer from '../components/JsonRenderer.vue'
 
 export default {
   name: 'Analytic',
   components: {
-    VueApexCharts
+    VueApexCharts,
+    JsonRenderer
   },
   data () {
     return {
@@ -46,6 +60,10 @@ export default {
       paused: true,
       fromIndex: null,
       toIndex: null,
+      selectedTxs: [],
+      txViewIndex: 0,
+      donutDataPointIndex: null,
+      barDataPointIndex: null,
       progressbar: {
         value: 0,
         max: 0
@@ -61,6 +79,19 @@ export default {
             show: true,
             position: 'bottom',
             horizontalAlign: 'center'
+          },
+          chart: {
+            events: {
+              dataPointSelection: (event, chartContext, config) => {
+                // The last parameter config contains additional information like `seriesIndex` and `dataPointIndex` for cartesian charts
+                if (this.donutDataPointIndex === config.dataPointIndex) {
+                  this.donutDataPointIndex = null
+                } else {
+                  this.donutDataPointIndex = config.dataPointIndex
+                }
+                this.onAnalyticSelected()
+              }
+            }
           }
         }
       },
@@ -68,9 +99,14 @@ export default {
         options: {
           chart: {
             events: {
-              dataPointSelection: function (event, chartContext, config) {
+              dataPointSelection: (event, chartContext, config) => {
                 // The last parameter config contains additional information like `seriesIndex` and `dataPointIndex` for cartesian charts
-                console.log(event, chartContext, config)
+                if (this.barDataPointIndex === config.dataPointIndex) {
+                  this.barDataPointIndex = null
+                } else {
+                  this.barDataPointIndex = config.dataPointIndex
+                }
+                this.onAnalyticSelected()
               }
             }
           },
@@ -172,7 +208,7 @@ export default {
       pairIndexArray.push(...mappedArray.map(o => o.pairValue))
     },
     updateDonutChart (ledgerIndex, data) {
-      const startTime = new Date().getTime()
+      // const startTime = new Date().getTime()
 
       const donutLabels = [...this.donut.chartOptions.labels]
       const donutSeries = [...this.donut.series]
@@ -187,15 +223,15 @@ export default {
       }
 
       this.sortArrayPair(donutSeries, donutLabels)
-      console.log('updateDonutChart computed', ledgerIndex, new Date().getTime() - startTime)
+      // console.log('updateDonutChart computed', ledgerIndex, new Date().getTime() - startTime)
       this.donut.chartOptions.labels.length = 0 // hacky workaround to keep the label reference
       this.donut.chartOptions.labels.push(...donutLabels)
       this.donut.series = donutSeries // hacky workaround to update the series value
       this.$refs.donut.updateSeries(donutSeries)
-      console.log('updateDonutChart render', ledgerIndex, new Date().getTime() - startTime)
+      // console.log('updateDonutChart render', ledgerIndex, new Date().getTime() - startTime)
     },
     updateBarChart (ledgerIndex, data) {
-      const startTime = new Date().getTime()
+      // const startTime = new Date().getTime()
 
       const barCategories = [...this.bar.options.xaxis.categories]
       const barSeries = [...this.bar.series[0].data]
@@ -213,14 +249,14 @@ export default {
       barSeries.splice(15)
       barCategories.splice(15)
 
-      console.log('updateBarChart computed', ledgerIndex, new Date().getTime() - startTime)
+      // console.log('updateBarChart computed', ledgerIndex, new Date().getTime() - startTime)
       this.bar.options.xaxis.categories.length = 0 // hacky workaround to keep the label reference
       this.bar.options.xaxis.categories.push(...barCategories)
       this.bar.series[0].data = barSeries // hacky workaround to update the series value
       this.$refs.bar.updateSeries([{
         data: barSeries
       }])
-      console.log('updateBarChart render', ledgerIndex, new Date().getTime() - startTime)
+      // console.log('updateBarChart render', ledgerIndex, new Date().getTime() - startTime)
     },
     updateCharts (ledgerIndex) {
       const data = this.computeData(ledgerIndex)
@@ -259,6 +295,43 @@ export default {
       this.bar.series[0].data.length = 0
       this.bar.options.xaxis.categories.length = 0
       this.$refs.bar.updateSeries([{ data: [] }])
+    },
+    onAnalyticSelected () {
+      const filterByTransactionType = this.donutDataPointIndex !== null
+        ? this.donut.chartOptions.labels[this.donutDataPointIndex]
+        : null
+      const filterByAccount = this.barDataPointIndex !== null
+        ? this.bar.options.xaxis.categories[this.barDataPointIndex]
+        : null
+      console.log(filterByTransactionType, filterByAccount)
+
+      this.selectedTxs.length = 0
+      this.txViewIndex = 0
+      if (filterByTransactionType === null && filterByAccount === null) {
+        this.selectedTxs.push()
+        return
+      }
+
+      this.$ledger.list.forEach(ledgerIndex => {
+        const data = this.$ledger.getLedger(ledgerIndex)
+        const filtered = data.ledger.transactions.filter(transaction =>
+          (transaction.Account === filterByAccount || filterByAccount === null) &&
+          (transaction.TransactionType === filterByTransactionType || filterByTransactionType === null)
+        )
+        this.selectedTxs.push(...filtered)
+      })
+    },
+    transactionNext () {
+      if (this.txViewIndex + 1 === this.selectedTxs.length) {
+        return
+      }
+      this.txViewIndex++
+    },
+    transactionPrev () {
+      if (this.txViewIndex === 0) {
+        return
+      }
+      this.txViewIndex--
     }
   },
   async mounted () {
