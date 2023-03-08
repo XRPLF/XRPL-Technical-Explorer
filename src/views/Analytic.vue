@@ -14,12 +14,16 @@
           placeholder="From Index" aria-label="Search">
         <input v-model="toIndex" class="border border-2 border-dark py-0 me-2" type="search" style="width:120px;"
           placeholder="To Index" aria-label="Search">
-        <button class="py-0 px-2 ml-2 nes-btn is-primary">Add Ledgers</button>
+        <button class="py-0 px-2 ml-2 nes-btn is-primary" :disabled="!!progressbar.max" :class="{ 'is-disabled': !!progressbar.max }">Add Ledgers</button>
       </form>
 
       <hr />
 
       <h4 class="nes blue">Analytic</h4>
+      <div v-if="progressbar.max" class="d-flex">
+        <label for="loading" style="align-self:center;margin-bottom:0">Loading ledger progress:</label>
+        <progress id="loading" style="align-self:center" :value="progressbar.value" :max="progressbar.max"></progress>
+      </div>
       <div class="d-flex">
         <VueApexCharts width="400" height="400" type="donut" :options="donut.chartOptions" :series="donut.series" ref="donut"></VueApexCharts>
         <VueApexCharts width="500" height="400" type="bar" :options="bar.options" :series="bar.series" ref="bar"></VueApexCharts>
@@ -42,17 +46,16 @@ export default {
       paused: true,
       fromIndex: null,
       toIndex: null,
+      progressbar: {
+        value: 0,
+        max: 0
+      },
       donut: {
         series: [],
         chartOptions: {
           labels: [],
           title: {
-            text: 'Count by TransactionType',
-            align: 'left',
-            style: {
-              fontWeight: 'bold',
-              color: '#263238'
-            }
+            text: 'Count by TransactionType'
           },
           legend: {
             show: true,
@@ -81,12 +84,7 @@ export default {
             categories: []
           },
           title: {
-            text: 'Top 15 active accounts',
-            align: 'left',
-            style: {
-              fontWeight: 'bold',
-              color: '#263238'
-            }
+            text: 'Top 15 active accounts'
           }
         },
         series: [{
@@ -96,22 +94,54 @@ export default {
     }
   },
   methods: {
-    addPinLedger (e) {
+    async addPinLedger (e) {
       e.preventDefault()
 
-      console.log(this.fromIndex, this.toIndex)
-      this.chart.series[0].data[0] += 5
-      this.$refs.chart.updateSeries([{
-        data: this.chart.series[0].data
-      }], true)
+      try {
+        const fromIndex = parseInt(this.fromIndex)
+        const toIndex = parseInt(this.toIndex)
 
-      // this.$refs.chart.appendSeries({
-      //   name: 'newSeries',
-      //   data: [32, 44, 31, 41, 22]
-      // })
+        if (isNaN(fromIndex) || isNaN(toIndex)) {
+          alert('Invalid! Input is not a number!')
+          return
+        } else if (fromIndex > toIndex) {
+          alert('Invalid! FromIndex > ToIndex')
+          return
+        }
+
+        const diff = toIndex - fromIndex
+        if (diff > 100 && !confirm('You\'re about to load > 100 ledgers\nAre you sure to proceed?')) {
+          return
+        }
+
+        console.log('Sideload Ledger', fromIndex, toIndex)
+        this.progressbar.value = 0
+        this.progressbar.max = diff
+        for (let ledgerIndex = fromIndex; ledgerIndex <= toIndex; ledgerIndex++) {
+          this.progressbar.value++
+          if (this.isLedgerLoaded(ledgerIndex)) {
+            continue
+          }
+          await this.$ledger.hydrate(ledgerIndex)
+          this.updateCharts(ledgerIndex)
+        }
+      } catch (e) {
+        alert('Error: ' + e)
+        throw e
+      } finally {
+        this.progressbar.value = 0
+        this.progressbar.max = 0
+      }
+    },
+    isLedgerLoaded (ledgerIndex) {
+      return this.$ledger.list.indexOf(ledgerIndex) !== -1
     },
     computeData (ledgerIndex) {
       const data = this.$ledger.getLedger(ledgerIndex)
+      if (data.error) {
+        throw data.error_message
+      }
+
       return data.ledger.transactions.reduce((sum, ledger) => {
         const { byAccount, byTransactionType } = sum
         if (byTransactionType[ledger.TransactionType] === undefined) {
@@ -201,8 +231,17 @@ export default {
       if (this.paused) {
         return
       }
-      await this.$ledger.hydrate(ledger.ledger_index)
-      this.updateCharts(ledger.ledger_index)
+
+      try {
+        if (this.isLedgerLoaded(ledger.ledger_index)) {
+          return
+        }
+        await this.$ledger.hydrate(ledger.ledger_index)
+        this.updateCharts(ledger.ledger_index)
+      } catch (e) {
+        alert('Error: ' + e)
+        throw e
+      }
     },
     clearAll () {
       // remove pin ledger
@@ -234,6 +273,24 @@ export default {
     this.$events.on('connected', () => {
       this.connected = true
     })
+
+    setTimeout(() => {
+      console.log('is mounted', this.$ledger.list.length)
+
+      try {
+        this.progressbar.value = 0
+        this.progressbar.max = this.$ledger.list.length
+        this.$ledger.list.forEach(ledgerIndex => {
+          this.progressbar.value++
+          this.updateCharts(ledgerIndex)
+        })
+      } catch (e) {
+        alert('Error: ' + e)
+      } finally {
+        this.progressbar.value = 0
+        this.progressbar.max = 0
+      }
+    }, 1000)
   }
 }
 </script>
