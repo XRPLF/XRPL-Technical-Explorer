@@ -10,9 +10,9 @@
         <button @click="clearAll" class=" py-0 nes-btn">Clear All</button>
       </div>
       <form class="d-flex" @submit="addPinLedger">
-        <input v-model="fromIndex" class="border border-2 border-dark py-0 me-2" type="search" style="width:120px;"
+        <input v-model="fromIndex" class="nes-input py-0 me-2" type="search" style="width:120px;"
           placeholder="From Index" aria-label="Search">
-        <input v-model="toIndex" class="border border-2 border-dark py-0 me-2" type="search" style="width:120px;"
+        <input v-model="toIndex" class="nes-input py-0 me-2" type="search" style="width:120px;"
           placeholder="To Index" aria-label="Search">
         <button class="py-0 px-2 ml-2 nes-btn is-primary" :disabled="!!progressbar.max" :class="{ 'is-disabled': !!progressbar.max }">Add Ledgers</button>
       </form>
@@ -24,9 +24,19 @@
         <label for="loading" class="nes" style="align-self:center;margin-bottom:0">Loading:</label>
         <progress id="loading" class="nes-progress is-pattern" style="align-self:center" :value="progressbar.value" :max="progressbar.max"></progress>
       </div>
-      <div class="d-flex">
+      <div class="d-flex flex-wrap-reverse">
         <VueApexCharts width="400" height="400" type="donut" :options="donut.chartOptions" :series="donut.series" ref="donut"></VueApexCharts>
         <VueApexCharts width="500" height="400" type="bar" :options="bar.options" :series="bar.series" ref="bar"></VueApexCharts>
+        <div class="d-flex flex-column">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-column">
+              <strong>Filter by Address</strong>
+              <small>One address per line only</small>
+            </div>
+            <button class="py-0 nes-btn is-primary" @click="applyFilterAddresses">Apply</button>
+          </div>
+          <textarea v-model="inputFilterAddresses" class="py-0 my-2 nes-input" :class="{ 'is-error': isFilterAddressesError }" rows="12" cols="40"></textarea>
+        </div>
       </div>
 
       <hr />
@@ -60,6 +70,9 @@ export default {
       paused: true,
       fromIndex: null,
       toIndex: null,
+      inputFilterAddresses: null,
+      finalFilterAddresses: [],
+      isFilterAddressesError: false,
       selectedTxs: [],
       txViewIndex: 0,
       donutDataPointIndex: null,
@@ -130,55 +143,23 @@ export default {
     }
   },
   methods: {
-    async addPinLedger (e) {
-      e.preventDefault()
-
-      try {
-        const fromIndex = parseInt(this.fromIndex)
-        const toIndex = parseInt(this.toIndex)
-
-        if (isNaN(fromIndex) || isNaN(toIndex)) {
-          alert('Invalid! Input is not a number!')
-          return
-        } else if (fromIndex > toIndex) {
-          alert('Invalid! FromIndex > ToIndex')
-          return
-        }
-
-        const diff = toIndex - fromIndex
-        if (diff > 100 && !confirm('You\'re about to load > 100 ledgers\nAre you sure to proceed?')) {
-          return
-        }
-
-        console.log('Sideload Ledger', fromIndex, toIndex)
-        this.progressbar.value = 0
-        this.progressbar.max = diff
-        for (let ledgerIndex = fromIndex; ledgerIndex <= toIndex; ledgerIndex++) {
-          this.progressbar.value++
-          if (this.isLedgerLoaded(ledgerIndex)) {
-            continue
-          }
-          await this.$ledger.hydrate(ledgerIndex)
-          this.updateCharts(ledgerIndex)
-        }
-      } catch (e) {
-        alert('Error: ' + e)
-        throw e
-      } finally {
-        this.progressbar.value = 0
-        this.progressbar.max = 0
-      }
-    },
     isLedgerLoaded (ledgerIndex) {
       return this.$ledger.list.indexOf(ledgerIndex) !== -1
     },
-    computeData (ledgerIndex) {
+    getLedgerTransactions (ledgerIndex) {
       const data = this.$ledger.getLedger(ledgerIndex)
       if (data.error) {
         throw data.error_message
       }
 
-      return data.ledger.transactions.reduce((sum, ledger) => {
+      return data.ledger.transactions
+        .filter(ledger => this.finalFilterAddresses.length === 0 ||
+          this.finalFilterAddresses.indexOf(ledger.Account) !== -1)
+    },
+    computeData (ledgerIndex) {
+      const transactions = this.getLedgerTransactions(ledgerIndex)
+
+      return transactions.reduce((sum, ledger) => {
         const { byAccount, byTransactionType } = sum
         if (byTransactionType[ledger.TransactionType] === undefined) {
           byTransactionType[ledger.TransactionType] = 1
@@ -279,13 +260,46 @@ export default {
         throw e
       }
     },
-    clearAll () {
-      // remove pin ledger
-      while (this.$ledger.ledgers.length) {
-        const ledger = this.$ledger.ledgers[0]
-        this.$ledger.purge(ledger.ledgerIndex)
-      }
+    async addPinLedger (e) {
+      e.preventDefault()
 
+      try {
+        const fromIndex = parseInt(this.fromIndex)
+        const toIndex = parseInt(this.toIndex)
+
+        if (isNaN(fromIndex) || isNaN(toIndex)) {
+          alert('Invalid! Input is not a number!')
+          return
+        } else if (fromIndex > toIndex) {
+          alert('Invalid! FromIndex > ToIndex')
+          return
+        }
+
+        const diff = toIndex - fromIndex
+        if (diff > 100 && !confirm('You\'re about to load > 100 ledgers\nAre you sure to proceed?')) {
+          return
+        }
+
+        console.log('Sideload Ledger', fromIndex, toIndex)
+        this.progressbar.value = 0
+        this.progressbar.max = diff
+        for (let ledgerIndex = fromIndex; ledgerIndex <= toIndex; ledgerIndex++) {
+          this.progressbar.value++
+          if (this.isLedgerLoaded(ledgerIndex)) {
+            continue
+          }
+          await this.$ledger.hydrate(ledgerIndex)
+          this.updateCharts(ledgerIndex)
+        }
+      } catch (e) {
+        alert('Error: ' + e)
+        throw e
+      } finally {
+        this.progressbar.value = 0
+        this.progressbar.max = 0
+      }
+    },
+    clearChart () {
       // remove donut, keeping original reference
       this.donut.series.length = 0
       this.donut.chartOptions.labels.length = 0
@@ -295,6 +309,15 @@ export default {
       this.bar.series[0].data.length = 0
       this.bar.options.xaxis.categories.length = 0
       this.$refs.bar.updateSeries([{ data: [] }])
+    },
+    clearAll () {
+      // remove pin ledger
+      while (this.$ledger.ledgers.length) {
+        const ledger = this.$ledger.ledgers[0]
+        this.$ledger.purge(ledger.ledgerIndex)
+      }
+
+      this.clearChart()
     },
     onAnalyticSelected () {
       const filterByTransactionType = this.donutDataPointIndex !== null
@@ -313,8 +336,8 @@ export default {
       }
 
       this.$ledger.list.forEach(ledgerIndex => {
-        const data = this.$ledger.getLedger(ledgerIndex)
-        const filtered = data.ledger.transactions.filter(transaction =>
+        const transactions = this.getLedgerTransactions(ledgerIndex)
+        const filtered = transactions.filter(transaction =>
           (transaction.Account === filterByAccount || filterByAccount === null) &&
           (transaction.TransactionType === filterByTransactionType || filterByTransactionType === null)
         )
@@ -332,6 +355,42 @@ export default {
         return
       }
       this.txViewIndex--
+    },
+    validateFilterAddresses () {
+      if (this.inputFilterAddresses === null || this.inputFilterAddresses === '') {
+        return true
+      }
+
+      const addresses = this.inputFilterAddresses.split('\n')
+      return addresses.map(address => address.match(/^r[a-zA-Z0-9]{25,35}$/g) !== null)
+        .indexOf(false) === -1
+    },
+    applyFilterAddresses () {
+      if (!this.validateFilterAddresses()) {
+        this.isFilterAddressesError = true
+        return
+      }
+
+      try {
+        this.isFilterAddressesError = false
+        this.finalFilterAddresses = this.inputFilterAddresses === null || this.inputFilterAddresses === ''
+          ? []
+          : this.inputFilterAddresses.split('\n')
+        this.clearChart()
+
+        this.progressbar.value = 0
+        this.progressbar.max = this.$ledger.list.length
+        this.$ledger.list.forEach(ledgerIndex => {
+          this.progressbar.value++
+          this.updateCharts(ledgerIndex)
+        })
+      } catch (e) {
+        alert('Error: ' + e)
+        throw e
+      } finally {
+        this.progressbar.value = 0
+        this.progressbar.max = 0
+      }
     }
   },
   async mounted () {
