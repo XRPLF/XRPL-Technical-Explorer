@@ -118,6 +118,13 @@ export default {
                   this.barDataPointIndex = null
                 } else {
                   this.barDataPointIndex = config.dataPointIndex
+
+                  const address = this.bar.options.xaxis.categories[this.barDataPointIndex]
+                  navigator.clipboard.writeText(address)
+                  this.$toast('Address copied to clipboard', {
+                    position: 'bottom-right',
+                    timeout: 1000
+                  })
                 }
                 this.onAnalyticSelected()
               }
@@ -256,7 +263,10 @@ export default {
         await this.$ledger.hydrate(ledger.ledger_index)
         this.updateCharts(ledger.ledger_index)
       } catch (e) {
-        alert('Error: ' + e)
+        this.$toast.error('Error: ' + e, {
+          position: 'bottom-right',
+          timeout: 3000
+        })
         throw e
       }
     },
@@ -268,10 +278,16 @@ export default {
         const toIndex = parseInt(this.toIndex)
 
         if (isNaN(fromIndex) || isNaN(toIndex)) {
-          alert('Invalid! Input is not a number!')
+          this.$toast.error('Invalid! Input is not a number!', {
+            position: 'bottom-right',
+            timeout: 3000
+          })
           return
         } else if (fromIndex > toIndex) {
-          alert('Invalid! FromIndex > ToIndex')
+          this.$toast.error('Invalid! FromIndex > ToIndex', {
+            position: 'bottom-right',
+            timeout: 3000
+          })
           return
         }
 
@@ -292,7 +308,10 @@ export default {
           this.updateCharts(ledgerIndex)
         }
       } catch (e) {
-        alert('Error: ' + e)
+        this.$toast.error('Error: ' + e, {
+          position: 'bottom-right',
+          timeout: 3000
+        })
         throw e
       } finally {
         this.progressbar.value = 0
@@ -385,7 +404,10 @@ export default {
           this.updateCharts(ledgerIndex)
         })
       } catch (e) {
-        alert('Error: ' + e)
+        this.$toast.error('Error: ' + e, {
+          position: 'bottom-right',
+          timeout: 3000
+        })
         throw e
       } finally {
         this.progressbar.value = 0
@@ -417,7 +439,10 @@ export default {
           this.updateCharts(ledgerIndex)
         })
       } catch (e) {
-        alert('Error: ' + e)
+        this.$toast.error('Error: ' + e, {
+          position: 'bottom-right',
+          timeout: 3000
+        })
       } finally {
         this.progressbar.value = 0
         this.progressbar.max = 0

@@ -16,9 +16,9 @@
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.2",
     "vue-codemirror": "^4.0.6",
-    "vue-ctk-date-time-picker": "^2.5.0",
     "vue-json-pretty": "^1.8.1",
     "vue-router": "^3.2.0",
+    "vue-toastification": "^1.7.14",
     "xrpl-client": "^1.8.0"
   },
   "devDependencies": {
