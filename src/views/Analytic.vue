@@ -387,6 +387,10 @@ export default {
     applyFilterAddresses () {
       if (!this.validateFilterAddresses()) {
         this.isFilterAddressesError = true
+        this.$toast.error('Invalid XRP Address to filter!', {
+          position: 'bottom-right',
+          timeout: 3000
+        })
         return
       }
 
@@ -404,6 +408,7 @@ export default {
           this.updateCharts(ledgerIndex)
         })
       } catch (e) {
+        console.log(e)
         this.$toast.error('Error: ' + e, {
           position: 'bottom-right',
           timeout: 3000
