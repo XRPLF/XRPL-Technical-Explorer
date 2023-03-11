@@ -10,9 +10,9 @@
         <button @click="clearAll" class=" py-0 nes-btn">Clear All</button>
       </div>
       <form class="d-flex" @submit="addPinLedger">
-        <input v-model="fromIndex" class="nes-input py-0 me-2" type="search" style="width:120px;"
+        <input v-model="fromIndex" class="nes-input py-0 me-2" type="search" style="width:140px;"
           placeholder="From Index" aria-label="Search">
-        <input v-model="toIndex" class="nes-input py-0 me-2" type="search" style="width:120px;"
+        <input v-model="toIndex" class="nes-input py-0 me-2" type="search" style="width:140px;"
           placeholder="To Index" aria-label="Search">
         <button class="py-0 px-2 ml-2 nes-btn is-primary" :disabled="!!progressbar.max" :class="{ 'is-disabled': !!progressbar.max }">Add Ledgers</button>
       </form>
@@ -22,7 +22,7 @@
       <h4 class="nes blue">Analytic</h4>
       <div class="d-flex" v-if="progressbar.max">
         <label for="loading" class="nes" style="align-self:center;margin-bottom:0">Loading:</label>
-        <progress id="loading" class="nes-progress is-pattern" style="align-self:center" :value="progressbar.value" :max="progressbar.max"></progress>
+        <progress id="loading" class="nes-progress is-pattern" style="align-self:center;height:28px;" :value="progressbar.value" :max="progressbar.max"></progress>
       </div>
       <div class="d-flex flex-wrap-reverse">
         <VueApexCharts width="400" height="400" type="donut" :options="donut.chartOptions" :series="donut.series" ref="donut"></VueApexCharts>
@@ -73,13 +73,14 @@ export default {
       inputFilterAddresses: null,
       finalFilterAddresses: [],
       isFilterAddressesError: false,
+      tempBarData: { labels: [], series: [] },
       selectedTxs: [],
       txViewIndex: 0,
-      donutDataPointIndex: null,
-      barDataPointIndex: null,
+      donutDataPointText: null,
+      barDataPointText: null,
       progressbar: {
-        value: 0,
-        max: 0
+        value: 2,
+        max: 10
       },
       donut: {
         series: [],
@@ -93,16 +94,20 @@ export default {
             position: 'bottom',
             horizontalAlign: 'center'
           },
+          noData: {
+            text: 'No Data is loaded'
+          },
           chart: {
             events: {
               dataPointSelection: (event, chartContext, config) => {
                 // The last parameter config contains additional information like `seriesIndex` and `dataPointIndex` for cartesian charts
-                if (this.donutDataPointIndex === config.dataPointIndex) {
-                  this.donutDataPointIndex = null
+                const transactionType = this.donut.chartOptions.labels[config.dataPointIndex]
+                if (this.donutDataPointText === transactionType) {
+                  this.donutDataPointText = null
                 } else {
-                  this.donutDataPointIndex = config.dataPointIndex
+                  this.donutDataPointText = transactionType
                 }
-                this.onAnalyticSelected()
+                this.onAnalyticSelected('donut', config.dataPointIndex)
               }
             }
           }
@@ -110,23 +115,26 @@ export default {
       },
       bar: {
         options: {
+          noData: {
+            text: 'No Data is loaded'
+          },
           chart: {
             events: {
               dataPointSelection: (event, chartContext, config) => {
                 // The last parameter config contains additional information like `seriesIndex` and `dataPointIndex` for cartesian charts
-                if (this.barDataPointIndex === config.dataPointIndex) {
-                  this.barDataPointIndex = null
+                const address = this.bar.options.xaxis.categories[config.dataPointIndex]
+                if (this.barDataPointText === address) {
+                  this.barDataPointText = null
                 } else {
-                  this.barDataPointIndex = config.dataPointIndex
+                  this.barDataPointText = address
 
-                  const address = this.bar.options.xaxis.categories[this.barDataPointIndex]
                   navigator.clipboard.writeText(address)
                   this.$toast('Address copied to clipboard', {
                     position: 'bottom-right',
                     timeout: 1000
                   })
                 }
-                this.onAnalyticSelected()
+                this.onAnalyticSelected('bar', config.dataPointIndex)
               }
             }
           },
@@ -165,20 +173,28 @@ export default {
     },
     computeData (ledgerIndex) {
       const transactions = this.getLedgerTransactions(ledgerIndex)
+      const filterByAccount = this.barDataPointText
+      const filterByTransactionType = this.donutDataPointText
 
       return transactions.reduce((sum, ledger) => {
         const { byAccount, byTransactionType } = sum
-        if (byTransactionType[ledger.TransactionType] === undefined) {
-          byTransactionType[ledger.TransactionType] = 1
-        } else {
-          byTransactionType[ledger.TransactionType]++
+
+        if (filterByAccount === null || filterByAccount === ledger.Account) {
+          if (byTransactionType[ledger.TransactionType] === undefined) {
+            byTransactionType[ledger.TransactionType] = 1
+          } else {
+            byTransactionType[ledger.TransactionType]++
+          }
         }
 
-        if (byAccount[ledger.Account] === undefined) {
-          byAccount[ledger.Account] = 1
-        } else {
-          byAccount[ledger.Account]++
+        if (filterByTransactionType === null || filterByTransactionType === ledger.TransactionType) {
+          if (byAccount[ledger.Account] === undefined) {
+            byAccount[ledger.Account] = 1
+          } else {
+            byAccount[ledger.Account]++
+          }
         }
+
         return sum
       }, { byAccount: {}, byTransactionType: {} })
     },
@@ -251,6 +267,48 @@ export default {
       this.updateDonutChart(ledgerIndex, data)
       this.updateBarChart(ledgerIndex, data)
     },
+    reloadSelectedCharts (chartType) {
+      try {
+        this.clearChart(chartType)
+
+        this.progressbar.value = 0
+        this.progressbar.max = this.$ledger.list.length
+
+        const accumulateData = { byAccount: {}, byTransactionType: {} }
+        this.$ledger.list.forEach(ledgerIndex => {
+          const data = this.computeData(ledgerIndex)
+
+          for (const [key, value] of Object.entries(data.byTransactionType)) {
+            if (accumulateData.byTransactionType[key] === undefined) {
+              accumulateData.byTransactionType[key] = 0
+            }
+            accumulateData.byTransactionType[key] += value
+          }
+          for (const [key, value] of Object.entries(data.byAccount)) {
+            if (accumulateData.byAccount[key] === undefined) {
+              accumulateData.byAccount[key] = 0
+            }
+            accumulateData.byAccount[key] += value
+          }
+        })
+
+        if (chartType === undefined || chartType === 'donut') {
+          this.updateDonutChart(null, accumulateData)
+        }
+
+        if (chartType === undefined || chartType === 'bar') {
+          this.updateBarChart(null, accumulateData)
+        }
+      } catch (e) {
+        this.$toast.error('Error: ' + e, {
+          position: 'bottom-right',
+          timeout: 3000
+        })
+      } finally {
+        this.progressbar.value = 0
+        this.progressbar.max = 0
+      }
+    },
     async onNewLedger (ledger) {
       if (this.paused) {
         return
@@ -318,16 +376,20 @@ export default {
         this.progressbar.max = 0
       }
     },
-    clearChart () {
-      // remove donut, keeping original reference
-      this.donut.series.length = 0
-      this.donut.chartOptions.labels.length = 0
-      this.$refs.donut.updateSeries([])
+    clearChart (chartType) {
+      if (chartType === undefined || chartType === 'donut') {
+        // remove donut, keeping original reference
+        this.donut.series.length = 0
+        this.donut.chartOptions.labels.length = 0
+        this.$refs.donut.updateSeries([])
+      }
 
-      // remove bar, keeping original reference
-      this.bar.series[0].data.length = 0
-      this.bar.options.xaxis.categories.length = 0
-      this.$refs.bar.updateSeries([{ data: [] }])
+      if (chartType === undefined || chartType === 'bar') {
+        // remove bar, keeping original reference
+        this.bar.series[0].data.length = 0
+        this.bar.options.xaxis.categories.length = 0
+        this.$refs.bar.updateSeries([{ data: [] }])
+      }
     },
     clearAll () {
       // remove pin ledger
@@ -337,21 +399,20 @@ export default {
       }
 
       this.clearChart()
+
+      // other related to chart
+      this.selectedTxs.length = 0
+      this.selectedTxs.push()
     },
-    onAnalyticSelected () {
-      const filterByTransactionType = this.donutDataPointIndex !== null
-        ? this.donut.chartOptions.labels[this.donutDataPointIndex]
-        : null
-      const filterByAccount = this.barDataPointIndex !== null
-        ? this.bar.options.xaxis.categories[this.barDataPointIndex]
-        : null
+    onAnalyticSelected (chartType, dataPointIndex) {
+      const filterByTransactionType = this.donutDataPointText
+      const filterByAccount = this.barDataPointText
       console.log(filterByTransactionType, filterByAccount)
 
       this.selectedTxs.length = 0
       this.txViewIndex = 0
       if (filterByTransactionType === null && filterByAccount === null) {
         this.selectedTxs.push()
-        return
       }
 
       this.$ledger.list.forEach(ledgerIndex => {
@@ -362,6 +423,14 @@ export default {
         )
         this.selectedTxs.push(...filtered)
       })
+
+      if (chartType === 'donut') {
+        this.reloadSelectedCharts('bar')
+      } else if (chartType === 'bar') {
+        this.reloadSelectedCharts('donut')
+      } else {
+        this.reloadSelectedCharts()
+      }
     },
     transactionNext () {
       if (this.txViewIndex + 1 === this.selectedTxs.length) {
@@ -394,30 +463,12 @@ export default {
         return
       }
 
-      try {
-        this.isFilterAddressesError = false
-        this.finalFilterAddresses = this.inputFilterAddresses === null || this.inputFilterAddresses === ''
-          ? []
-          : this.inputFilterAddresses.split('\n')
-        this.clearChart()
+      this.isFilterAddressesError = false
+      this.finalFilterAddresses = this.inputFilterAddresses === null || this.inputFilterAddresses === ''
+        ? []
+        : this.inputFilterAddresses.split('\n')
 
-        this.progressbar.value = 0
-        this.progressbar.max = this.$ledger.list.length
-        this.$ledger.list.forEach(ledgerIndex => {
-          this.progressbar.value++
-          this.updateCharts(ledgerIndex)
-        })
-      } catch (e) {
-        console.log(e)
-        this.$toast.error('Error: ' + e, {
-          position: 'bottom-right',
-          timeout: 3000
-        })
-        throw e
-      } finally {
-        this.progressbar.value = 0
-        this.progressbar.max = 0
-      }
+      this.reloadSelectedCharts()
     }
   },
   async mounted () {
@@ -435,23 +486,7 @@ export default {
 
     setTimeout(() => {
       console.log('is mounted', this.$ledger.list.length)
-
-      try {
-        this.progressbar.value = 0
-        this.progressbar.max = this.$ledger.list.length
-        this.$ledger.list.forEach(ledgerIndex => {
-          this.progressbar.value++
-          this.updateCharts(ledgerIndex)
-        })
-      } catch (e) {
-        this.$toast.error('Error: ' + e, {
-          position: 'bottom-right',
-          timeout: 3000
-        })
-      } finally {
-        this.progressbar.value = 0
-        this.progressbar.max = 0
-      }
+      this.reloadSelectedCharts()
     }, 1000)
   }
 }
