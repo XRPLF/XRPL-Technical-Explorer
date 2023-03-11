@@ -49,7 +49,7 @@
           <button class="py-0 nes-btn is-primary" @click="transactionNext" :disabled="txViewIndex+1===selectedTxs.length" :class="{ 'is-disabled': txViewIndex+1===selectedTxs.length }">next</button>
         </div>
       </div>
-      <JsonRenderer v-if="selectedTxs.length" :data="selectedTxs[txViewIndex]" :_blank="true" />
+      <JsonRenderer v-if="selectedTxs.length" :data="selectedTxs[txViewIndex]" :useToastAction="true" />
     </main>
   </div>
 </template>

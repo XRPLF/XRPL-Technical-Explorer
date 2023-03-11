@@ -13,15 +13,23 @@
 </template>
 
 <script>
-// TODO: MEMO decoding, etc.
-
 import VueJsonPretty from 'vue-json-pretty'
+import JsonRendererToast from './JsonRendererToast.vue'
 import 'vue-json-pretty/lib/styles.css'
 import { hookHashToLedgerObjectHash } from '../plugins/helpers'
 
+function decodeHex (str1) {
+  const hex = str1.toString()
+  let str = ''
+  for (let n = 0; n < hex.length; n += 2) {
+    str += String.fromCharCode(parseInt(hex.substr(n, 2), 16))
+  }
+  return str
+}
+
 export default {
   name: 'JsonRenderer',
-  props: ['data', '_blank'],
+  props: ['data', 'useToastAction'],
   components: {
     VueJsonPretty
   },
@@ -29,9 +37,9 @@ export default {
     click (event) {
       const value = event.content
       const fieldName = event.path.split('.').reverse()[0].toLowerCase()
-      console.log('JSON click event', event, fieldName, value)
+      // console.log('JSON click event', event, fieldName, value)
 
-      let newRoute
+      let newRoute, humanizeMemo
 
       if (String(value).match(/^r[a-zA-Z0-9]{15,}/)) {
         // Account
@@ -59,19 +67,38 @@ export default {
         console.log('Hook Namespace', { newRoute })
       }
 
+      if (fieldName.match(/memodata/) && value.length) {
+        humanizeMemo = decodeHex(value)
+      }
+
       if (fieldName.match(/hookstate|nftokenid/)) {
         return
       }
 
-      if (newRoute) {
+      if (this.useToastAction && newRoute) {
+        this.$toast({
+          component: JsonRendererToast,
+          props: {
+            title: `Open "${fieldName}" link?`,
+            buttonText: 'Go'
+          },
+          listeners: {
+            clicked: () => window.open(newRoute, '_blank')
+          }
+        }, {
+          position: 'bottom-right',
+          timeout: 3000
+        })
+      } else if (this.useToastAction && humanizeMemo) {
+        this.$toast(humanizeMemo, {
+          position: 'bottom-right',
+          timeout: 3000
+        })
+      } else if (newRoute) {
         // Check if not there yet
         if (this.$router.currentRoute.path !== newRoute) {
           console.log('Navigate', this.$router.currentRoute.path, newRoute)
-          if (this._blank) {
-            window.open(newRoute, '_blank')
-          } else {
-            this.$router.push(newRoute)
-          }
+          this.$router.push(newRoute)
         }
       }
     }
