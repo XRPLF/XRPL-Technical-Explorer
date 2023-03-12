@@ -67,7 +67,7 @@ export default {
         console.log('Hook Namespace', { newRoute })
       }
 
-      if (fieldName.match(/memodata/) && value.length) {
+      if (fieldName.match(/memo/) && String(value).match(/^[A-F0-9]{6,}$/)) {
         humanizeMemo = decodeHex(value)
       }
 

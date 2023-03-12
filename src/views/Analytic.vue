@@ -20,23 +20,27 @@
       <hr />
 
       <h4 class="nes blue">Analytic</h4>
+
+      <div class="d-flex flex-column">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex flex-column">
+            <strong>Filter by Accounts or Issuers</strong>
+            <small>One address per line only</small>
+          </div>
+          <button class="py-0 nes-btn is-primary" @click="applyFilterAddresses">Apply</button>
+        </div>
+        <textarea v-model="inputFilterAddresses" class="py-0 my-2 nes-input" :class="{ 'is-error': isFilterAddressesError }" rows="2" cols="40"></textarea>
+      </div>
+
       <div class="d-flex" v-if="progressbar.max">
         <label for="loading" class="nes" style="align-self:center;margin-bottom:0">Loading:</label>
         <progress id="loading" class="nes-progress is-pattern" style="align-self:center;height:28px;" :value="progressbar.value" :max="progressbar.max"></progress>
       </div>
-      <div class="d-flex flex-wrap-reverse">
+
+      <div class="d-flex flex-wrap-reverse my-3">
         <VueApexCharts width="400" height="400" type="donut" :options="donut.chartOptions" :series="donut.series" ref="donut"></VueApexCharts>
         <VueApexCharts width="500" height="400" type="bar" :options="bar.options" :series="bar.series" ref="bar"></VueApexCharts>
-        <div class="d-flex flex-column">
-          <div class="d-flex justify-content-between">
-            <div class="d-flex flex-column">
-              <strong>Filter by Address</strong>
-              <small>One address per line only</small>
-            </div>
-            <button class="py-0 nes-btn is-primary" @click="applyFilterAddresses">Apply</button>
-          </div>
-          <textarea v-model="inputFilterAddresses" class="py-0 my-2 nes-input" :class="{ 'is-error': isFilterAddressesError }" rows="12" cols="40"></textarea>
-        </div>
+        <VueApexCharts width="500" height="400" type="bar" :options="bar2.options" :series="bar2.series" ref="bar2"></VueApexCharts>
       </div>
 
       <hr />
@@ -58,6 +62,19 @@
 import VueApexCharts from 'vue-apexcharts'
 import JsonRenderer from '../components/JsonRenderer.vue'
 
+const BAR_ACCOUNT_SERIES = {
+  name: 'Account',
+  data: []
+}
+const BAR_ISSUER_PAYS_SERIES = {
+  name: 'Pays',
+  data: []
+}
+const BAR_ISSUER_GETS_SERIES = {
+  name: 'Gets',
+  data: []
+}
+
 export default {
   name: 'Analytic',
   components: {
@@ -78,6 +95,8 @@ export default {
       txViewIndex: 0,
       donutDataPointText: null,
       barDataPointText: null,
+      bar2DataPointText: null,
+      bar2DataPointText1: null,
       progressbar: {
         value: 2,
         max: 10
@@ -85,17 +104,13 @@ export default {
       donut: {
         series: [],
         chartOptions: {
+          title: { text: 'Count by TransactionType' },
+          noData: { text: 'No Data is loaded' },
           labels: [],
-          title: {
-            text: 'Count by TransactionType'
-          },
           legend: {
             show: true,
             position: 'bottom',
             horizontalAlign: 'center'
-          },
-          noData: {
-            text: 'No Data is loaded'
           },
           chart: {
             events: {
@@ -115,9 +130,9 @@ export default {
       },
       bar: {
         options: {
-          noData: {
-            text: 'No Data is loaded'
-          },
+          title: { text: 'Top 20 active accounts' },
+          noData: { text: 'No Data is loaded' },
+          dataLabels: { enabled: false },
           chart: {
             events: {
               dataPointSelection: (event, chartContext, config) => {
@@ -127,12 +142,6 @@ export default {
                   this.barDataPointText = null
                 } else {
                   this.barDataPointText = address
-
-                  navigator.clipboard.writeText(address)
-                  this.$toast('Address copied to clipboard', {
-                    position: 'bottom-right',
-                    timeout: 1000
-                  })
                 }
                 this.onAnalyticSelected('bar', config.dataPointIndex)
               }
@@ -144,16 +153,49 @@ export default {
               horizontal: true
             }
           },
+          xaxis: { categories: [] }
+        },
+        series: [BAR_ACCOUNT_SERIES]
+      },
+      bar2: {
+        series: [{
+          name: 'Pays',
+          data: []
+        }, {
+          name: 'Gets',
+          data: []
+        }],
+        options: {
+          title: { text: 'Top 20 active issuers' },
+          noData: { text: 'No Data is loaded' },
+          dataLabels: { enabled: false },
+          chart: {
+            type: 'bar',
+            stacked: true,
+            events: {
+              dataPointSelection: (event, chartContext, config) => {
+                // The last parameter config contains additional information like `seriesIndex` and `dataPointIndex` for cartesian charts
+                const series = this.bar2.series[config.seriesIndex].name
+                const address = this.bar2.options.xaxis.categories[config.dataPointIndex].split('.')[1]
+                const selector = series + ':' + address
+                if (this.bar2DataPointText === selector) {
+                  this.bar2DataPointText = null
+                } else {
+                  this.bar2DataPointText = selector
+                }
+                this.onAnalyticSelected('bar2', config.dataPointIndex)
+              }
+            }
+          },
+          colors: ['#FF4560', '#008FFB'],
+          legend: { show: false },
+          plotOptions: {
+            bar: { horizontal: true }
+          },
           xaxis: {
             categories: []
-          },
-          title: {
-            text: 'Top 15 active accounts'
           }
-        },
-        series: [{
-          data: []
-        }]
+        }
       }
     }
   },
@@ -168,18 +210,31 @@ export default {
       }
 
       return data.ledger.transactions
-        .filter(ledger => this.finalFilterAddresses.length === 0 ||
-          this.finalFilterAddresses.indexOf(ledger.Account) !== -1)
+        .filter(ledger =>
+          this.finalFilterAddresses.length === 0 ||
+          this.finalFilterAddresses.indexOf(ledger.Account) !== -1 ||
+          this.finalFilterAddresses.indexOf(ledger?.TakerGets?.issuer ?? '') !== -1 ||
+          this.finalFilterAddresses.indexOf(ledger?.TakerPays?.issuer ?? '') !== -1
+        )
     },
     computeData (ledgerIndex) {
       const transactions = this.getLedgerTransactions(ledgerIndex)
       const filterByAccount = this.barDataPointText
       const filterByTransactionType = this.donutDataPointText
+      const filterByIssuerPays = (this.bar2DataPointText ?? '').substring(0, 4) === BAR_ISSUER_PAYS_SERIES.name
+        ? this.bar2DataPointText.split(':')[1] : null
+      const filterByIssuerGets = (this.bar2DataPointText ?? '').substring(0, 4) === BAR_ISSUER_GETS_SERIES.name
+        ? this.bar2DataPointText.split(':')[1] : null
 
       return transactions.reduce((sum, ledger) => {
-        const { byAccount, byTransactionType } = sum
+        const { byAccount, byTransactionType, byIssuer } = sum
 
-        if (filterByAccount === null || filterByAccount === ledger.Account) {
+        const isAccount = filterByAccount === null || filterByAccount === ledger.Account
+        const isTxType = filterByTransactionType === null || filterByTransactionType === ledger.TransactionType
+        const isIssuerPays = filterByIssuerPays === null || filterByIssuerPays === ledger?.TakerPays?.issuer
+        const isIssuerGets = filterByIssuerGets === null || filterByIssuerGets === ledger?.TakerGets?.issuer
+
+        if (isAccount && isIssuerPays && isIssuerGets) {
           if (byTransactionType[ledger.TransactionType] === undefined) {
             byTransactionType[ledger.TransactionType] = 1
           } else {
@@ -187,7 +242,7 @@ export default {
           }
         }
 
-        if (filterByTransactionType === null || filterByTransactionType === ledger.TransactionType) {
+        if (isTxType && isIssuerPays && isIssuerGets) {
           if (byAccount[ledger.Account] === undefined) {
             byAccount[ledger.Account] = 1
           } else {
@@ -195,25 +250,45 @@ export default {
           }
         }
 
+        if (isAccount && isTxType && isIssuerGets) {
+          const address = ledger?.TakerPays?.issuer
+          if (address !== undefined) {
+            if (byIssuer[address] === undefined) {
+              byIssuer[address] = { pays: 1, gets: 0, currency: ledger?.TakerPays?.currency }
+            } else {
+              byIssuer[address].pays++
+            }
+          }
+        }
+
+        if (isAccount && isTxType && isIssuerPays) {
+          const address = ledger?.TakerGets?.issuer
+          if (address !== undefined) {
+            if (byIssuer[address] === undefined) {
+              byIssuer[address] = { pays: 0, gets: 1, currency: ledger?.TakerGets?.currency }
+            } else {
+              byIssuer[address].gets++
+            }
+          }
+        }
+
         return sum
-      }, { byAccount: {}, byTransactionType: {} })
+      }, { byAccount: {}, byTransactionType: {}, byIssuer: {} })
     },
     sortArrayPair (sortingArray, pairIndexArray) {
       if (sortingArray.length !== pairIndexArray.length) {
         return // not match, skip
       }
 
-      const mappedArray = sortingArray.map((o, i) => ({ sortValue: o, pairValue: pairIndexArray[i] }))
+      const mappedArray = sortingArray.map((o, i) => ({ sortValue: o.value ?? o, sortSrc: o, pairSrc: pairIndexArray[i] }))
       mappedArray.sort((m, n) => n.sortValue - m.sortValue)
 
       sortingArray.length = 0
       pairIndexArray.length = 0
-      sortingArray.push(...mappedArray.map(o => o.sortValue))
-      pairIndexArray.push(...mappedArray.map(o => o.pairValue))
+      sortingArray.push(...mappedArray.map(o => o.sortSrc))
+      pairIndexArray.push(...mappedArray.map(o => o.pairSrc))
     },
     updateDonutChart (ledgerIndex, data) {
-      // const startTime = new Date().getTime()
-
       const donutLabels = [...this.donut.chartOptions.labels]
       const donutSeries = [...this.donut.series]
       for (const [key, value] of Object.entries(data.byTransactionType)) {
@@ -227,16 +302,12 @@ export default {
       }
 
       this.sortArrayPair(donutSeries, donutLabels)
-      // console.log('updateDonutChart computed', ledgerIndex, new Date().getTime() - startTime)
       this.donut.chartOptions.labels.length = 0 // hacky workaround to keep the label reference
       this.donut.chartOptions.labels.push(...donutLabels)
       this.donut.series = donutSeries // hacky workaround to update the series value
       this.$refs.donut.updateSeries(donutSeries)
-      // console.log('updateDonutChart render', ledgerIndex, new Date().getTime() - startTime)
     },
     updateBarChart (ledgerIndex, data) {
-      // const startTime = new Date().getTime()
-
       const barCategories = [...this.bar.options.xaxis.categories]
       const barSeries = [...this.bar.series[0].data]
       for (const [key, value] of Object.entries(data.byAccount)) {
@@ -250,31 +321,77 @@ export default {
       }
 
       this.sortArrayPair(barSeries, barCategories)
-      barSeries.splice(15)
-      barCategories.splice(15)
+      barSeries.splice(20)
+      barCategories.splice(20)
 
-      // console.log('updateBarChart computed', ledgerIndex, new Date().getTime() - startTime)
       this.bar.options.xaxis.categories.length = 0 // hacky workaround to keep the label reference
       this.bar.options.xaxis.categories.push(...barCategories)
       this.bar.series[0].data = barSeries // hacky workaround to update the series value
       this.$refs.bar.updateSeries([{
         data: barSeries
       }])
-      // console.log('updateBarChart render', ledgerIndex, new Date().getTime() - startTime)
+    },
+    updateBar2Chart (ledgerIndex, data) {
+      const bar2Categories = [...this.bar2.options.xaxis.categories]
+      const bar2Series0 = [...this.bar2.series[0].data]
+      const bar2Series1 = [...this.bar2.series[1].data]
+      for (const [key, value] of Object.entries(data.byIssuer)) {
+        const issuerLabel = value.currency.substring(0, 5) + '.' + key
+        const bar2Index = bar2Categories.indexOf(issuerLabel)
+        if (bar2Index !== -1) {
+          bar2Series0[bar2Index] -= value.pays
+          bar2Series1[bar2Index] += value.gets
+        } else {
+          bar2Categories.push(issuerLabel)
+          bar2Series0.push(-value.pays)
+          bar2Series1.push(value.gets)
+        }
+      }
+
+      const bar2Sort = bar2Series0.map((s0, i) => ({
+        series0: s0,
+        series1: bar2Series1[i],
+        value: bar2Series1[i] - s0 // because s0 is -ve value
+      }))
+
+      this.sortArrayPair(bar2Sort, bar2Categories)
+      bar2Series0.length = 0
+      bar2Series1.length = 0
+      bar2Series0.push(...bar2Sort.map(o => o.series0))
+      bar2Series1.push(...bar2Sort.map(o => o.series1))
+
+      bar2Series0.splice(20)
+      bar2Series1.splice(20)
+      bar2Categories.splice(20)
+
+      this.bar2.options.xaxis.categories.length = 0 // hacky workaround to keep the label reference
+      this.bar2.options.xaxis.categories.push(...bar2Categories)
+      this.bar2.series[0].data = bar2Series0 // hacky workaround to update the series value
+      this.bar2.series[1].data = bar2Series1 // hacky workaround to update the series value
+      this.$refs.bar2.updateSeries([{
+        data: bar2Series0
+      }, {
+        data: bar2Series1
+      }])
     },
     updateCharts (ledgerIndex) {
       const data = this.computeData(ledgerIndex)
       this.updateDonutChart(ledgerIndex, data)
       this.updateBarChart(ledgerIndex, data)
+      this.updateBar2Chart(ledgerIndex, data)
     },
-    reloadSelectedCharts (chartType) {
+    reloadSelectedCharts (chartTypes = []) {
       try {
-        this.clearChart(chartType)
+        if (chartTypes.length) {
+          chartTypes.map(this.clearChart)
+        } else {
+          this.clearChart()
+        }
 
         this.progressbar.value = 0
         this.progressbar.max = this.$ledger.list.length
 
-        const accumulateData = { byAccount: {}, byTransactionType: {} }
+        const accumulateData = { byAccount: {}, byTransactionType: {}, byIssuer: {} }
         this.$ledger.list.forEach(ledgerIndex => {
           const data = this.computeData(ledgerIndex)
 
@@ -290,20 +407,32 @@ export default {
             }
             accumulateData.byAccount[key] += value
           }
+          for (const [key, value] of Object.entries(data.byIssuer)) {
+            if (accumulateData.byIssuer[key] === undefined) {
+              accumulateData.byIssuer[key] = { pays: 0, gets: 0, currency: value.currency }
+            }
+            accumulateData.byIssuer[key].pays += value.pays
+            accumulateData.byIssuer[key].gets += value.gets
+          }
         })
 
-        if (chartType === undefined || chartType === 'donut') {
+        if (chartTypes.indexOf('donut') !== -1 || chartTypes.length === 0) {
           this.updateDonutChart(null, accumulateData)
         }
 
-        if (chartType === undefined || chartType === 'bar') {
+        if (chartTypes.indexOf('bar') !== -1 || chartTypes.length === 0) {
           this.updateBarChart(null, accumulateData)
+        }
+
+        if (chartTypes.indexOf('bar2') !== -1 || chartTypes.length === 0) {
+          this.updateBar2Chart(null, accumulateData)
         }
       } catch (e) {
         this.$toast.error('Error: ' + e, {
           position: 'bottom-right',
           timeout: 3000
         })
+        throw e
       } finally {
         this.progressbar.value = 0
         this.progressbar.max = 0
@@ -388,7 +517,15 @@ export default {
         // remove bar, keeping original reference
         this.bar.series[0].data.length = 0
         this.bar.options.xaxis.categories.length = 0
-        this.$refs.bar.updateSeries([{ data: [] }])
+        this.$refs.bar.updateSeries([BAR_ACCOUNT_SERIES])
+      }
+
+      if (chartType === undefined || chartType === 'bar2') {
+        // remove bar, keeping original reference
+        this.bar2.series[0].data.length = 0
+        this.bar2.series[1].data.length = 0
+        this.bar2.options.xaxis.categories.length = 0
+        this.$refs.bar2.updateSeries([BAR_ISSUER_PAYS_SERIES, BAR_ISSUER_GETS_SERIES])
       }
     },
     clearAll () {
@@ -407,27 +544,38 @@ export default {
     onAnalyticSelected (chartType, dataPointIndex) {
       const filterByTransactionType = this.donutDataPointText
       const filterByAccount = this.barDataPointText
-      console.log(filterByTransactionType, filterByAccount)
+      const filterByIssuerPays = (this.bar2DataPointText ?? '').substring(0, 4) === BAR_ISSUER_PAYS_SERIES.name
+        ? this.bar2DataPointText.split(':')[1] : null
+      const filterByIssuerGets = (this.bar2DataPointText ?? '').substring(0, 4) === BAR_ISSUER_GETS_SERIES.name
+        ? this.bar2DataPointText.split(':')[1] : null
+
+      console.log('Filter:', {
+        filterByTransactionType, filterByAccount, filterByIssuerPays, filterByIssuerGets
+      })
 
       this.selectedTxs.length = 0
       this.txViewIndex = 0
-      if (filterByTransactionType === null && filterByAccount === null) {
+      if (filterByTransactionType === null && filterByAccount === null && filterByIssuerPays === null && filterByIssuerGets === null) {
         this.selectedTxs.push()
+      } else {
+        this.$ledger.list.forEach(ledgerIndex => {
+          const transactions = this.getLedgerTransactions(ledgerIndex)
+          const filtered = transactions.filter(transaction =>
+            (filterByTransactionType === null || filterByTransactionType === transaction.TransactionType) &&
+            (filterByAccount === null || filterByAccount === transaction.Account) &&
+            (filterByIssuerGets === null || filterByIssuerGets === transaction?.TakerGets?.issuer) &&
+            (filterByIssuerPays === null || filterByIssuerPays === transaction?.TakerPays?.issuer)
+          )
+          this.selectedTxs.push(...filtered)
+        })
       }
 
-      this.$ledger.list.forEach(ledgerIndex => {
-        const transactions = this.getLedgerTransactions(ledgerIndex)
-        const filtered = transactions.filter(transaction =>
-          (transaction.Account === filterByAccount || filterByAccount === null) &&
-          (transaction.TransactionType === filterByTransactionType || filterByTransactionType === null)
-        )
-        this.selectedTxs.push(...filtered)
-      })
-
       if (chartType === 'donut') {
-        this.reloadSelectedCharts('bar')
+        this.reloadSelectedCharts(['bar', 'bar2'])
       } else if (chartType === 'bar') {
-        this.reloadSelectedCharts('donut')
+        this.reloadSelectedCharts(['donut', 'bar2'])
+      } else if (chartType === 'bar2') {
+        this.reloadSelectedCharts(['donut', 'bar'])
       } else {
         this.reloadSelectedCharts()
       }
