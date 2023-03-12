@@ -98,8 +98,8 @@ export default {
       bar2DataPointText: null,
       bar2DataPointText1: null,
       progressbar: {
-        value: 2,
-        max: 10
+        value: null,
+        max: null
       },
       donut: {
         series: [],
@@ -634,7 +634,9 @@ export default {
 
     setTimeout(() => {
       console.log('is mounted', this.$ledger.list.length)
-      this.reloadSelectedCharts()
+      if (this.$ledger.list.length) {
+        this.reloadSelectedCharts()
+      }
     }, 1000)
   }
 }
