@@ -59,8 +59,9 @@
 </template>
 
 <script>
-import VueApexCharts from 'vue-apexcharts'
+// import VueApexCharts from 'vue-apexcharts'
 import JsonRenderer from '../components/JsonRenderer.vue'
+const VueApexCharts = () => import('vue-apexcharts')
 
 const BAR_ACCOUNT_SERIES = {
   name: 'Account',
@@ -483,7 +484,7 @@ export default {
           return
         }
 
-        console.log('Sideload Ledger', fromIndex, toIndex)
+        // console.log('Sideload Ledger', fromIndex, toIndex)
         this.progressbar.value = 0
         this.progressbar.max = diff
         for (let ledgerIndex = fromIndex; ledgerIndex <= toIndex; ledgerIndex++) {
@@ -549,9 +550,9 @@ export default {
       const filterByIssuerGets = (this.bar2DataPointText ?? '').substring(0, 4) === BAR_ISSUER_GETS_SERIES.name
         ? this.bar2DataPointText.split(':')[1] : null
 
-      console.log('Filter:', {
-        filterByTransactionType, filterByAccount, filterByIssuerPays, filterByIssuerGets
-      })
+      // console.log('Filter:', {
+      //   filterByTransactionType, filterByAccount, filterByIssuerPays, filterByIssuerGets
+      // })
 
       this.selectedTxs.length = 0
       this.txViewIndex = 0
@@ -633,7 +634,7 @@ export default {
     })
 
     setTimeout(() => {
-      console.log('is mounted', this.$ledger.list.length)
+      // console.log('is mounted', this.$ledger.list.length)
       if (this.$ledger.list.length) {
         this.reloadSelectedCharts()
       }
