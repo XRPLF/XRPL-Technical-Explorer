@@ -439,6 +439,9 @@ export default {
         this.progressbar.max = 0
       }
     },
+    async onConnected () {
+      this.connected = true
+    },
     async onNewLedger (ledger) {
       if (this.paused) {
         return
@@ -628,17 +631,17 @@ export default {
     }
 
     this.$events.on('ledger', this.onNewLedger)
-
-    this.$events.on('connected', () => {
-      this.connected = true
-    })
+    this.$events.on('connected', this.onConnected)
 
     setTimeout(() => {
-      // console.log('is mounted', this.$ledger.list.length)
       if (this.$ledger.list.length) {
         this.reloadSelectedCharts()
       }
     }, 1000)
+  },
+  destroyed () {
+    this.$events.off('ledger', this.onNewLedger)
+    this.$events.off('connected', this.onConnected)
   }
 }
 </script>
