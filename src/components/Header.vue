@@ -9,29 +9,55 @@
         <span class="d-block d-md-none">XRPL <small>Explorer</small></span>
         <span class="d-none d-md-block">XRP Ledger Explorer</span>
       </router-link>
-      <button class="navbar-toggler p-0 border-0" type="button" @click="navbarCollapsed = !navbarCollapsed" aria-label="Toggle navigation">
+      <button class="navbar-toggler p-0 border-0" type="button" @click="navbarCollapsed = !navbarCollapsed"
+        aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="navbar-collapse offcanvas-collapse" :class="{open: navbarCollapsed}">
+      <div class="navbar-collapse offcanvas-collapse" :class="{ open: navbarCollapsed }">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">{{ nodeSelectLabel }}</a>
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown"
+              aria-expanded="false">{{ nodeSelectLabel }}</a>
             <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
               <li><a class="dropdown-item" href="https://explorer.xrplf.org"><b>Mainnet</b></a></li>
               <li><a class="dropdown-item" href="https://explorer-testnet.xrplf.org">Testnet</a></li>
-              <li><a class="dropdown-item" href="https://hooks-testnet-v3-explorer.xrpl-labs.com">Hooks Testnet V3</a></li>
-              <li><a class="dropdown-item" href="https://hooks-testnet-v2-explorer.xrpl-labs.com">Hooks Testnet V2</a></li>
+              <li><a class="dropdown-item" href="https://hooks-testnet-v3-explorer.xrpl-labs.com">Hooks Testnet V3</a>
+              </li>
+              <li><a class="dropdown-item" href="https://hooks-testnet-v2-explorer.xrpl-labs.com">Hooks Testnet V2</a>
+              </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" style="white-space: nowrap;" href="https://github.com/XRPLF/XRPL-Technical-Explorer" target="_blank"><i class="fab fa-github-square"></i><span class="ps-2">Source</span></a>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown"
+              aria-expanded="false">Others</a>
+            <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
+              <li>
+                <a class="dropdown-item" style="white-space: nowrap;"
+                  href="https://github.com/XRPLF/XRPL-Technical-Explorer" target="_blank">
+                  <i class="fab fa-github-square"></i><span class="ps-2">Source</span>
+                </a>
+              </li>
+              <li>
+                <router-link  class="dropdown-item" to="/command">
+                  <i class="fas fa-code"></i><span class="ps-2">Command</span>
+                </router-link>
+              </li>
+              <li>
+                <router-link  class="dropdown-item" to="/analytic">
+                  <i class="fas fa-chart-pie"></i><span class="ps-2">Analytic</span>
+                </router-link>
+              </li>
+            </ul>
           </li>
         </ul>
         <form class="d-flex" @submit="search">
-          <input v-model="query" class="form-control border border-2 border-dark py-0 me-2" type="search" placeholder="Search" aria-label="Search">
+          <input v-model="query" class="form-control border border-2 border-dark py-0 me-2" type="search"
+            placeholder="Search" aria-label="Search">
           <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
-          <button :disabled="!validQuery" type="submit" :class="{'is-success': validQuery, 'is-disabled': !validQuery}" class="py-0 px-2 nes-btn">Search</button>
+          <button :disabled="!validQuery" type="submit" :class="{ 'is-success': validQuery, 'is-disabled': !validQuery }"
+            class="py-0 px-2 nes-btn">Search</button>
         </form>
       </div>
     </div>
@@ -137,5 +163,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

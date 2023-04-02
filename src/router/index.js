@@ -11,6 +11,7 @@ import NotFound from '../views/NotFound.vue'
 import CustomCommand from '../views/CustomCommand.vue'
 import GenericData from '../components/GenericData.vue'
 import publicCommands from '../plugins/commands'
+import Analytic from '../views/Analytic'
 
 Vue.use(VueRouter)
 
@@ -123,6 +124,16 @@ const routes = [
       replaceProp: 'index',
       replaceParam: 'hash'
     }
+  },
+  {
+    path: '/analytic',
+    name: 'analytic',
+    component: Analytic
+  },
+  {
+    path: '/analytic/:ledger_from([0-9]{5,20})/:ledger_to([0-9]{5,20})',
+    name: 'analytic_ledger',
+    component: Analytic
   },
   {
     path: '/namespace/:account(r[a-zA-Z0-9]{15,})/:namespace_id([a-fA-F0-9]{64})',
