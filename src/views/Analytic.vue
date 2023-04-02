@@ -59,9 +59,11 @@
 </template>
 
 <script>
-// import VueApexCharts from 'vue-apexcharts'
+import { delay } from '../plugins/utils'
 import JsonRenderer from '../components/JsonRenderer.vue'
 const VueApexCharts = () => import('vue-apexcharts')
+
+const ADD_PIN_LEDGER_LOAD_LIMIT = 20
 
 const BAR_ACCOUNT_SERIES = {
   name: 'Account',
@@ -483,7 +485,13 @@ export default {
         }
 
         const diff = toIndex - fromIndex
-        if (diff > 100 && !confirm('You\'re about to load > 100 ledgers\nAre you sure to proceed?')) {
+        const confirmText = `
+        Bulk load ledgers detected! This action puts a lot of load on public nodes & it may make the browser unusable.
+
+        We'll be throttling the loading of the ledger.
+        `
+
+        if (diff > ADD_PIN_LEDGER_LOAD_LIMIT && !confirm(confirmText)) {
           return
         }
 
@@ -497,6 +505,10 @@ export default {
           }
           await this.$ledger.hydrate(ledgerIndex)
           this.updateCharts(ledgerIndex)
+
+          if (diff > ADD_PIN_LEDGER_LOAD_LIMIT) {
+            await delay(500)
+          }
         }
       } catch (e) {
         this.$toast.error('Error: ' + e, {
