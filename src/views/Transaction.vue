@@ -54,7 +54,15 @@ export default {
 
       const transaction = await this.$ws.send({
         command: 'tx',
-        transaction: this.$router.currentRoute.params.hash
+        ...(
+          this.$router.currentRoute.params.hash.length === 16
+            ? {
+              ctid: this.$router.currentRoute.params.hash
+            }
+            : {
+              transaction: this.$router.currentRoute.params.hash
+            }
+        )
       })
       this.transaction = transaction
     }

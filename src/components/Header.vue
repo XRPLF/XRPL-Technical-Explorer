@@ -67,6 +67,10 @@ export default {
         return false
       }
 
+      if (query.match(/^[A-F0-9]{16}/i)) {
+        // CTID
+        return query
+      }
       if (query.match(/^r[a-zA-Z0-9]{15,}/)) {
         // XRPL account address
         return query

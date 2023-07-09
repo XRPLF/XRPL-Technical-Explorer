@@ -31,6 +31,11 @@ const routes = [
     component: Transaction
   },
   {
+    path: '/:hash([a-fA-F0-9]{16})', // CTID
+    name: 'ctid',
+    component: Transaction
+  },
+  {
     path: '/entry/:hash([a-fA-F0-9]{64})',
     name: 'ledgerentry',
     component: LedgerEntry
