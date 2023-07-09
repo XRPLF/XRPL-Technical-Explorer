@@ -35,6 +35,7 @@
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import { hookHashToLedgerObjectHash } from '../plugins/helpers'
+import { decode } from 'ripple-binary-codec'
 
 export default {
   name: 'JsonRenderer',
@@ -53,7 +54,28 @@ export default {
       if (this.data?.TransactionType === 'Import') {
         if (this.data?.Blob) {
           Object.assign(modifiedData, {
-            Blob: JSON.parse(Buffer.from(this.data.Blob, 'hex').toString())
+            Blob: JSON.parse(
+              Buffer.from(this.data.Blob, 'hex')
+                .toString()
+                .replace(/"[A-F0-9]{129,}"/g, r => {
+                  try {
+                    const hex = r.slice(1, -1)
+                    return JSON.stringify(decode(hex))
+                  } catch (e) {
+                    //
+                  }
+                  return r
+                })
+                .replace(/"ey[a-zA-Z0-9=/+]{30,}"/g, r => {
+                  try {
+                    const base64 = r.slice(1, -1)
+                    return Buffer.from(base64, 'base64').toString()
+                  } catch (e) {
+                    //
+                  }
+                  return r
+                })
+            )
           })
         }
       }
