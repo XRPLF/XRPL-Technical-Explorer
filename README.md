@@ -7,8 +7,7 @@ Early beta of a new (technical) tx / ledger / object / hash explorer I'm working
 
 Mainnet: https://explorer.xrplf.org
 Testnet: https://explorer-testnet.xrplf.org
-Hooks Testnet V1: https://hooks-testnet-explorer.xrpl-labs.com
-Hooks Testnet V2: https://hooks-testnet-v2-explorer.xrpl-labs.com
+Hooks Testnet V3: https://hooks-testnet-v3-explorer.xrpl-labs.com
 
 It's easy to roll your own as the wss endpoint is an env. var.
 
@@ -24,7 +23,7 @@ Configure alternative WebSocket endpoint with the env. variable:
 VUE_APP_WSS_ENDPOINT
 ```
 
-E.g. `VUE_APP_WSS_ENDPOINT=wss://hooks-testnet.xrpl-labs.com`
+E.g. `VUE_APP_WSS_ENDPOINT=wss://hooks-testnet-v3.xrpl-labs.com`
 
 ### Compiles and hot-reloads for development
 ```
