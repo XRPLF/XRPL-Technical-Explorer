@@ -131,7 +131,7 @@ export default {
           newRoute = '/' + value
         }
       }
-      if (String(value).match(/^[0-9]{5,}$/) && Number(value) >= 1 && Number(value) <= this.$ws.getState().ledger.last) {
+      if (String(value).match(/^[0-9]{1,}$/) && Number(value) >= 1 && Number(value) <= this.$ws.getState().ledger.last) {
         // Ledger Index
         if (!fieldName.match(/sequence/)) {
           newRoute = '/' + value
