@@ -6,9 +6,26 @@
       :collapsed-on-click-brackets="true"
       :show-line="true"
       :show-double-quotes="false"
-      :data="data"
+      :data="formatted ? dataFormatted : data"
+      :deep="2"
       @node-click="click"
-    />
+    >
+    <template #nodeValue="{ node, defaultValue }">
+      <template v-if="node.key === 'Blob' && data?.TransactionType === 'Import'">
+        <div class="value d-inline-block">
+          <small @click="toggle(node.path)" class="px-1 alert alert-warning text-dark py-0 mb-1 d-block">Click key to display &amp; toggle between HEX and JSON view</small>
+          <span v-if="formatted !== null">{{ defaultValue }}</span>
+        </div>
+      </template>
+      <template v-else>{{ defaultValue }}</template>
+    </template>
+    <template #nodeKey="{ node, defaultKey }">
+      <template v-if="node.key === 'Blob' && data?.TransactionType === 'Import'">
+        <span :ref="node.path.replace(/[^a-zA-Z0-9]+/g, '')" @click="toggle(node.path)"><u class="text-primary">{{ defaultKey }}</u></span>
+      </template>
+      <template v-else>{{ defaultKey }}</template>
+    </template>
+  </vue-json-pretty>
   </div>
 </template>
 
@@ -25,11 +42,38 @@ export default {
   components: {
     VueJsonPretty
   },
+  data () {
+    return {
+      formatted: null
+    }
+  },
+  computed: {
+    dataFormatted () {
+      const modifiedData = {}
+      if (this.data?.TransactionType === 'Import') {
+        if (this.data?.Blob) {
+          Object.assign(modifiedData, {
+            Blob: JSON.parse(Buffer.from(this.data.Blob, 'hex').toString())
+          })
+        }
+      }
+
+      return Object.assign({}, {
+        ...this.data,
+        ...modifiedData
+      })
+    }
+  },
   methods: {
+    toggle (ref) {
+      // const _ref = ref.replace(/[^a-zA-Z0-9]+/g, '')
+      // this.$refs?.[_ref]
+      this.formatted = !this.formatted
+    },
     click (event) {
       const value = event.content
       const fieldName = event.path.split('.').reverse()[0].toLowerCase()
-      console.log('JSON click event', event, fieldName, value)
+      // console.log('JSON click event', event, fieldName, value)
 
       let newRoute
 
@@ -58,6 +102,10 @@ export default {
         newRoute = '/namespace/' + this.data.Account + '/' + value
         console.log('Hook Namespace', { newRoute })
       }
+
+      // if (fieldName.toLowerCase() === 'blob' && String(value).match(/^[a-fA-F0-9]{10,}$/) && this.data?.TransactionType === 'Import') {
+      //   console.log('Proof of Burn', { newRoute })
+      // }
 
       if (fieldName.match(/hookstate|nftokenid/)) {
         return
