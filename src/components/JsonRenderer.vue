@@ -11,6 +11,7 @@
       @node-click="click"
     >
     <template #nodeValue="{ node, defaultValue }">
+      <!-- Hooks Burn 2 Mint -->
       <template v-if="node.key === 'Blob' && data?.TransactionType === 'Import'">
         <div class="value d-inline-block">
           <small @click="toggle(node.path)" class="px-1 alert alert-warning text-dark py-0 mb-1 d-block">Click key to display &amp; toggle between HEX and JSON view</small>
@@ -57,7 +58,10 @@ export default {
             Blob: JSON.parse(
               Buffer.from(this.data.Blob, 'hex')
                 .toString()
-                .replace(/"[A-F0-9]{129,}"/g, r => {
+                /**
+                 * Now going to replace embedded contents like binary encoded & JSON data
+                 */
+                .replace(/"[A-F0-9]{129,}"/g, r => { // Making sure it's > 128 (signature)
                   try {
                     const hex = r.slice(1, -1)
                     return JSON.stringify(decode(hex))
@@ -66,7 +70,7 @@ export default {
                   }
                   return r
                 })
-                .replace(/"ey[a-zA-Z0-9=/+]{30,}"/g, r => {
+                .replace(/"ey[a-zA-Z0-9=/+]{30,}"/g, r => { // {"... (JSON Start) is always ^ey... in base64
                   try {
                     const base64 = r.slice(1, -1)
                     return Buffer.from(base64, 'base64').toString()
