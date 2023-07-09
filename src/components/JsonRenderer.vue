@@ -123,7 +123,7 @@ export default {
         newRoute = '/' + value
       }
 
-      if (String(value).match(/^[a-fA-F0-9]{64}$/) && !fieldName.match(/marker|account_hash|transaction_hash/)) {
+      if (String(value).match(/^[a-fA-F0-9]{64}$/) && !fieldName.match(/signature|marker|account_hash|transaction_hash/i)) {
         // Hash
         if (fieldName === 'hookhash' || fieldName === 'emithookhash') {
           newRoute = '/' + hookHashToLedgerObjectHash(value)
