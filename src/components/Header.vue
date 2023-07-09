@@ -75,8 +75,8 @@ export default {
         // Ledger / TX / Object hash
         return query
       }
-      if (query.match(/^[0-9]{5,}/) && Number(query) >= 32570) {
-        // Ledger Index
+      if (query.match(/^[0-9]{1,}/) && Number(query) >= 1) {
+        // Ledger Index, XRPL > 32570, but other networks probably have real full history
         return query
       }
       const possibleCommands = commands.filter(c => c.match(query.toLowerCase()))
