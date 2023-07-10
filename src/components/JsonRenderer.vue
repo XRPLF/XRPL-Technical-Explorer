@@ -118,7 +118,7 @@ export default {
         newRoute = '/' + value
       }
 
-      if (String(value).match(/^[a-zA-Z0-9]{16}/)) {
+      if (String(value).match(/^[a-zA-Z0-9]{16}$/)) {
         // CTID
         newRoute = '/' + value
       }
