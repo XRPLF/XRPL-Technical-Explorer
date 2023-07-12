@@ -36,7 +36,8 @@
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 import { hookHashToLedgerObjectHash } from '../plugins/helpers'
-import { decode, decodeLedgerData } from 'ripple-binary-codec'
+// import { decode, decodeLedgerData } from 'ripple-binary-codec'
+import { decode } from 'ripple-binary-codec'
 
 export default {
   name: 'JsonRenderer',
@@ -83,7 +84,8 @@ export default {
                   try {
                     const base64 = r.slice(1, -1)
                     // Manifests can be decoded from base64 and then decoded with Binary Codec
-                    return JSON.stringify(decodeLedgerData(Buffer.from(base64, 'base64').toString('hex')))
+                    // return Buffer.from(base64, 'base64').toString('hex')
+                    return JSON.stringify(decode(Buffer.from(base64, 'base64').toString('hex')))
                   } catch (e) {
                     //
                   }
