@@ -1,38 +1,50 @@
 <template>
   <main class="container-fluid pb-5">
-    <div v-if="possibleCommands.length > 0">
-      <h4 class="nes blue">Custom command</h4>
-      <code class="text-primary nes">Pick one</code>
-
-      <p class="pt-3">
-        Which one are you looking for?
-      </p>
-
-      <ul class="list-unstyled">
-        <li v-for="entry in possibleCommands" v-bind:key="entry">
-          <router-link :to="'/' + entry" class="nes-btn py-0 mb-3 nes is-warning">{{ entry }}</router-link>
-        </li>
-      </ul>
-    </div>
-    <div v-else>
-      <h4 class="nes blue">
-        {{ commandName }}
-        <a class="nes-btn is-warning float-end btn-sm py-1" :href="'https://xrpl.org/' + commandName + '.html'" target="_blank"><i style="position: relative; top: -2px;" class="fas fa-external-link-alt me-2"></i><code class="d-none text-primary pe-2">{{ commandName }}</code>Docs</a>
-      </h4>
-      <code class="text-primary nes">Custom command</code>
-      <div class="mt-3">
-        <div class="rounded" style="overflow: hidden;">
-          <codemirror v-model="command" :options="cmOptions"></codemirror>
+    <div class="row">
+      <div class="col-9">
+        <div v-if="possibleCommands.length > 0">
+          <h4 class="nes blue">Custom command</h4>
+          <code class="text-primary nes">Pick one</code>
+          <p class="pt-3">
+            Which one are you looking for?
+          </p>
+          <ul class="list-unstyled">
+            <li v-for="entry in possibleCommands" v-bind:key="entry">
+              <router-link :to="'/' + entry" class="nes-btn py-0 mb-3 nes is-warning">{{ entry }}</router-link>
+            </li>
+          </ul>
         </div>
-        <div class="d-block text-end">
-          <button @click="get()" :disabled="loading" :class="{ 'is-success': !loading, 'is-disabled': loading }" class="mt-3 nes-btn nes"><i class="fas fa-rocket-launch me-2" style="position: relative; top: -3px"></i>Execute</button>
+        <div v-else>
+          <h4 class="nes blue">
+            {{ commandName }}
+            <a class="nes-btn is-warning float-end btn-sm py-1" :href="'https://xrpl.org/' + commandName + '.html'" target="_blank"><i style="position: relative; top: -2px;" class="fas fa-external-link-alt me-2"></i><code class="d-none text-primary pe-2">{{ commandName }}</code>Docs</a>
+          </h4>
+          <code class="text-primary nes">Custom command</code>
+          <div class="mt-3">
+            <div class="rounded" style="overflow: hidden;">
+              <codemirror v-model="command" :options="cmOptions"></codemirror>
+            </div>
+            <div class="d-block text-end">
+              <button @click="get()" :disabled="loading" :class="{ 'is-success': !loading, 'is-disabled': loading }" class="mt-3 nes-btn nes"><i class="fas fa-rocket-launch me-2" style="position: relative; top: -3px"></i>Execute</button>
+            </div>
+            <div class="mt-2">
+              <Loading v-if="loading" />
+              <div :class="{ 'border-danger': errorResponse }" class="card mt-4 shadow-sm" v-if="!loading && Object.keys(data).length > 0">
+                <h5 :class="{ 'bg-danger text-white': errorResponse }" class="card-header nes h6">{{ errorResponse ? 'Error' : 'Results' }}</h5>
+                <div class="card-body" style="overflow-x: auto;">
+                  <JsonRenderer :data="data" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="mt-2">
-          <Loading v-if="loading" />
-          <div :class="{ 'border-danger': errorResponse }" class="card mt-4 shadow-sm" v-if="!loading && Object.keys(data).length > 0">
-            <h5 :class="{ 'bg-danger text-white': errorResponse }" class="card-header nes h6">{{ errorResponse ? 'Error' : 'Results' }}</h5>
-            <div class="card-body" style="overflow-x: auto;">
-              <JsonRenderer :data="data" />
+      </div>
+      <div class="col-3 scrollable-section">
+        <div class="list-group">
+          <div v-for="(group, index) in groupedCommands" :key="index">
+            <h4 href="#" class="list-group-item list-group-item-action">{{ group.title }}</h4>
+            <div v-for="(item, itemIndex) in group.items" :key="`item-${itemIndex}`">
+              <a :href="item.link" class="list-group-item list-group-item-action">{{ item.name }}</a>
             </div>
           </div>
         </div>
@@ -40,11 +52,17 @@
     </div>
   </main>
 </template>
-
+<style lang="scss" scoped>
+.scrollable-section {
+  max-height: 100vh; /* Adjust this value according to your needs */
+  overflow-y: auto;
+}
+</style>
 <script>
 import { codemirror } from 'vue-codemirror'
 import JsonRenderer from '../components/JsonRenderer.vue'
 import Loading from '../components/Loading.vue'
+import { groupedCommands } from '../plugins/commands'
 
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
@@ -82,7 +100,8 @@ export default {
       loading: false,
       marker: null,
       data: {},
-      errorResponse: false
+      errorResponse: false,
+      groupedCommands: groupedCommands
     }
   },
   computed: {
