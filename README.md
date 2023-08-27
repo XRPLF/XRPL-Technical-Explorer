@@ -20,10 +20,14 @@ npm install
 
 Configure alternative WebSocket endpoint with the env. variable:
 ```
+PORT
 VUE_APP_WSS_ENDPOINT
 ```
 
-E.g. `VUE_APP_WSS_ENDPOINT=wss://hooks-testnet-v3.xrpl-labs.com`
+E.g. ```
+PORT=4000
+VUE_APP_WSS_ENDPOINT=wss://hooks-testnet-v3.xrpl-labs.com
+```
 
 ### Compiles and hot-reloads for development
 ```
