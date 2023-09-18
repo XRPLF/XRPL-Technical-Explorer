@@ -480,6 +480,26 @@ export const groupedCommands = [
         }
       },
       {
+        name: 'nft_buy_offers',
+        link: '/nft_buy_offers',
+        href: 'https://docs',
+        json: {
+          command: 'nft_buy_offers',
+          nft_id: '00090000D0B007439B080E9B05BF62403911301A7B1F0CFAA048C0A200000007',
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'nft_sell_offers',
+        link: '/nft_sell_offers',
+        href: 'https://docs',
+        json: {
+          command: 'nft_sell_offers',
+          nft_id: '00090000D0B007439B080E9B05BF62403911301A7B1F0CFAA048C0A200000007',
+          ledger_index: 'validated'
+        }
+      },
+      {
         name: 'path_find',
         link: '/path_find',
         href: 'https://docs',
@@ -515,6 +535,21 @@ export const groupedCommands = [
             value: '0.001',
             currency: 'USD',
             issuer: 'rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B'
+          }
+        }
+      },
+      {
+        name: 'amm_info',
+        link: '/amm_info',
+        href: 'https://docs',
+        json: {
+          command: 'amm_info',
+          asset: {
+            currency: 'XRP'
+          },
+          asset2: {
+            currency: 'TST',
+            issuer: 'rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd'
           }
         }
       }
