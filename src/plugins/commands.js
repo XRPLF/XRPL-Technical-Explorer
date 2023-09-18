@@ -172,14 +172,206 @@ export const groupedCommands = [
         }
       },
       {
-        name: 'ledger_entry_state',
-        link: '/ledger_entry_state',
+        name: 'ledger_entry_account_root',
+        link: '/ledger_entry_account_root',
         href: 'https://docs',
         json: {
           command: 'ledger_entry',
+          account_root: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn',
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'ledger_entry_amm',
+        link: '/ledger_entry_amm',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          amm: {
+            asset: {
+              currency: 'XRP'
+            },
+            asset2: {
+              currency: 'TST',
+              issuer: 'rP9jPyP5kyvFRb6ZiRghAGw5u8SGAmU4bd'
+            }
+          },
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'ledger_entry_directory_node',
+        link: '/ledger_entry_directory_node',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          directory: {
+            owner: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn',
+            sub_index: 0
+          },
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'ledger_entry_nft_page',
+        link: '/ledger_entry_nft_page',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          nft_page: '255DD86DDF59D778081A06D02701E9B2C9F4F01DFFFFFFFFFFFFFFFFFFFFFFFF',
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'ledger_entry_offer',
+        link: '/ledger_entry_offer',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          offer: {
+            account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn',
+            seq: 359
+          },
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'ledger_entry_ripple_state',
+        link: '/ledger_entry_ripple_state',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          ripple_state: {
+            accounts: [
+              'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn',
+              'rsA2LpzuawewSBQXkiju3YQTMzW13pAAdW'
+            ],
+            currency: 'USD'
+          },
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'ledger_entry_check',
+        link: '/ledger_entry_check',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          check: 'C4A46CCD8F096E994C4B0DEAB6CE98E722FC17D7944C28B95127C2659C47CBEB',
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'ledger_entry_escrow',
+        link: '/ledger_entry_escrow',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          escrow: {
+            owner: 'rL4fPHi2FWGwRGRQSH7gBcxkuo2b9NTjKK',
+            seq: 126
+          },
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'ledger_entry_pay_channel',
+        link: '/ledger_entry_pay_channel',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          payment_channel: 'C7F634794B79DB40E87179A9D1BF05D05797AE7E92DF8E93FD6656E8C4BE3AE7',
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'ledger_entry_deposit_preauth',
+        link: '/ledger_entry_deposit_preauth',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          deposit_preauth: {
+            owner: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn',
+            authorized: 'ra5nK24KXen9AHvsdFTKHSANinZseWnPcX'
+          },
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'ledger_entry_ticket',
+        link: '/ledger_entry_ticket',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          ticket: {
+            account: 'rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn',
+            ticket_seq: 389
+          },
+          ledger_index: 'validated'
+        }
+      },
+      {
+        name: 'ledger_entry_uri_token',
+        link: '/ledger_entry_uri_token',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          uri_token: {
+            issuer: 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
+            uri: '68747470733A2F2F746573742E636F6D'
+          }
+        }
+      },
+      {
+        name: 'ledger_entry_hook',
+        link: '/ledger_entry_hook',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          hook: {
+            account: 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh'
+          }
+        }
+      },
+      {
+        name: 'ledger_entry_hook_definition',
+        link: '/ledger_entry_hook_definition',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          hook_definition: 'C7F634794B79DB40E87179A9D1BF05D05797AE7E92DF8E93FD6656E8C4BE3AE7'
+        }
+      },
+      {
+        name: 'ledger_entry_emitted_txn',
+        link: '/ledger_entry_emitted_txn',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          emitted_txn: 'C7F634794B79DB40E87179A9D1BF05D05797AE7E92DF8E93FD6656E8C4BE3AE7'
+        }
+      },
+      {
+        name: 'ledger_entry_hook_state',
+        link: '/ledger_entry_hook_state',
+        href: 'https://docs',
+        json: {
+          command: 'ledger_entry',
+          hook_state: {
+            account: 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
+            key: '7DB0788C020F02780A673DC74757F23823FA3014C1866E72CC4CD8B226CD6EF4',
+            namespace_id: '4FF9961269BF7630D32E15276569C94470174A5DA79FA567C0F62251AA9A36B9'
+          }
+        }
+      },
+      {
+        name: 'account_namespace',
+        link: '/account_namespace',
+        href: 'https://docs',
+        json: {
+          command: 'account_namespace',
           account: 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
-          key: '7DB0788C020F02780A673DC74757F23823FA3014C1866E72CC4CD8B226CD6EF4',
-          namespace_id: 'DEADBEEF'
+          namespace_id: '4FF9961269BF7630D32E15276569C94470174A5DA79FA567C0F62251AA9A36B9'
         }
       }
     ]
@@ -412,21 +604,6 @@ export const groupedCommands = [
         href: 'https://docs',
         json: {
           command: 'random'
-        }
-      }
-    ]
-  },
-  {
-    title: 'Hook Methods',
-    items: [
-      {
-        name: 'account_namespace',
-        link: '/account_namespace',
-        href: 'https://docs',
-        json: {
-          command: 'account_namespace',
-          account: 'rUQTpMqAF5jhykj4FExVeXakrZpiKF6cQV',
-          namespace_id: 'DEADBEEF'
         }
       }
     ]
