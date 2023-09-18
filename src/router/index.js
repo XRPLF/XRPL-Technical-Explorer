@@ -4,13 +4,17 @@ import Home from '../views/Home.vue'
 import Ledger from '../views/Ledger.vue'
 import ResolveHash from '../components/ResolveHash.vue'
 import Transaction from '../views/Transaction.vue'
-import HookNamespace from '../views/HookNamespace.vue'
 import LedgerEntry from '../views/LedgerEntry.vue'
 import Account from '../views/Account.vue'
 import NotFound from '../views/NotFound.vue'
 import CustomCommand from '../views/CustomCommand.vue'
 import GenericData from '../components/GenericData.vue'
-import publicCommands from '../plugins/commands'
+import { groupedCommands } from '../plugins/commands'
+
+const gcom = groupedCommands.flatMap(group => group.items).reduce((acc, item) => {
+  acc[item.name] = item.json
+  return acc
+}, {})
 
 Vue.use(VueRouter)
 
@@ -107,33 +111,17 @@ const routes = [
     name: 'custom_command',
     component: CustomCommand
   },
-  ...Object.keys(publicCommands).map(command => {
+  ...groupedCommands.flatMap((group) => group.items.map(command => {
     return {
-      path: '/' + command,
-      name: 'command_' + command,
+      path: '/' + command.name,
+      name: 'command_' + command.name,
       component: CustomCommand,
       meta: {
         isPublicCommand: true,
-        template: publicCommands[command]
+        template: gcom[command.name]
       }
     }
-  }),
-  {
-    path: '/ledger_entry/:hash([a-fA-F0-9]{64})',
-    name: '_command_ledger_entry',
-    component: CustomCommand,
-    meta: {
-      isPublicCommand: true,
-      template: publicCommands.ledger_entry,
-      replaceProp: 'index',
-      replaceParam: 'hash'
-    }
-  },
-  {
-    path: '/namespace/:account(r[a-zA-Z0-9]{15,})/:namespace_id([a-fA-F0-9]{64})',
-    name: 'hooknamespace',
-    component: HookNamespace
-  },
+  })),
   {
     path: '/404',
     alias: '*',
