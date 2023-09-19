@@ -619,6 +619,14 @@ export const groupedCommands = [
         json: {
           command: 'server_state'
         }
+      },
+      {
+        name: 'server_definitions',
+        link: '/server_definitions',
+        href: 'https://docs',
+        json: {
+          command: 'server_definitions'
+        }
       }
     ]
   },
