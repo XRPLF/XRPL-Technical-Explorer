@@ -8,6 +8,7 @@ import LedgerEntry from '../views/LedgerEntry.vue'
 import Account from '../views/Account.vue'
 import NotFound from '../views/NotFound.vue'
 import CustomCommand from '../views/CustomCommand.vue'
+import B2M from '../views/B2M.vue'
 import GenericData from '../components/GenericData.vue'
 import { groupedCommands } from '../plugins/commands'
 
@@ -122,6 +123,11 @@ const routes = [
       }
     }
   })),
+  {
+    path: '/b2m',
+    name: 'b2m',
+    component: B2M
+  },
   {
     path: '/404',
     alias: '*',
