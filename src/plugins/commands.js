@@ -91,6 +91,16 @@ export const groupedCommands = [
         }
       },
       {
+        name: 'account_namespace',
+        link: '/account_namespace',
+        href: 'https://docs',
+        json: {
+          command: 'account_namespace',
+          account: 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
+          namespace_id: '4FF9961269BF7630D32E15276569C94470174A5DA79FA567C0F62251AA9A36B9'
+        }
+      },
+      {
         name: 'gateway_balances',
         link: '/gateway_balances',
         href: 'https://docs',
@@ -362,16 +372,6 @@ export const groupedCommands = [
             key: '7DB0788C020F02780A673DC74757F23823FA3014C1866E72CC4CD8B226CD6EF4',
             namespace_id: '4FF9961269BF7630D32E15276569C94470174A5DA79FA567C0F62251AA9A36B9'
           }
-        }
-      },
-      {
-        name: 'account_namespace',
-        link: '/account_namespace',
-        href: 'https://docs',
-        json: {
-          command: 'account_namespace',
-          account: 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
-          namespace_id: '4FF9961269BF7630D32E15276569C94470174A5DA79FA567C0F62251AA9A36B9'
         }
       }
     ]
