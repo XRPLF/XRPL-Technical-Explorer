@@ -17,7 +17,7 @@
         <div v-else>
           <h4 class="nes blue">
             {{ commandName }}
-            <a class="nes-btn is-warning float-end btn-sm py-1" :href="'https://xrpl.org/' + commandName + '.html'" target="_blank"><i style="position: relative; top: -2px;" class="fas fa-external-link-alt me-2"></i><code class="d-none text-primary pe-2">{{ commandName }}</code>Docs</a>
+            <a class="nes-btn is-warning float-end btn-sm py-1" :href="'https://docs.hooks.network/' + commandName + '.html'" target="_blank"><i style="position: relative; top: -2px;" class="fas fa-external-link-alt me-2"></i><code class="d-none text-primary pe-2">{{ commandName }}</code>Docs</a>
           </h4>
           <code class="text-primary nes">Custom command</code>
           <div class="mt-3">
