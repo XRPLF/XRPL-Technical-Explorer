@@ -9,8 +9,8 @@ export default {
     const net = {
       xrpl: endpoint === '' || endpoint.match(/xrplcluster|xrpl\.ws|xrpl\.link|s[12]\.ripple\.com/),
       xrpl_test: endpoint.match(/rippletest|\/testnet\.xrpl-labs/),
-      xahau: endpoint.match(/xahau/),
-      xahau_test: endpoint.match(/xahau.test/),
+      xahau: endpoint.match(/xahau.network/),
+      xahau_test: endpoint.match(/xahau-test.network/),
       local: endpoint.match(/localhost|0.0.0.0|custom-node/)
     }
 
