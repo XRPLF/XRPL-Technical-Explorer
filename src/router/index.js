@@ -9,6 +9,7 @@ import Account from '../views/Account.vue'
 import NotFound from '../views/NotFound.vue'
 import CustomCommand from '../views/CustomCommand.vue'
 import B2M from '../views/B2M.vue'
+import HookNamespace from '../views/HookNamespace.vue'
 import GenericData from '../components/GenericData.vue'
 import { groupedCommands } from '../plugins/commands'
 
@@ -99,7 +100,12 @@ const routes = [
           element: 'offers',
           map: ''
         }
-      }
+      },
+      {
+        path: '/account_namespace/:account(r[a-zA-Z0-9]{15,})/:namespace_id([a-fA-F0-9]{64})',
+        name: 'account_namespace',
+        component: HookNamespace
+      },
     ]
   },
   {

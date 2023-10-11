@@ -140,9 +140,9 @@ export default {
         }
       }
 
-      if (fieldName.match(/hooknamespace/) && this.data?.Account) {
+      if (fieldName.match(/account_namespace/) && this.data?.Account) {
         // Hook Namespace
-        newRoute = '/namespace/' + this.data.Account + '/' + value
+        newRoute = '/account_namespace/' + this.data.Account + '/' + value
         console.log('Hook Namespace', { newRoute })
       }
 
