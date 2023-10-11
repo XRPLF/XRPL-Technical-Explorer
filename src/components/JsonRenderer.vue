@@ -11,7 +11,7 @@
       @node-click="click"
     >
     <template #nodeValue="{ node, defaultValue }">
-      <!-- Hooks Burn 2 Mint -->
+      <!-- Xahau Burn 2 Mint -->
       <template v-if="node.key === 'Blob' && data?.TransactionType === 'Import'">
         <div class="value d-inline-block">
           <small @click="toggle(node.path)" class="px-1 alert alert-warning text-dark py-0 mb-1 d-block">Click key to display &amp; toggle between HEX and JSON + Binary Decoded view</small>

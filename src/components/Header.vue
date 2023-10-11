@@ -1,8 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark" :class="{
-    'bg-blue': nodeSelectLabel.match(/Main/),
-    'bg-success': nodeSelectLabel.match(/Test/),
-    'bg-info': nodeSelectLabel.match(/Hooks|custom-node/),
+    'bg-blue': nodeSelectLabel.match(/Xrpl Mainnet/),
+    'bg-success': nodeSelectLabel.match(/Xrpl Testnet/),
+    'bg-red': nodeSelectLabel.match(/Xahau Mainnet/),
+    'bg-orange': nodeSelectLabel.match(/Xahau Testnet/),
     'bg-info': nodeSelectLabel.match(/Local|custom-node/)
   }" aria-label="Main navigation">
     <div class="container-fluid">
@@ -19,10 +20,11 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">{{ nodeSelectLabel }}</a>
             <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
+              <li><a class="dropdown-item" href="https://xahau.network">Xahau Mainnet</a></li>
+              <li><a class="dropdown-item" href="https://xahau-test.network">Xahau Testnet</a></li>
+              <li><a class="dropdown-item" href="https://explorer.xrplf.org"><b>Xrpl Mainnet</b></a></li>
+              <li><a class="dropdown-item" href="https://explorer-testnet.xrplf.org">Xrpl Testnet</a></li>
               <li><a class="dropdown-item" href="http://localhost:4000"><b>Localhost (:6006)</b></a></li>
-              <li><a class="dropdown-item" href="https://explorer.xrplf.org"><b>Mainnet</b></a></li>
-              <li><a class="dropdown-item" href="https://explorer-testnet.xrplf.org">Testnet</a></li>
-              <li><a class="dropdown-item" href="https://hooks-testnet-v3-explorer.xrpl-labs.com">Hooks Testnet V3</a></li>
             </ul>
           </li>
           <li class="nav-item">
@@ -53,16 +55,19 @@ export default {
   },
   computed: {
     nodeSelectLabel () {
-      if (this.$net.test) {
-        return 'Testnet (Change)'
+      if (this.$net.xrpl) {
+        return 'Xrpl Testnet (Change)'
       }
-      if (this.$net.hooks) {
-        return 'Hooks (Change)'
+      if (this.$net.xrpl_test) {
+        return 'Xrpl Mainnet (Change)'
+      }
+      if (this.$net.xahau_test) {
+        return 'Xahau Testnet (Change)'
       }
       if (this.$net.local) {
         return 'Local (Change)'
       }
-      return 'Mainnet (Change)'
+      return 'Xahau Mainnet (Change)'
     },
     validQuery () {
       const commands = this.$router.options.routes.filter(r => {

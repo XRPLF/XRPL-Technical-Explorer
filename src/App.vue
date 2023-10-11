@@ -47,6 +47,8 @@ export default {
     .blue-border { border-color: lighten(#183FB7, 45%); }
     .blue-highlight { color: #7592F7; }
     .bg-blue { background-color: #183FB7; color: white; }
+    .bg-red { background-color: #FF0000; color: white; }
+    .bg-orange { background-color: #FFA500; color: white; }
 
     .bg-card { background-color: #0C1637; }
     .bg-card-header { background-color: #3D4256; }

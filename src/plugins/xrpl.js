@@ -7,10 +7,11 @@ export default {
     const endpoint = String(process?.env?.VUE_APP_WSS_ENDPOINT || '')
 
     const net = {
-      live: endpoint === '' || endpoint.match(/xrplcluster|xrpl\.ws|xrpl\.link|s[12]\.ripple\.com/),
-      test: endpoint.match(/rippletest|\/testnet\.xrpl-labs/),
-      hooks: endpoint.match(/hooks|custom-node/),
-      local: endpoint.match(/localhost|0.0.0.0/)
+      xrpl: endpoint === '' || endpoint.match(/xrplcluster|xrpl\.ws|xrpl\.link|s[12]\.ripple\.com/),
+      xrpl_test: endpoint.match(/rippletest|\/testnet\.xrpl-labs/),
+      xahau: endpoint.match(/xahau/),
+      xahau_test: endpoint.match(/xahau.test/),
+      local: endpoint.match(/localhost|0.0.0.0|custom-node/)
     }
 
     Vue.prototype.$net = net
