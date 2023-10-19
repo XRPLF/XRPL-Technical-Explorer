@@ -1,0 +1,37 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+     "jsx": "react",
+     "composite": true,
+     "module": "commonjs",
+     "moduleResolution": "node",
+     "sourceMap": true,
+     "strict": true,
+     "pretty": true,
+    //  "target": "es6",
+     "outDir": "./dist/npm",
+     "declaration": true,
+     "declarationMap": true,
+     "strictNullChecks": false,
+     "noImplicitAny": true,
+     "noUnusedLocals": true,
+     "removeComments": true,
+     "preserveConstEnums": true,
+     "esModuleInterop": true,
+     "skipLibCheck": false,
+     "resolveJsonModule": true,
+     "preserveSymlinks": true,
+   },
+   "include": [
+     "src/**/*.ts",
+     "src/**/*.tsx",
+     "src/**/*.json"
+   ],
+   "exclude": [
+     "node_modules",
+     "**/*.test.tsx",
+     "**/*.test.ts",
+     "**/*.spec.ts",
+     "dist"
+   ]
+}
