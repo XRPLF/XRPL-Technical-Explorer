@@ -31,7 +31,10 @@
             <a class="nav-link" style="white-space: nowrap;" href="https://github.com/XRPLF/XRPL-Technical-Explorer" target="_blank"><i class="fab fa-github-square"></i><span class="ps-2">Source</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" style="white-space: nowrap;" href="/command" target="_blank"><i class="fa-solid fa-webhook"></i><span class="ps-2">Commands</span></a>
+            <a class="nav-link" style="white-space: nowrap;" href="/command""><i class="fa-solid fa-webhook"></i><span class="ps-2">Commands</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="white-space: nowrap;" href="/xumm"><i class="fa-solid fa-webhook"></i><span class="ps-2">Xumm</span></a>
           </li>
         </ul>
         <form class="d-flex" @submit="search">

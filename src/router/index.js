@@ -10,6 +10,7 @@ import NotFound from '../views/NotFound.vue'
 import CustomCommand from '../views/CustomCommand.vue'
 import B2M from '../views/B2M.vue'
 import HookNamespace from '../views/HookNamespace.vue'
+import XummPayload from '../views/XummPayload.vue'
 import GenericData from '../components/GenericData.vue'
 import { groupedCommands } from '../plugins/commands'
 
@@ -25,6 +26,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/xumm',
+    name: 'home',
+    component: XummPayload
   },
   {
     path: '/:ledger([0-9]{1,20})',
