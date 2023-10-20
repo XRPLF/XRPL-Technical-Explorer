@@ -11,6 +11,7 @@ import CustomCommand from '../views/CustomCommand.vue'
 import B2M from '../views/B2M.vue'
 import HookNamespace from '../views/HookNamespace.vue'
 import XummPayload from '../views/XummPayload.vue'
+import LedgerPayload from '../views/LedgerPayload.vue'
 import GenericData from '../components/GenericData.vue'
 import { groupedCommands } from '../plugins/commands'
 
@@ -28,9 +29,14 @@ const routes = [
     component: Home
   },
   {
-    path: '/xumm',
+    path: '/wallets/xumm',
     name: 'home',
     component: XummPayload
+  },
+  {
+    path: '/wallets/ledger',
+    name: 'home',
+    component: LedgerPayload
   },
   {
     path: '/:ledger([0-9]{1,20})',
@@ -111,7 +117,7 @@ const routes = [
         path: '/account_namespace/:account(r[a-zA-Z0-9]{15,})/:namespace_id([a-fA-F0-9]{64})',
         name: 'account_namespace',
         component: HookNamespace
-      },
+      }
     ]
   },
   {
