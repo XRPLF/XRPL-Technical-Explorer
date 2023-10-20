@@ -85,5 +85,5 @@ export default {
   destroyed () {
     this.$events.off('ledger', this.addLedger)
   }
-};
+}
 </script>
