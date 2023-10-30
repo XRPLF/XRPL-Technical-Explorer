@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark" :class="{
-    'bg-blue': nodeSelectLabel.match(/Xahau.*Main/),
-    'bg-success': nodeSelectLabel.match(/Xrpl.*Test/),
+    'bg-blue': nodeSelectLabel.match(/XRPL.*Main/),
+    'bg-success': nodeSelectLabel.match(/XRPL.*Test/),
     'bg-info': nodeSelectLabel.match(/Xahau.*Main/),
     'bg-danger': nodeSelectLabel.match(/Xahau.*Test/)
   }" aria-label="Main navigation">
