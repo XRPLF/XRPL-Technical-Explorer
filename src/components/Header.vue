@@ -2,8 +2,8 @@
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark" :class="{
     'bg-blue': nodeSelectLabel.match(/Xrpl Mainnet/),
     'bg-success': nodeSelectLabel.match(/Xrpl Testnet/),
-    'bg-red': nodeSelectLabel.match(/Xahau Mainnet/),
-    'bg-orange': nodeSelectLabel.match(/Xahau Testnet/),
+    'bg-orange': nodeSelectLabel.match(/Xahau Mainnet/),
+    'bg-red': nodeSelectLabel.match(/Xahau Testnet/),
     'bg-info': nodeSelectLabel.match(/Local|custom-node/)
   }" aria-label="Main navigation">
     <div class="container-fluid">
@@ -63,9 +63,6 @@ export default {
   computed: {
     nodeSelectLabel () {
       if (this.$net.xrpl) {
-        return 'Xrpl Testnet (Change)'
-      }
-      if (this.$net.xrpl_test) {
         return 'Xrpl Mainnet (Change)'
       }
       if (this.$net.xahau_test) {
