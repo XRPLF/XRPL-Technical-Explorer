@@ -137,8 +137,6 @@ export default {
         return
       }
 
-      console.log(customCommand)
-
       try {
         const response = await axios.post('http://localhost:9000/payload', customCommand)
         this.loading = false

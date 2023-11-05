@@ -47,8 +47,10 @@ export default {
     .blue-border { border-color: lighten(#183FB7, 45%); }
     .blue-highlight { color: #7592F7; }
     .bg-blue { background-color: #183FB7; color: white; }
-    .bg-red { background-color: #FF0000; color: white; }
-    .bg-orange { background-color: #FFA500; color: white; }
+    .bg-purple { background-color: #6626EB; color: white; }
+    .bg-navy { background-color: #0A023D; color: white; }
+    .bg-orange { background-color: #ED7035; color: white; }
+    .bg-yellow { background-color: #FFFD88; color: white; }
 
     .bg-card { background-color: #0C1637; }
     .bg-card-header { background-color: #3D4256; }

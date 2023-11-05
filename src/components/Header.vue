@@ -1,9 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark" :class="{
-    'bg-blue': nodeSelectLabel.match(/Xrpl Mainnet/),
-    'bg-success': nodeSelectLabel.match(/Xrpl Testnet/),
-    'bg-orange': nodeSelectLabel.match(/Xahau Mainnet/),
-    'bg-red': nodeSelectLabel.match(/Xahau Testnet/),
+    'bg-purple': nodeSelectLabel.match(/Xrpl Mainnet/),
+    'bg-orange': nodeSelectLabel.match(/Xrpl Testnet/),
+    'bg-navy': nodeSelectLabel.match(/Xahau Mainnet/),
+    'bg-yellow': nodeSelectLabel.match(/Xahau Testnet/),
     'bg-info': nodeSelectLabel.match(/Local|custom-node/)
   }" aria-label="Main navigation">
     <div class="container-fluid">
