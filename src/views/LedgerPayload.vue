@@ -126,7 +126,7 @@ export default {
           TransactionType: 'Payment',
           Account: address,
           Amount: '1000000',
-          Destination: 'r223rsyz1cfqPbjmiX6oYu1hFgNwCkWZH'
+          Destination: ''
         }, null, 2)
         this.data = {}
         this.loading = false

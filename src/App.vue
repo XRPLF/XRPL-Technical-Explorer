@@ -18,6 +18,7 @@ export default {
     // Sample
   },
   mounted () {
+    console.log('App mounted')
   }
 }
 </script>

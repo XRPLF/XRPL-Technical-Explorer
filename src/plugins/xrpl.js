@@ -11,10 +11,11 @@ export default {
       xrpl_test: endpoint.match(/rippletest|\/testnet\.xrpl-labs/),
       xahau: endpoint.match(/xahau.network/),
       xahau_test: endpoint.match(/xahau-test.net/),
-      local: endpoint.match(/localhost|0.0.0.0|custom-node/)
+      custom: endpoint
     }
 
     Vue.prototype.$net = net
+    Vue.prototype.$active_net = 'custom'
 
     Vue.prototype.$ws.on('ledger', ledger => Vue.prototype.$events.emit('ledger', ledger))
     console.info('Connecting @ `plugins/xrpl`')

@@ -20,11 +20,11 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">{{ nodeSelectLabel }}</a>
             <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
-              <li><a class="dropdown-item" href="https://xahau.network">Xahau Mainnet</a></li>
-              <li><a class="dropdown-item" href="https://xahau-test.network">Xahau Testnet</a></li>
-              <li><a class="dropdown-item" href="https://explorer.xrplf.org"><b>Xrpl Mainnet</b></a></li>
-              <li><a class="dropdown-item" href="https://explorer-testnet.xrplf.org">Xrpl Testnet</a></li>
-              <li><a class="dropdown-item" href="http://localhost:4000"><b>Localhost (:6006)</b></a></li>
+              <li><a class="dropdown-item" @click="switchNetwork('xahau')"><b v-if="$active_net === 'xahau'">Xahau Mainnet</b> <span v-else>Xahau Mainnet</span></a></li>
+              <li><a class="dropdown-item" @click="switchNetwork('xahau-test')"><b v-if="$active_net === 'xahau-test'">Xahau Testnet</b> <span v-else>Xahau Testnet</span></a></li>
+              <li><a class="dropdown-item" @click="switchNetwork('xrpl')"><b v-if="$active_net === 'xrpl'">Xrpl Mainnet</b> <span v-else>Xrpl Mainnet</span></a></li>
+              <li><a class="dropdown-item" @click="switchNetwork('xrpl-test')"><b v-if="$active_net === 'xrpl-test'">Xrpl Testnet</b> <span v-else>Xrpl Testnet</span></a></li>
+              <li><a class="dropdown-item" @click="switchNetwork('custom')"><b v-if="$active_net === 'custom'">Custom</b> <span v-else>Custom</span></a></li>
             </ul>
           </li>
           <li class="nav-item">
@@ -34,8 +34,8 @@
             <a class="nav-link" style="white-space: nowrap;" href="/command"><i class="fa-solid fa-webhook"></i><span class="ps-2">Commands</span></a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Select Wallet</a>
-            <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-bs-toggle="dropdown" aria-expanded="false">Select Wallet</a>
+            <ul class="dropdown-menu shadow" aria-labelledby="dropdown02">
               <li><a class="dropdown-item" href="/wallets/xumm">Xumm</a></li>
               <li><a class="dropdown-item" href="/wallets/ledger">Ledger</a></li>
             </ul>
@@ -52,12 +52,15 @@
 </template>
 
 <script>
+import { networkSwitch } from '../plugins/xrpl-switch'
+
 export default {
   name: 'Header',
   data () {
     return {
       navbarCollapsed: false,
-      query: ''
+      query: '',
+      network: ''
     }
   },
   computed: {
@@ -111,6 +114,10 @@ export default {
   components: {
   },
   methods: {
+    async switchNetwork (network) {
+      await networkSwitch(this.$ws, this.$events, this.$active_net, network)
+      this.$active_net = network
+    },
     search (e) {
       e.preventDefault()
       let navTo
@@ -152,7 +159,8 @@ export default {
       return false
     }
   },
-  mounted () {
+  async mounted () {
+    console.log('head mounted....')
   }
 }
 </script>
