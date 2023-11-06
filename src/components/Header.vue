@@ -1,11 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark" :class="{
-    'bg-purple': nodeSelectLabel.match(/Xrpl Mainnet/),
-    'bg-orange': nodeSelectLabel.match(/Xrpl Testnet/),
-    'bg-navy': nodeSelectLabel.match(/Xahau Mainnet/),
-    'bg-yellow': nodeSelectLabel.match(/Xahau Testnet/),
-    'bg-info': nodeSelectLabel.match(/Local|custom-node/)
-  }" aria-label="Main navigation">
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark" :class="network_color" aria-label="Main navigation">
     <div class="container-fluid">
       <router-link class="nes nav navbar-brand" to="/">
         <span class="d-block d-md-none">XRPL <small>Explorer</small></span>
@@ -18,7 +12,7 @@
       <div class="navbar-collapse offcanvas-collapse" :class="{open: navbarCollapsed}">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">{{ nodeSelectLabel }}</a>
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">{{ label }}</a>
             <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
               <li><a class="dropdown-item" @click="switchNetwork('xahau')"><b v-if="$active_net === 'xahau'">Xahau Mainnet</b> <span v-else>Xahau Mainnet</span></a></li>
               <li><a class="dropdown-item" @click="switchNetwork('xahau-test')"><b v-if="$active_net === 'xahau-test'">Xahau Testnet</b> <span v-else>Xahau Testnet</span></a></li>
@@ -60,22 +54,12 @@ export default {
     return {
       navbarCollapsed: false,
       query: '',
-      network: ''
+      network: 'custom',
+      label: 'Custom (Change)',
+      network_color: 'bg-info'
     }
   },
   computed: {
-    nodeSelectLabel () {
-      if (this.$net.xrpl) {
-        return 'Xrpl Mainnet (Change)'
-      }
-      if (this.$net.xahau_test) {
-        return 'Xahau Testnet (Change)'
-      }
-      if (this.$net.local) {
-        return 'Local (Change)'
-      }
-      return 'Xahau Mainnet (Change)'
-    },
     validQuery () {
       const commands = this.$router.options.routes.filter(r => {
         return r?.meta?.isPublicCommand && r.name.slice(0, 1) !== '_'
@@ -115,8 +99,33 @@ export default {
   },
   methods: {
     async switchNetwork (network) {
-      await networkSwitch(this.$ws, this.$events, this.$active_net, network)
-      this.$active_net = network
+      const switched = await networkSwitch(this.$ws, this.$events, this.$active_net, this.$net, network)
+      this.$active_net = switched.active
+      this.$net = switched.net
+      // this.$active_net = network
+      console.log('net', this.$net)
+      switch (this.$active_net) {
+        case 'xrpl':
+          this.label = 'Xrpl Mainnet (Change)'
+          this.network_color = 'bg-purple'
+          break
+        case 'xrpl-test':
+          this.label = 'Xrpl Testnet (Change)'
+          this.network_color = 'bg-orange'
+          break
+        case 'xahau':
+          this.label = 'Xahau (Change)'
+          this.network_color = 'bg-navy'
+          break
+        case 'xahau-test':
+          this.label = 'Xahau Testnet (Change)'
+          this.network_color = 'bg-yellow'
+          break
+        case 'custom':
+          this.label = 'Custom (Change)'
+          this.network_color = 'bg-info'
+          break
+      }
     },
     search (e) {
       e.preventDefault()
