@@ -29,14 +29,15 @@ const networkSwitch = async (ws, events, active, net, network) => {
     xahau_test: ws.endpoint.match(/xahau-test.net/),
     custom: process?.env?.VUE_APP_WSS_ENDPOINT
   }
-  console.log('hey')
+
   net = nets
-  console.log('nettttt', net)
   ws.on('ledger', ledger => events.emit('ledger', ledger))
   await ws.ready()
+  const state = ws.getState()
+  console.info('Connected @ `plugins/xrpl`', state.server)
+  events.emit('connected', state.server.publicKey)
+
   active = network
-  // console.log(ws)
-  // console.log('done')
   return { active, net, ws }
 }
 
