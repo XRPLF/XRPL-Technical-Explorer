@@ -3,6 +3,7 @@ import { XrplClient } from 'xrpl-client'
 const networkSwitch = async (ws, events, active, net, network) => {
   console.log('networkSwitch ' + network)
   ws.close()
+  console.log('ws ', ws)
   switch (network) {
     case 'xrpl':
       ws = new XrplClient('wss://xrplcluster.com')
@@ -36,7 +37,7 @@ const networkSwitch = async (ws, events, active, net, network) => {
   active = network
   // console.log(ws)
   // console.log('done')
-  return { active, net }
+  return { active, net, ws }
 }
 
 export {

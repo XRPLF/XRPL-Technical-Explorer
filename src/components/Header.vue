@@ -102,6 +102,8 @@ export default {
       const switched = await networkSwitch(this.$ws, this.$events, this.$active_net, this.$net, network)
       this.$active_net = switched.active
       this.$net = switched.net
+      this.$ws = switched.ws
+
       // this.$active_net = network
       console.log('net', this.$net)
       switch (this.$active_net) {
