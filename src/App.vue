@@ -1,28 +1,30 @@
 <template>
-  <div id="app" class="pb-4">
-    <Header />
+  <main class="container pb-4">
+    <Ledger />
+    <HeaderComponent />
     <LedgerNav />
     <router-view/>
-  </div>
+  </main>
 </template>
 
 <script>
-import Header from './components/Header.vue'
+import Ledger from './components/Ledger.vue'
+import HeaderComponent from './components/Header.vue'
 import LedgerNav from './components/LedgerNav.vue'
 
 export default {
   name: 'App',
   components: {
-    Header,
+    Ledger, 
+    HeaderComponent,
     LedgerNav
-    // Sample
   },
   mounted () {
     console.log('App mounted')
   }
 }
 </script>
-
+ 
 <style lang="scss">
   html, body {
     overflow-x: hidden; /* Prevent scroll on narrow devices */
