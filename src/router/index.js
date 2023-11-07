@@ -6,7 +6,14 @@ import ResolveHash from '../components/ResolveHash.vue'
 import LedgerEntry from '../views/LedgerEntry.vue'
 import Account from '../views/Account.vue'
 import GenericData from '../components/GenericData.vue'
+import CustomCommand from '../views/CustomCommand.vue'
 import NotFound from '../views/NotFound.vue'
+
+import { groupedCommands } from '../plugins/commands'
+const gcom = groupedCommands.flatMap(group => group.items).reduce((acc, item) => {
+    acc[item.name] = item.json
+    return acc
+}, {})
 
 export const routes = [
     {
@@ -91,6 +98,22 @@ export const routes = [
         }
         ]
     },
+    {
+        path: '/command',
+        name: 'custom_command',
+        component: CustomCommand
+      },
+      ...groupedCommands.flatMap((group) => group.items.map(command => {
+        return {
+          path: '/' + command.name,
+          name: 'command_' + command.name,
+          component: CustomCommand,
+          meta: {
+            isPublicCommand: true,
+            template: gcom[command.name]
+          }
+        }
+    })),
     {
         path: '/:hash([a-fA-F0-9]{64})',
         name: 'hash',
