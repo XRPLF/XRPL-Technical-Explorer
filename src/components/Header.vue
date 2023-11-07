@@ -94,47 +94,46 @@ export default {
       this.$store.dispatch('setNetwork', key)
       //this.$store.getters.getNetwork
     },
-    methods: {
-      search (e) {
-        e.preventDefault()
-        let navTo
-        const navQuery = {}
+  
+    search (e) {
+      e.preventDefault()
+      let navTo
+      const navQuery = {}
 
-        if (this.validQuery && typeof this.validQuery === 'string') {
-          navTo = '/' + this.validQuery
+      if (this.validQuery && typeof this.validQuery === 'string') {
+        navTo = '/' + this.validQuery
+      }
+      if (this.validQuery && Array.isArray(this.validQuery) && this.validQuery.length > 0) {
+        if (this.validQuery.length === 1) {
+          navTo = '/' + this.validQuery[0]
         }
-        if (this.validQuery && Array.isArray(this.validQuery) && this.validQuery.length > 0) {
-          if (this.validQuery.length === 1) {
-            navTo = '/' + this.validQuery[0]
-          }
-          if (this.validQuery.length > 1) {
-            console.log(this.validQuery)
-            navTo = '/command'
-            // console.log(this.validQuery)
-            Object.assign(navQuery, {
-              c: this.validQuery
-            })
-          }
-        }
-        console.log(navTo)
-        if (
-          navTo &&
-          (
-            this.$route.path !== navTo ||
-            JSON.stringify(navQuery) !== JSON.stringify(this?.$route?.query || {})
-          ) &&
-          !(
-            JSON.stringify(navQuery) === JSON.stringify(this?.$route?.query || {}) &&
-            this.$route.path === navTo
-          )
-        ) {
-          this.$router[Object.keys(navQuery).length > 0 ? 'replace' : 'push']({
-            path: navTo,
-            query: navQuery
+        if (this.validQuery.length > 1) {
+          console.log(this.validQuery)
+          navTo = '/command'
+          // console.log(this.validQuery)
+          Object.assign(navQuery, {
+            c: this.validQuery
           })
         }
-        return false
       }
+      console.log('navTo', navTo)
+      if (
+        navTo &&
+        (
+          this.$route.path !== navTo ||
+          JSON.stringify(navQuery) !== JSON.stringify(this?.$route?.query || {})
+        ) &&
+        !(
+          JSON.stringify(navQuery) === JSON.stringify(this?.$route?.query || {}) &&
+          this.$route.path === navTo
+        )
+      ) {
+        this.$router[Object.keys(navQuery).length > 0 ? 'replace' : 'push']({
+          path: navTo,
+          query: navQuery
+        })
+      }
+      return false
     }
   },
   computed: {
@@ -144,7 +143,7 @@ export default {
       }).map(r => r.name.split('_').slice(1).join('_'))
 
       const query = this.query.trim()
-
+      console.log('query', query)
       if (query.length < 2) {
         return false
       }
