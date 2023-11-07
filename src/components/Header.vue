@@ -52,14 +52,20 @@ export default {
         'xrpl': {
           label: 'XRPL Mainnet',
           type: 'mainnet',
-          wss: ['wss://xrplcluster.com'],
+          wss: ['wss://xrplcluster.com', 'wss://s2.ripple.com'],
           color: 'bg-purple'
         },
         'xrpl-test': {
           label: 'XRPL Testnet',
           type: 'testnet',
-          wss: ['wss://testnet.xrpl-labs.com'],
+          wss: ['wss://testnet.xrpl-labs.com', 'wss://s.altnet.rippletest.net:51233'],
           color: 'bg-orange'
+        },
+        'xrpl-dev': {
+          label: 'XRPL Devnet',
+          type: 'devnet',
+          wss: ['wss://s.devnet.rippletest.net:51233'],
+          color: 'bg-pink'
         },
         'xahau': {
           label: 'Xahau Mainnet',

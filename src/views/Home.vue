@@ -1,5 +1,4 @@
 <template>
-    <main class="container px-3">
       <h4 class="nes blue">Hi!</h4>
       <code class="text-primary nes">Work in progress, EARLY BETA ;)</code>
       <div class="mt-4">
@@ -15,7 +14,6 @@
       <div class="mt-4">
         Click a ledger or search for something (account, hash, ...)
       </div>
-    </main>
   </template>
   
   <script>

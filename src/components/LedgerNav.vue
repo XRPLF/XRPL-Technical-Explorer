@@ -15,7 +15,7 @@
         </div>
         <span v-if="!connected" class="blue await-close ms-3 pt-2"><small>Connecting...</small></span>
         <span v-if="connected && ledgers.length === 0" class="blue await-close ms-3 pt-2"><small>Waiting for the next ledger to close...</small></span>
-        <router-link :to="'/' + String(l.ledger_index)" v-for="l in ledgers" v-bind:key="l.ledger_index" class="nav-link px-0">
+        <router-link @click="pinLedger(l.ledger_index)" :to="'/' + String(l.ledger_index)" v-for="l in ledgers" v-bind:key="l.ledger_index" class="nav-link px-0">
           <div class="ps-2 pe-1" v-if="ledgerList.indexOf(l.ledger_index) > -1">
             <span disabled class="text-muted"><small><i class="far fa-thumbtack"></i> {{ l.ledger_index }}</small></span>
           </div>
@@ -41,7 +41,7 @@
     },
     computed: {
         pinnedList() {
-            return this.pinned.map(l => l.ledgerIndex)
+          return this.pinned.map(l => l.ledgerIndex)
         },
         ledgerList () {
           return this.ledgers.map(l => l.ledgerIndex)
@@ -63,6 +63,18 @@
       }
     },
     methods: {
+      async pinLedger(path) {
+        const ledgerIndex = Number(path)
+        const matched = this.$store.getters.ledgers.filter(l => {return l.ledgerIndex === ledgerIndex}).pop()
+        if (matched) {
+          this.$router.push('/' + path)
+          if (this.pinned.indexOf(matched) < 0) {
+            this.pinned.unshift(matched)
+            this.pinned.splice(20)
+          }
+        }
+        
+      },
       addLedger (ledger) {
         // console.log('ledgerledger', Number(ledger.ledger_index))
         this.$store.getters.hydrateLedger(Number(ledger.ledger_index))
@@ -70,12 +82,6 @@
         if (this.ledgers.indexOf(ledger) < 0) {
           this.ledgers.unshift(ledger)
           this.ledgers.splice(20)
-        }
-      },
-      purge (ledgerIndex) {
-        this.$ledger.purge(ledgerIndex)
-        if (this.$router?.params?.ledger === String(ledgerIndex)) {
-          this.$router.push('/')
         }
       },
       getLedger (ledgerIndex) {
