@@ -53,43 +53,43 @@ export default {
           label: 'XRPL Mainnet',
           type: 'mainnet',
           wss: ['wss://xrplcluster.com', 'wss://s2.ripple.com'],
-          color: 'bg-purple'
+          color: 'bg-info text-light'
         },
         'xrpl-test': {
           label: 'XRPL Testnet',
           type: 'testnet',
           wss: ['wss://testnet.xrpl-labs.com', 'wss://s.altnet.rippletest.net:51233'],
-          color: 'bg-orange'
+          color: 'bg-orange text-light'
         },
         'xrpl-dev': {
           label: 'XRPL Devnet',
           type: 'devnet',
           wss: ['wss://s.devnet.rippletest.net:51233'],
-          color: 'bg-pink'
+          color: 'bg-purple text-light'
         },
         'xrpl-amm': {
           label: 'XRPL AMM',
           type: 'ammnet',
           wss: ['wss://amm.devnet.rippletest.net:51233'],
-          color: 'bg-pink'
+          color: 'bg-pink text-light'
         },
         'xahau': {
           label: 'Xahau Mainnet',
           type: 'mainnet',
           wss: ['wss://xahau.network'],
-          color: 'bg-navy'
+          color: 'bg-navy text-light'
         },
         'xahau-test': {
           label: 'Xahau Testnet',
           type: 'testnet',
           wss: ['wss://dev.xahau.network'],
-          color: 'bg-yellow'
+          color: 'bg-yellow text-dark'
         },
         'custom': {
           label: 'Custom',
           type: import.meta.env.VITE_APP_WSS_NETWORK_TYPE,
           wss: [import.meta.env.VITE_APP_WSS_ENDPOINT],
-          color: 'bg-info'
+          color: 'bg-green text-light'
         }
       }
     }
@@ -104,7 +104,7 @@ export default {
       this.$store.dispatch('setClientServers', this.networks[key].wss)
       this.$store.dispatch('clientConnect', false)
       this.$store.dispatch('setNetwork', {key: key, type: this.networks[key].type })
-      //this.$store.getters.getNetwork
+      this.$router.push('/')
     },
   
     search (e) {

@@ -28,7 +28,7 @@ export default {
 <style lang="scss">
   html, body {
     overflow-x: hidden; /* Prevent scroll on narrow devices */
-    font-family: 'Source Code Pro', monospace;
+    font-family: 'Source Code Pro', monospace !important;
 
     .nes {
       font-family: 'Press Start 2P', cursive;
@@ -49,12 +49,13 @@ export default {
     .blue { color: #183FB7; }
     .blue-border { border-color: lighten(#183FB7, 45%); }
     .blue-highlight { color: #7592F7; }
-    .bg-blue { background-color: #183FB7; color: white; }
-    .bg-purple { background-color: #6626EB; color: white; }
-    .bg-navy { background-color: #0A023D; color: white; }
-    .bg-orange { background-color: #ED7035; color: white; }
-    .bg-yellow { background-color: #FFFD88; color: white; }
-    .bg-pink { background-color: #ff80bf; color: white; }
+    .bg-blue { background-color: #183FB7; }
+    .bg-purple { background-color: #6626EB;  }
+    .bg-navy { background-color: #0A023D;  }
+    .bg-orange { background-color: #ED7035;  }
+    .bg-yellow { background-color: #fffb00;  }
+    .bg-pink { background-color: #ff80bf;  }
+    .bg-green { background-color: #08c814;  }
 
     .bg-card { background-color: #0C1637; }
     .bg-card-header { background-color: #3D4256; }
@@ -78,11 +79,15 @@ export default {
         padding-bottom: 1rem;
         margin-top: -1px;
         overflow-x: auto;
-        color: rgba(255, 255, 255, .75);
+        // color: rgba(255, 255, 255, .75);
         text-align: center;
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
       }
+    }
+
+    .text-dark .nav, .text-dark a {
+      color: rgba(var(--bs-dark-rgb), var(--bs-text-opacity)) !important;
     }
 
     .nav-underline .nav-link {
@@ -102,7 +107,6 @@ export default {
     }
 
     .text-white-50 { color: rgba(255, 255, 255, .5); }
-    .bg-purple { background-color: #6f42c1; }
   }
 
   @media (max-width: 991.98px) {

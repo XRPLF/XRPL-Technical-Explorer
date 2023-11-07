@@ -14,6 +14,9 @@
           <li><a v-if="$store.getters.getNetworkType === 'testnet' && $store.getters.getNetwork === 'xrpl-test'" class="dropdown-item" target="_blank" :href="'https://test.bithomp.com/explorer/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>bithomp.com</small></a></li>
           <li><a v-if="$store.getters.getNetworkType === 'testnet' && $store.getters.getNetwork === 'xrpl-test'" class="dropdown-item" target="_blank" :href="'https://testnet.xrpl.org/accounts/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpl.org</small></a></li>
 
+          <li><a v-if="$store.getters.getNetworkType === 'devnet' && $store.getters.getNetwork === 'xrpl-dev'" class="dropdown-item" target="_blank" :href="'https://devnet.xrpl.org/accounts/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpl.org</small></a></li>
+          <li><a v-if="$store.getters.getNetworkType === 'ammnet' && $store.getters.getNetwork === 'xrpl-amm'" class="dropdown-item" target="_blank" :href="'https://amm-devnet.xrpl.org/accounts/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpl.org</small></a></li>
+
           <li><a v-if="$store.getters.getNetworkType === 'mainnet' && $store.getters.getNetwork === 'xahau'" class="dropdown-item" target="_blank" :href="'https://xahauexplorer.com/explorer/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xahauexplorer.com</small></a></li>
           <li><a v-if="$store.getters.getNetworkType === 'mainnet' && $store.getters.getNetwork === 'xahau'" class="dropdown-item" target="_blank" :href="'https://xahscan.com/accounts/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xahscan.com</small></a></li>
         </ul>
