@@ -12,6 +12,7 @@ export const AppStore = {
         client: null,
         client_reset: true,
         network_key: 'custom',
+        network_type: 'mainnet',
         servers: [],
         account: '',
         account_data: {},
@@ -44,8 +45,8 @@ export const AppStore = {
         clientConnect({commit}, force) {
             commit('CONNECT', force)
         },
-        setNetwork({commit}, key) {
-            commit('KEY', key)
+        setNetwork({commit}, data) {
+            commit('KEY', data)
         },
         setClientServers({commit}, servers) {
             commit('SERVERS', servers)
@@ -68,6 +69,8 @@ export const AppStore = {
                 state.servers = JSON.parse(localStorage.getItem('servers'))
             if (localStorage.getItem('network_key'))
                 state.network_key = JSON.parse(localStorage.getItem('network_key'))
+            if (localStorage.getItem('network_type'))
+                state.network_type = JSON.parse(localStorage.getItem('network_type'))
         },
         TOKEN_DATA(state, data) {
             state.xumm.tokenData = data
@@ -84,9 +87,11 @@ export const AppStore = {
         LEDGER(state, ledger) {
             state.ledger = ledger
         },
-        KEY(state, key) {
-            state.network_key = key
-            localStorage.setItem('network_key', JSON.stringify(key))
+        KEY(state, data) {
+            console.log('set nnnn ', data)
+            state.network_key = data.key
+            localStorage.setItem('network_key', JSON.stringify(data.key))
+            localStorage.setItem('network_type', JSON.stringify(data.type))
         },
         STORE(state, data) {
             state.data = data
@@ -161,6 +166,9 @@ export const AppStore = {
         },
         getNetwork: state => {
             return state.network_key
+        },
+        getNetworkType: state => {
+            return state.network_type
         },
         getAccountData: (state) => {
             return state.account_data

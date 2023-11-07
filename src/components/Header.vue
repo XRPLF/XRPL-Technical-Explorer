@@ -89,7 +89,7 @@ export default {
     }
   },
   async mounted () {
-    console.log('head mounted....', this.$store.getters.getNetwork)
+    console.log('head mounted....', this.$store.getters.getNetwork, this.$store.getters.getNetworkType)
   },
   methods: {
     switchNetwork (key) {
@@ -97,7 +97,7 @@ export default {
       if (this.networks[key].wss === undefined) { return }
       this.$store.dispatch('setClientServers', this.networks[key].wss)
       this.$store.dispatch('clientConnect', false)
-      this.$store.dispatch('setNetwork', key)
+      this.$store.dispatch('setNetwork', {key: key, type: this.networks[key].type })
       //this.$store.getters.getNetwork
     },
   

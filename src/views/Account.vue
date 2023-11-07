@@ -5,17 +5,17 @@
           Open with... <i class="fas fa-chevron-down"></i>
         </button>
         <ul class="dropdown-menu nes mt-2">
-          <li><a v-if="$store.getters.getNetwork === 'xrpl'" class="dropdown-item" target="_blank" :href="'https://bithomp.com/explorer/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>bithomp.com</small></a></li>
-          <li><a v-if="$store.getters.getNetwork === 'xrpl'" class="dropdown-item" target="_blank" :href="'https://xrpscan.com/account/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpscan.com</small></a></li>
-          <li><a v-if="$store.getters.getNetwork === 'xrpl'" class="dropdown-item" target="_blank" :href="'https://xrplorer.com/account/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrplorer.com</small></a></li>
-          <li><a v-if="$store.getters.getNetwork === 'xrpl'" class="dropdown-item" target="_blank" :href="'https://xrpintel.com/account/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpintel.com</small></a></li>
-          <li><a v-if="$store.getters.getNetwork === 'xrpl'" class="dropdown-item" target="_blank" :href="'https://livenet.xrpl.org/accounts/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpl.org</small></a></li>
+          <li><a v-if="$store.getters.getNetworkType === 'mainnet' && $store.getters.getNetwork === 'xrpl'" class="dropdown-item" target="_blank" :href="'https://bithomp.com/explorer/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>bithomp.com</small></a></li>
+          <li><a v-if="$store.getters.getNetworkType === 'mainnet' && $store.getters.getNetwork === 'xrpl'" class="dropdown-item" target="_blank" :href="'https://xrpscan.com/account/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpscan.com</small></a></li>
+          <li><a v-if="$store.getters.getNetworkType === 'mainnet' && $store.getters.getNetwork === 'xrpl'" class="dropdown-item" target="_blank" :href="'https://xrplorer.com/account/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrplorer.com</small></a></li>
+          <li><a v-if="$store.getters.getNetworkType === 'mainnet' && $store.getters.getNetwork === 'xrpl'" class="dropdown-item" target="_blank" :href="'https://xrpintel.com/account/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpintel.com</small></a></li>
+          <li><a v-if="$store.getters.getNetworkType === 'mainnet' && $store.getters.getNetwork === 'xrpl'" class="dropdown-item" target="_blank" :href="'https://livenet.xrpl.org/accounts/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpl.org</small></a></li>
   
-          <li><a v-if="$store.getters.getNetwork === 'xrpl-test'" class="dropdown-item" target="_blank" :href="'https://test.bithomp.com/explorer/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>bithomp.com</small></a></li>
-          <li><a v-if="$store.getters.getNetwork === 'xrpl-test'" class="dropdown-item" target="_blank" :href="'https://testnet.xrpl.org/accounts/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpl.org</small></a></li>
+          <li><a v-if="$store.getters.getNetworkType === 'testnet' && $store.getters.getNetwork === 'xrpl-test'" class="dropdown-item" target="_blank" :href="'https://test.bithomp.com/explorer/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>bithomp.com</small></a></li>
+          <li><a v-if="$store.getters.getNetworkType === 'testnet' && $store.getters.getNetwork === 'xrpl-test'" class="dropdown-item" target="_blank" :href="'https://testnet.xrpl.org/accounts/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xrpl.org</small></a></li>
 
-          <li><a v-if="$store.getters.getNetwork === 'xahau'" class="dropdown-item" target="_blank" :href="'https://xahauexplorer.com/explorer/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xahauexplorer.com</small></a></li>
-          <li><a v-if="$store.getters.getNetwork === 'xahau'" class="dropdown-item" target="_blank" :href="'https://xahscan.com/accounts/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xahscan.com</small></a></li>
+          <li><a v-if="$store.getters.getNetworkType === 'mainnet' && $store.getters.getNetwork === 'xahau'" class="dropdown-item" target="_blank" :href="'https://xahauexplorer.com/explorer/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xahauexplorer.com</small></a></li>
+          <li><a v-if="$store.getters.getNetworkType === 'mainnet' && $store.getters.getNetwork === 'xahau'" class="dropdown-item" target="_blank" :href="'https://xahscan.com/accounts/' + $route.params.account"><i class="fad fa-external-link me-2"></i><small>xahscan.com</small></a></li>
         </ul>
       </div>
   

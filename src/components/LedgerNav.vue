@@ -57,7 +57,7 @@
       restarted (value) {
         this.ledgers = []
         this.pinned = []
-        this.$store.getters.getClient.off('ledger', this.addLedger)
+        // this.$store.getters.getClient.off('ledger', this.addLedger)
         if (value === false) {
           console.log('Updating attcheLedgersClose')
           this.attcheLedgersClose()
@@ -72,7 +72,7 @@
           this.$router.push('/' + path)
           if (this.pinned.indexOf(matched) < 0) {
             this.pinned.unshift(matched)
-            this.pinned.splice(20)
+            this.getTxCount(matched.ledgerIndex)
           }
         }
         
@@ -114,8 +114,7 @@
           }
       },
       getTxCount (ledgerIndex) {
-        console.log('getTxCount', ledgerIndex)
-        const local = this.ledgers.filter(l => l.ledger_index === ledgerIndex)
+        const local = this.$store.getters.ledgers.filter(l => l.ledger_index === ledgerIndex)
         if (Array.isArray(local) && local.length > 0) {
           return local[0].txn_count
         }
