@@ -22,6 +22,9 @@
           <li class="nav-item">
             <a class="nav-link" style="white-space: nowrap;" href="https://github.com/XRPLF/XRPL-Technical-Explorer" target="_blank"><i class="fab fa-github-square"></i><span class="ps-2">Source</span></a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" style="white-space: nowrap;" href="/command"><i class="fa-solid fa-webhook"></i><span class="ps-2">Commands</span></a>
+          </li>
         </ul>
         <form class="d-flex" @submit="search">
           <input v-model="query" class="form-control border border-2 border-dark py-0 me-2" type="search" placeholder="Search" aria-label="Search">
