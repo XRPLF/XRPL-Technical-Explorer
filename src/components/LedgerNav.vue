@@ -56,6 +56,8 @@
     watch: {
       restarted (value) {
         this.ledgers = []
+        this.pinned = []
+        this.$store.getters.getClient.off('ledger', this.addLedger)
         if (value === false) {
           console.log('Updating attcheLedgersClose')
           this.attcheLedgersClose()
@@ -82,6 +84,18 @@
         if (this.ledgers.indexOf(ledger) < 0) {
           this.ledgers.unshift(ledger)
           this.ledgers.splice(20)
+        }
+      },
+      purge (ledgerIndex) {
+        const matched = this.$store.getters.ledgers.filter(l => {return l.ledgerIndex === ledgerIndex})
+        if (matched) {
+          const index = this.pinned.indexOf(matched[0])
+          if (index > -1) {
+            this.pinned.splice(index, 1)
+          }
+        }
+        if (this.$router?.params?.ledger === String(ledgerIndex)) {
+          this.$router.push('/')
         }
       },
       getLedger (ledgerIndex) {
@@ -134,7 +148,7 @@
         // this.attcheLedgersClose()
     },
     destroyed () {
-      this.$events.off('ledger', this.addLedger)
+      this.$store.getters.getClient.off('ledger', this.addLedger)
     }
   }
   </script>
