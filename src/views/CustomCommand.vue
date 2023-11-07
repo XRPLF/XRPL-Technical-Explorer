@@ -81,16 +81,6 @@
                 marker: null,
                 data: {},
                 errorResponse: false,
-                cmOptions: {
-                    tabSize: 2,
-                    mode: 'application/json',
-                    theme: 'monokai',
-                    lineNumbers: true,
-                    line: true,
-                    keymap: 'sublime',
-                    lineWrapping: false,
-                    lint: true
-                },
                 groupedCommands: groupedCommands
             }
         },
@@ -128,9 +118,7 @@
                 return this.$route.meta?.replaceProp && this.$route.meta?.replaceParam && this.$route.params?.[this.$route.meta.replaceParam]
             },
             possibleCommands () {
-                console.log('possibleCommands')
                 if (this.$route?.query?.c) {
-                    console.log('possibleCommands 22222')
                     return this.$router.options.routes.filter(r => { return r?.meta?.isPublicCommand}).map(r => r.name.split('_').slice(1).join('_')).filter(r => this.$route.query.c.indexOf(r) > -1).sort()
                 }
 
