@@ -67,6 +67,12 @@ export default {
           wss: ['wss://s.devnet.rippletest.net:51233'],
           color: 'bg-pink'
         },
+        'xrpl-amm': {
+          label: 'XRPL AMM',
+          type: 'ammnet',
+          wss: ['wss://amm.devnet.rippletest.net:51233'],
+          color: 'bg-pink'
+        },
         'xahau': {
           label: 'Xahau Mainnet',
           type: 'mainnet',
