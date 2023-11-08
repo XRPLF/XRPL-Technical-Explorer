@@ -57,7 +57,7 @@
       restarted (value) {
         this.ledgers = []
         this.pinned = []
-        // this.$store.getters.getClient.off('ledger', this.addLedger)
+        this.$store.getters.getClient.off('ledger', this.addLedger)
         if (value === false) {
           console.log('Updating attcheLedgersClose')
           this.attcheLedgersClose()
