@@ -32,10 +32,10 @@ VUE_APP_WSS_ENDPOINT=ws://dev.xahau.network
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+yarn dev
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build
+yarn build
 ```
