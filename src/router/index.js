@@ -7,6 +7,7 @@ import LedgerEntry from '../views/LedgerEntry.vue'
 import Account from '../views/Account.vue'
 import GenericData from '../components/GenericData.vue'
 import CustomCommand from '../views/CustomCommand.vue'
+import Burn2Mint from '../views/Burn2Mint.vue'
 import NotFound from '../views/NotFound.vue'
 
 import { groupedCommands } from '../plugins/commands'
@@ -118,6 +119,11 @@ export const routes = [
         path: '/:hash([a-fA-F0-9]{64})',
         name: 'hash',
         component: ResolveHash
+    },
+    {
+        path: '/b2m',
+        name: 'b2m',
+        component: Burn2Mint
     },
     {
         path: '/:pathMatch(.*)*',
