@@ -1,15 +1,37 @@
 <template>
     <main class="container-fluid pb-5">
         <div class="row">
-            <div class="col-9">
+            <div class="col-12">
                 <div v-if="possibleCommands.length > 0">
                     <h4 class="nes blue">Custom command</h4>
                 </div>
                 <div v-else>
-                    <h4 class="nes blue">
-                        {{ commandName }}
-                        <a class="nes-btn is-warning float-end btn-sm py-1" :href="'https://docs.hooks.network/' + commandName + '.html'" target="_blank"><i style="position: relative; top: -2px;" class="fas fa-external-link-alt me-2"></i><code class="d-none text-primary pe-2">{{ commandName }}</code>Docs</a>
-                    </h4>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h4 class="nes blue mb-3">
+                                {{ commandName }}
+                            </h4>
+                            <h4 class="nes blue">
+                                <a class="nes-btn is-warning float-end btn-sm py-1" :href="'https://docs.hooks.network/' + commandName + '.html'" target="_blank"><i style="position: relative; top: -2px;" class="fas fa-external-link-alt me-2"></i><code class="d-none text-primary pe-2">{{ commandName }}</code>Docs</a>
+                            </h4>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-9">
+                        </div>
+                        <div class="col-3 align-self-end">
+                            <a class="nav-link dropdown-toggle float-end" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Commands</a>
+                            <div class="dropdown-menu">
+                                <ul v-for="(group, index) in groupedCommands" :key="index">
+                                    <h4 href="#" class="list-group-item list-group-item-action">{{ group.title }}</h4>
+                                    <li v-for="(item, itemIndex) in group.items" :key="`item-${itemIndex}`" class="dropdown-item">
+                                        <a :href="item.link" class="list-group-item list-group-item-action">{{ item.name }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     <code class="text-primary nes">Custom command</code>
                     <div class="mt-3">
                         <div class="rounded" style="overflow: hidden;">
@@ -22,9 +44,6 @@
                                 :tab-size="2"
                                 :extensions="extensions"
                                 @ready="handleReady"
-                                @change="log('change', $event)"
-                                @focus="log('focus', $event)"
-                                @blur="log('blur', $event)"
                                 />
                         </div>
                         <div class="d-block text-end">
@@ -38,16 +57,6 @@
                                     <JsonRenderer :data="data" />
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3 scrollable-section">
-                <div class="list-group">
-                    <div v-for="(group, index) in groupedCommands" :key="index">
-                        <h4 href="#" class="list-group-item list-group-item-action">{{ group.title }}</h4>
-                        <div v-for="(item, itemIndex) in group.items" :key="`item-${itemIndex}`">
-                            <a :href="item.link" class="list-group-item list-group-item-action">{{ item.name }}</a>
                         </div>
                     </div>
                 </div>
@@ -84,7 +93,7 @@
                 groupedCommands: groupedCommands
             }
         },
-        setup() {
+        setup () {
             const command = ref(``)
             const extensions = [json(), oneDark]
 
