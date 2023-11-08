@@ -6,8 +6,12 @@ A technical (geeky) JSON viewing explorer for the XRP Ledger.
 Early beta of a new (technical) tx / ledger / object / hash explorer I'm working on, for XRPLF.
 
 Mainnet: https://explorer.xrplf.org
+
 Testnet: https://explorer-testnet.xrplf.org
-Hooks Testnet V3: https://hooks-testnet-v3-explorer.xrpl-labs.com
+
+Xahau Mainnet: https://explorer.xahau.network
+
+Xahau Testnet : https://explorer.xahau-test.net
 
 It's easy to roll your own as the wss endpoint is an env. var.
 
