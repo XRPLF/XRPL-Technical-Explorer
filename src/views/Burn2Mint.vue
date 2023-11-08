@@ -1,10 +1,10 @@
 <template>
-    <div style="margin-left: 10px;">
-        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-            <label style="margin: 0px;">Activated Ledger:</label>
-            <div style="margin-left: 10px;">{{ activatedLedger }}</div>
+    <div v-if="$store.getters.getNetworkType === 'mainnet'">
+        <div class="flex mb-2">
+            <label class="nes blue">Activated Ledger:</label>
+            <span class="nes blue ms-2">{{ activatedLedger }}</span>
         </div>
-        <form @submit.prevent="submitForm" style="margin-bottom: 10px;">
+        <form @submit.prevent="submitForm" class="mb-2">
             <div>
                 <label for="burnAmount">Burn Amount:</label>
                 <input
@@ -17,10 +17,13 @@
             </div>
             <button type="submit">Submit</button>
         </form>
-        <div style="display: flex; align-items: center;">
-            <label style="margin: 0px;">Calculated Value:</label>
-            <div style="margin-left: 10px;">{{ calculatedValue }}</div>
+        <div class="flex">
+            <label class="nes blue">Calculated Value:</label>
+            <span class="nes blue ms-2">{{ calculatedValue }}</span>
         </div>
+    </div>
+    <div v-else>
+        <h2 class="nes blue text-center">Burn2Mint mainnet only</h2>
     </div>
 </template>
 
