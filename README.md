@@ -21,13 +21,13 @@ npm install
 
 Configure alternative WebSocket endpoint with the env. variable:
 ```
-PORT
+VITE_APP_WSS_NETWORK_TYPE
 VUE_APP_WSS_ENDPOINT
 ```
 
 E.g. ```
-PORT=4000
-VUE_APP_WSS_ENDPOINT=wss://dev.xahau.network
+VITE_APP_WSS_NETWORK_TYPE=xahau
+VUE_APP_WSS_ENDPOINT=ws://dev.xahau.network
 ```
 
 ### Compiles and hot-reloads for development

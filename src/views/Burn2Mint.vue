@@ -8,7 +8,7 @@
             <div>
                 <label for="burnAmount">Burn Amount:</label>
                 <input
-                    style="margin-left: 10px;"
+                    class="ms-2"
                     type="number"
                     id="burnAmount"
                     v-model.number="burnAmount"

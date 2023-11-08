@@ -99,6 +99,7 @@ export default {
   },
   async mounted () {
     console.log('head mounted....', this.$store.getters.getNetwork, this.$store.getters.getNetworkType)
+    console.log(this.networks)
   },
   methods: {
     switchNetwork (key) {

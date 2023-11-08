@@ -173,7 +173,6 @@
                     marker,
                     ...customCommand
                 })
-                //src/views/Account.vue
                 const data = await this.$store.getters.getClient.send({
                     marker,
                     ...customCommand

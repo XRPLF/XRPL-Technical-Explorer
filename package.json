@@ -30,7 +30,6 @@
     "xumm-sdk": "^1.8.6"
   },
   "devDependencies": {
-    "@rollup/plugin-inject": "^5.0.5",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/compiler-sfc": "^3.3.4",
     "sass": "^1.63.5",

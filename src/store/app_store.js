@@ -88,7 +88,7 @@ export const AppStore = {
             state.ledger = ledger
         },
         KEY(state, data) {
-            console.log('set nnnn ', data)
+            console.log('set NETWORKS KEY ', data)
             state.network_key = data.key
             localStorage.setItem('network_key', JSON.stringify(data.key))
             localStorage.setItem('network_type', JSON.stringify(data.type))
@@ -180,10 +180,11 @@ export const AppStore = {
             return state.client_reset
         },
         hydrateLedger: (state) => async (ledger) => {
-          const ledgerIndex = Number(ledger)
-          if (state.ledgers.filter(l => l.ledgerIndex === ledgerIndex).length > 0) {
-            console.log('Skip hydrating: known', ledgerIndex)
-          } else {
+            const ledgerIndex = Number(ledger)
+            if (state.ledgers.filter(l => l.ledgerIndex === ledgerIndex).length > 0) {
+                console.log('Skip hydrating: known', ledgerIndex)
+                return
+            } 
             console.log('Hydrate', ledgerIndex)
 
             const existingRecordIndex = state.ledgers.map(l => l.ledgerIndex).indexOf(ledgerIndex)
@@ -198,7 +199,6 @@ export const AppStore = {
             })
 
             console.log('Hydrated', ledgerIndex)
-          }
         },
         ledgers: state => {
           return state.ledgers
