@@ -1,5 +1,5 @@
 <template>
-    <div v-if="$store.getters.getNetworkType === 'mainnet'">
+    <div v-if="$store.getters.getNetworkType === 'mainnet' && $store.getters.getNetwork === 'xahau'">
         <div class="flex mb-2">
             <label class="nes blue">Activated Ledger:</label>
             <span class="nes blue ms-2">{{ activatedLedger }}</span>
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div v-else>
-        <h2 class="nes blue text-center">Burn2Mint mainnet only</h2>
+        <h2 class="nes blue text-center">Burn2Mint xahau mainnet explorer only</h2>
     </div>
 </template>
 
@@ -47,6 +47,7 @@ export default {
                 command: 'ledger_entry',
                 index: '4BC50C9B0D8515D3EAAE1E74B29A95804346C491EE1A95BF25E4AAB854A6A651'
             })
+            console.log('xahau init', data)
             this.activatedLedger = data.node.XahauActivationLgrSeq || this.ledgerIndex
         },
         submitForm () {
