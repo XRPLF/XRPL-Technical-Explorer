@@ -40,3 +40,6 @@ yarn dev
 ```
 yarn build
 ```
+
+
+Explorer will launch at http://localhost:4000

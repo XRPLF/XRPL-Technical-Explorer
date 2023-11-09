@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     https: false,
     strictPort: true,
-    port: 4001,
+    port: 4000,
   },
   define: {
     'process.env': {}
