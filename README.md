@@ -19,13 +19,14 @@ Lots to do, but the beginning is here. You can view (JSON, technical (!) explore
 npm install
 ```
 
-Configure alternative WebSocket endpoint with the env. variable:
+### Configure alternative WebSocket endpoint with the env. variable:
 ```
 VITE_APP_WSS_NETWORK_TYPE
 VUE_APP_WSS_ENDPOINT
 ```
 
-E.g. ```
+### Example config
+```
 VITE_APP_WSS_NETWORK_TYPE=xahau
 VUE_APP_WSS_ENDPOINT=ws://dev.xahau.network
 ```
