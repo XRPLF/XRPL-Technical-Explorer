@@ -3,9 +3,9 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "vite --port 4001",
+    "dev": "vite --port 4000",
     "build": "vite build",
-    "serve": "vite preview --port 4001"
+    "serve": "vite preview --port 4000"
   },
   "dependencies": {
     "@codemirror/lang-json": "^6.0.1",
