@@ -9,7 +9,7 @@ export default defineConfig({
     host: '0.0.0.0',
     https: false,
     strictPort: true,
-    port: 4001,
+    port: 4000,
   },
   define: {
     'process.env': {}
