@@ -1961,7 +1961,7 @@ wrappy@1:
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-xrpl-client@^2.0.11:
+xrpl-client@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/xrpl-client/-/xrpl-client-2.2.0.tgz#55c58ee558b7cbbbc2366eb5764c1164705557fc"
   integrity sha512-lHblRPbtUKiQ+6cBjvIt4FeUvnhuOp4A0/v51PyxO2oPgEjFOUTE9Dw63/z9t+JiOtVn1o5Z46XjhXq9czbuBg==

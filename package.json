@@ -3,9 +3,9 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "vite --port 4000",
+    "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "serve": "vite preview --port 4000"
+    "serve": "vite preview --port 4001"
   },
   "dependencies": {
     "@codemirror/lang-json": "^6.0.1",
@@ -26,7 +26,7 @@
     "vue-numerals": "^4.0.6",
     "vue-router": "^4.2.2",
     "vuex": "^4.0.2",
-    "xrpl-client": "^2.0.11",
+    "xrpl-client": "^2.2.0",
     "xumm-sdk": "^1.8.6"
   },
   "devDependencies": {

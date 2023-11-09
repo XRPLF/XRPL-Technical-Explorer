@@ -99,32 +99,12 @@ export const AppStore = {
         async CONNECT(state, force) {
             if (state.servers.length < 0) { return }
             if (state.client_reset || force || state.client === null) {
-                console.log('new connection', state.servers)
+                console.info('new connection', state.servers)
                 state.client = new XrplClient(state.servers)
                 await state.client.ready()
+                const response = state.client.getState()
+                console.info('Connected @ `app_store`', response.server)
             }
-            console.log('awaitingggg', state.servers)
-            // state.client.on('ledger', async ledger => {
-            //     const ledgerIndex = Number(ledger.ledger_index)
-            //     if (state.ledgers.filter(l => l.ledgerIndex === ledgerIndex).length > 0) {
-            //         console.log('Skip hydrating: known', ledgerIndex)
-            //     } else {
-            //         console.log('Hydrate', ledgerIndex)
-
-            //         const existingRecordIndex = state.ledgers.map(l => l.ledgerIndex).indexOf(ledgerIndex)
-            //         if (existingRecordIndex < 0) {
-            //         state.ledgers.push({ ledgerIndex, ledgerData: {} })
-            //         }
-
-            //         const ledgerData = await state.client.send({ command: 'ledger', ledger_index: Number(ledger), transactions: true, expand: true })
-            //         // console.log(ledgerData)
-            //         Object.assign(state.ledgers[state.ledgers.map(l => l.ledgerIndex).indexOf(ledgerIndex)], {
-            //         ledgerData
-            //         })
-
-            //         console.log('Hydrated', ledgerIndex)
-            //     }
-            // })
             state.client_reset = false
         },
         SERVERS(state, servers) {

@@ -85,6 +85,12 @@ export default {
         'xahau-test': {
           label: 'Xahau Testnet',
           type: 'testnet',
+          wss: ['wss://xahau-test.net'],
+          color: 'bg-yellow text-dark'
+        },
+        'xahau-dev': {
+          label: 'Xahau Devnet',
+          type: 'devnet',
           wss: ['wss://dev.xahau.network'],
           color: 'bg-yellow text-dark'
         },

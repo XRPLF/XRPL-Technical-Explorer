@@ -6,9 +6,10 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 export default defineConfig({
   plugins: [mkcert(), vue(), nodePolyfills()],
   server: {
+    host: '0.0.0.0',
     https: false,
     strictPort: true,
-    port: 4000,
+    port: 4001,
   },
   define: {
     'process.env': {}
