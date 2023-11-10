@@ -5,7 +5,7 @@ services:
    container_name: vite_docker
    entrypoint: /bin/sh
    ports:
-     - 4001:4001
+     - 4000:4000
    working_dir: /srv/app
    volumes:
      - type: bind
