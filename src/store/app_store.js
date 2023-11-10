@@ -16,8 +16,8 @@ export const AppStore = {
         servers: [],
         account: '',
         account_data: {},
-        user_token: '',
-        user_uuid: '',
+        user_token: '', // xumm client data
+        user_uuid: '', // xumm client data
         ledgers: []
     }),
     actions: {
