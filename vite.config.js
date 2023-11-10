@@ -16,7 +16,9 @@ export default defineConfig({
   },
 })
 
-
+// IF YOU WANT TO TEST ON HTTPS UNCOMENT BELOW AND COMMENT THE ONE ABOVE
+//
+//
 // export default defineConfig({
 //   plugins: [vue()],
 //   server: {
