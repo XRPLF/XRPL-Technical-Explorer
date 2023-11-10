@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [mkcert(), vue(), nodePolyfills()],
   server: {
     host: '0.0.0.0',
-    https: false,
+    https: false,   // if you wish to test on HTTPS flip value to true
     strictPort: true,
     port: 4000,
   },
@@ -15,17 +15,3 @@ export default defineConfig({
     'process.env': {}
   },
 })
-
-// IF YOU WANT TO TEST ON HTTPS UNCOMENT BELOW AND COMMENT THE ONE ABOVE
-//
-//
-// export default defineConfig({
-//   plugins: [vue()],
-//   server: {
-//     strictPort: true,
-//     port: 4001,
-//   },
-//   define: {
-//     'process.env': {}
-//   }
-// })
