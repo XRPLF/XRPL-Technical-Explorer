@@ -5,6 +5,7 @@
         <span class="d-block d-md-none">XRPL <small>Explorer</small></span>
         <span class="d-none d-md-block">XRP Ledger Explorer</span>
       </router-link>
+      
       <button class="navbar-toggler p-0 border-0" type="button" @click="navbarCollapsed = !navbarCollapsed" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -79,7 +80,7 @@ export default {
         'xahau': {
           label: 'Xahau Mainnet',
           type: 'mainnet',
-          wss: ['wss://xahau.network'],
+          wss: ['wss://xahau.org', 'wss://xahau.network'],
           color: 'bg-navy text-light'
         },
         'xahau-test': {
