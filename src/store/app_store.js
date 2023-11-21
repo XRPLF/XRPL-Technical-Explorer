@@ -104,7 +104,7 @@ export const AppStore = {
                     assumeOfflineAfterSeconds: 15,
                     maxConnectionAttempts: 4,
                     connectAttemptTimeoutSeconds: 4,
-                    tryAllNodes: true
+                    //tryAllNodes: true // testing..
                 })
                 await state.client.ready()
                 const response = state.client.getState()
