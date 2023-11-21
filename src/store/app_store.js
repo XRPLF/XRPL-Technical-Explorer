@@ -100,7 +100,12 @@ export const AppStore = {
             if (state.servers.length < 0) { return }
             if (state.client_reset || force || state.client === null) {
                 console.info('new connection', state.servers)
-                state.client = new XrplClient(state.servers)
+                state.client = new XrplClient(state.servers, {
+                    assumeOfflineAfterSeconds: 15,
+                    maxConnectionAttempts: 4,
+                    connectAttemptTimeoutSeconds: 4,
+                    tryAllNodes: true
+                })
                 await state.client.ready()
                 const response = state.client.getState()
                 console.info('Connected @ `app_store`', response.server)
