@@ -166,7 +166,7 @@ export default {
       }).map(r => r.name.split('_').slice(1).join('_'))
 
       const query = this.query.trim()
-      console.log('query', query)
+      console.log('query', this.query)
       if (query.length < 2) {
         return false
       }

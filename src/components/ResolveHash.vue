@@ -29,6 +29,8 @@
     methods: {
       async route () {
         const route = useRoute()
+
+        console.log('queryqueryqueryquery', route.query)
         // Either TX, Ledger, Object or not found
         const hashTypes = [
           { command: 'ledger_entry', key: 'index', valueHelper: hookHashToLedgerObjectHash },

@@ -9,7 +9,7 @@ export default defineConfig({
     host: '0.0.0.0',
     https: false,   // if you wish to test on HTTPS flip value to true
     strictPort: true,
-    port: 4000,
+    port: 4001,
   },
   define: {
     'process.env': {}
