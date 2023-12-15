@@ -2,15 +2,20 @@ import { XrplClient } from 'xrpl-client'
 
 export default {
   async install (Vue, options) {
-    Vue.prototype.$ws = new XrplClient(process?.env?.VUE_APP_WSS_ENDPOINT)
-
-    const endpoint = String(process?.env?.VUE_APP_WSS_ENDPOINT || '')
+    let _endpoint = process?.env?.VUE_APP_WSS_ENDPOINT
+    const customEndpoint = String(options.router?.options?.endpoint || '')
+    if (customEndpoint !== '') {
+      _endpoint = options.router?.options?.endpoint
+    }
+    const endpoint = String(_endpoint || '')
+    Vue.prototype.$ws = new XrplClient(endpoint)
 
     const net = {
       live: endpoint === '' || endpoint.match(/xrplcluster|xrpl\.ws|xrpl\.link|s[12]\.ripple\.com/),
       test: endpoint.match(/rippletest|\/testnet\.xrpl-labs/),
       xahaulive: endpoint.match(/xahau.*network/),
-      xahautest: endpoint.match(/xahau.*test/)
+      xahautest: endpoint.match(/xahau.*test/),
+      custom: customEndpoint !== ''
     }
 
     Vue.prototype.$net = net

@@ -9,7 +9,7 @@ Vue.config.productionTip = false
 
 Vue.prototype.$events = Mitt()
 
-Vue.use(Xrpl)
+Vue.use(Xrpl, { router })
 Vue.use(Ledger)
 
 router.$ws = Xrpl

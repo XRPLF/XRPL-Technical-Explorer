@@ -1,9 +1,10 @@
 <template>
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark" :class="{
-    'bg-blue': nodeSelectLabel.match(/XRPL.*Main/),
-    'bg-success': nodeSelectLabel.match(/XRPL.*Test/),
-    'bg-info': nodeSelectLabel.match(/Xahau.*Main/),
-    'bg-danger': nodeSelectLabel.match(/Xahau.*Test/)
+  <nav class="navbar navbar-expand-lg fixed-top" :class="{
+    'navbar-dark bg-blue': nodeSelectLabel.match(/XRPL.*Main/),
+    'navbar-dark bg-success': nodeSelectLabel.match(/XRPL.*Test/),
+    'navbar-dark bg-info': nodeSelectLabel.match(/Xahau.*Main/),
+    'navbar-dark bg-danger': nodeSelectLabel.match(/Xahau.*Test/),
+    'bg-warning navbar-light': $router.options.endpoint !== ''
   }" aria-label="Main navigation">
     <div class="container-fluid">
       <router-link class="nes nav navbar-brand" to="/">
@@ -16,7 +17,7 @@
 
       <div class="navbar-collapse offcanvas-collapse" :class="{open: navbarCollapsed}">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" v-if="$router.options.endpoint === ''">
             <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">{{ nodeSelectLabel }}</a>
             <ul class="dropdown-menu shadow" aria-labelledby="dropdown01">
               <li><a class="dropdown-item" href="https://explorer.xrplf.org"><b>XRPL Mainnet</b></a></li>
@@ -24,6 +25,9 @@
               <li><a class="dropdown-item" href="https://explorer.xahau.network"><b>Xahau Mainnet</b></a></li>
               <li><a class="dropdown-item" href="https://explorer.xahau-test.net">Xahau Testnet</a></li>
             </ul>
+          </li>
+          <li v-else>
+            <span class="nav-link text-primary"><b>{{ $router.options.endpoint }}</b></span>
           </li>
           <li class="nav-item">
             <a class="nav-link" style="white-space: nowrap;" href="https://github.com/XRPLF/XRPL-Technical-Explorer" target="_blank"><i class="fab fa-github-square"></i><span class="ps-2">Source</span></a>
@@ -50,6 +54,9 @@ export default {
   },
   computed: {
     nodeSelectLabel () {
+      if (this.$net.custom) {
+        return 'Custom Network'
+      }
       if (this.$net.test) {
         return 'XRPL Testnet (Change)'
       }

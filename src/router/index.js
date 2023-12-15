@@ -142,10 +142,17 @@ const routes = [
   }
 ]
 
+let routerBasePrefix = ''
+const endpointRegex = window.location.href.match(/\/(ws[s]{0,1}:[a-zA-Z0-9-\\.:\\[\]]+[:0-9]{0,})/)
+if (endpointRegex) {
+  routerBasePrefix = endpointRegex[1]
+}
+
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+  base: process.env.BASE_URL + routerBasePrefix,
+  routes,
+  endpoint: routerBasePrefix.replace(/^(ws[s]{0,1}:)/, '$1//')
 })
 
 export default router
