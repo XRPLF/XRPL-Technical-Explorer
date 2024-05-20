@@ -22,9 +22,17 @@ export default {
     command: 'account_lines',
     account: 'r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59'
   },
+  account_namespace: {
+    command: 'account_lines',
+    account: 'r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59',
+    namespace_id: '0000000000000000000000000000000000000000000000000000000000000000'
+  },
   account_nfts: {
     command: 'account_nfts',
     account: 'r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59'
+  },
+  account_nfts: {
+    command: 'server_definitions'
   },
   account_objects: {
     command: 'account_objects',
