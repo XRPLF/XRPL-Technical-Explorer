@@ -31,7 +31,7 @@ export default {
     command: 'account_nfts',
     account: 'r9cZA1mLK5R5Am25ArfXFmqgNwjZgnfk59'
   },
-  account_nfts: {
+  server_definitions: {
     command: 'server_definitions'
   },
   account_objects: {
