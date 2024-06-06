@@ -1,7 +1,7 @@
 <template>
   <main class="container px-3">
-    <h4 class="nes blue">Hi!</h4>
-    <code class="text-primary nes">Have a great one! 👋 from your friends at XRPL Labs.</code>
+    <h4 class="nes blue">Hi! Have a great one! </h4>
+    <code class="text-primary nes"><span class="h3">👋</span> from your friends at <a href="https://xrpl-labs.com" target="_blank"><u>XRPL Labs</u></a>.</code>
     <div class="mt-4">
       Simple technical TX / ledger / object / hash explorer.
     </div>
