@@ -20,6 +20,14 @@ export default {
     const endpoint = String(_endpoint || '')
     console.log(endpoint)
     Vue.prototype.$ws = new XrplClient(endpoint)
+    Vue.prototype.$localnet = false
+
+    Vue.prototype.$ws.send({ command: 'server_info' }).then(r => {
+      Vue.prototype.$localnet = r?.info?.last_close?.proposers === 0
+      if (Vue.prototype.$localnet) {
+        Vue.prototype.$events.emit('islocalnet', true)
+      }
+    })
 
     const net = {
       live: endpoint === '' || endpoint.match(/xrplcluster|xrpl\.ws|xrpl\.link|s[12]\.ripple\.com/),

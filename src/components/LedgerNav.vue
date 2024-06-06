@@ -17,7 +17,7 @@
           </span>
         </div>
       </div>
-      <span v-if="!connected" class="blue await-close ms-3 pt-2"><small>Connecting...</small></span>
+      <span v-if="!connected" class="blue await-close ms-3 pt-2"><small>{{ localnet ? 'Waiting for closed ledger' : 'Connecting' }}...</small></span>
       <span v-if="connected && ledgers.length === 0" class="blue await-close ms-3 pt-2"><small>Waiting for the next ledger to close...</small></span>
       <router-link :to="'/' + String(l.ledger_index)" v-for="l in ledgers" v-bind:key="l.ledger_index" class="nav-link px-0">
         <div class="ps-2 pe-1" v-if="$ledger.list.indexOf(l.ledger_index) > -1">
@@ -28,6 +28,7 @@
           <span v-if="l.txn_count > 0" class="badge bg-blue fw-bold ms-1 text-white rounded-pill align-text-bottom">{{ l.txn_count }}</span>
         </div>
       </router-link>
+      <a v-if="localnet" @click="$ws.send({ command: 'ledger_accept' })" style="height: 29px; position: absolute; right: 0px;" class="btn btn-danger border-radius-2 rounded nav-link text-white mx-3 my-2 py-0 border border-3 border-danger fw-bold">Close ledger</a>
     </nav>
   </div>
 </template>
@@ -38,7 +39,8 @@ export default {
   data () {
     return {
       ledgers: [],
-      connected: false
+      connected: false,
+      localnet: false
     }
   },
   methods: {
@@ -80,6 +82,11 @@ export default {
   components: {
   },
   mounted () {
+    this.localnet = this.$localnet
+    this.$events.on('islocalnet', l => {
+      this.localnet = l
+    })
+
     if (typeof this.$ws !== 'undefined') {
       if (this.$ws.getState().online) {
         this.connected = true
