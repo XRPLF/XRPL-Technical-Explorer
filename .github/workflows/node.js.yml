@@ -52,5 +52,5 @@ jobs:
         name: autorelease
         tag_name: autorelease
         files: |
-          explorer.zip
+          dist/explorer.zip
         fail_on_unmatched_files: true
