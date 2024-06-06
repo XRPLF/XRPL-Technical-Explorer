@@ -1,10 +1,9 @@
 <template>
   <main class="container px-3">
     <h4 class="nes blue">Hi!</h4>
-    <code class="text-primary nes">Work in progress, EARLY BETA ;)</code>
+    <code class="text-primary nes">Have a great one! 👋 from your friends at XRPL Labs.</code>
     <div class="mt-4">
-      Early (technical, geeky) beta of a new (technical) tx / ledger / object / hash explorer. Lots to do,
-      but the beginning is here.
+      Simple technical TX / ledger / object / hash explorer.
     </div>
     <div class="mt-4">
       <div class="alert alert-success shadow-sm">
