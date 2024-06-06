@@ -8,8 +8,8 @@
   }" aria-label="Main navigation">
     <div class="container-fluid">
       <router-link class="nes nav navbar-brand" to="/">
-        <span class="d-block d-md-none">XRPL <small>Explorer</small></span>
-        <span class="d-none d-md-block">XRP Ledger Explorer</span>
+        <span class="d-block d-md-none">{{ nodeSelectLabel.match(/xahau/i) ? 'Xahau ': (nodeSelectLabel.match(/xrpl/i) ? 'XRPL ' : '') }}<small>Explorer</small></span>
+        <span class="d-none d-md-block">{{ nodeSelectLabel.match(/xahau/i) ? 'Xahau ': (nodeSelectLabel.match(/xrpl/i) ? 'XRP Ledger ' : '') }} Explorer</span>
       </router-link>
       <button class="navbar-toggler p-0 border-0" type="button" @click="navbarCollapsed = !navbarCollapsed" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
