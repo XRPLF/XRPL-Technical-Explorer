@@ -112,7 +112,7 @@ export default {
           navTo = '/' + this.validQuery[0]
         }
         if (this.validQuery.length > 1) {
-          console.log(this.validQuery)
+          // console.log(this.validQuery)
           navTo = '/command'
           // console.log(this.validQuery)
           Object.assign(navQuery, {
@@ -120,7 +120,7 @@ export default {
           })
         }
       }
-      console.log(navTo)
+      // console.log(navTo)
       if (
         navTo &&
         (

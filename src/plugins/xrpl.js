@@ -18,7 +18,7 @@ export default {
 
     if (customEndpoint !== '') _endpoint = options.router.options.endpoint = customEndpoint
     const endpoint = String(_endpoint || '')
-    console.log(endpoint)
+    // console.log(endpoint)
     Vue.prototype.$ws = new XrplClient(endpoint)
     Vue.prototype.$localnet = false
 
@@ -40,10 +40,10 @@ export default {
     Vue.prototype.$net = net
 
     Vue.prototype.$ws.on('ledger', ledger => Vue.prototype.$events.emit('ledger', ledger))
-    console.info('Connecting @ `plugins/xrpl`')
+    // console.info('Connecting @ `plugins/xrpl`')
     await Vue.prototype.$ws.ready()
     const state = Vue.prototype.$ws.getState()
-    console.info('Connected @ `plugins/xrpl`', state.server)
+    // console.info('Connected @ `plugins/xrpl`', state.server)
     Vue.prototype.$events.emit('connected', state.server.publicKey)
   }
 }
