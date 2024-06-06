@@ -27,7 +27,7 @@
             </ul>
           </li>
           <li v-else>
-            <span class="nav-link text-primary"><b>{{ $router.options.endpoint.length > 30 ? '' : $router.options.endpoint }}</b></span>
+            <span class="nav-link text-primary" style="position: relative; max-width: calc(30vw); overflow: hidden; text-overflow: ellipsis;"><b>{{ $router.options.endpoint }}</b></span>
           </li>
           <li class="nav-item">
             <a class="nav-link" style="white-space: nowrap;" href="https://github.com/XRPLF/XRPL-Technical-Explorer" target="_blank"><i class="fab fa-github-square"></i><span class="ps-2">Source</span></a>
