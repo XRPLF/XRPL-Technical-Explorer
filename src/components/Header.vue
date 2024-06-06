@@ -54,18 +54,11 @@ export default {
   },
   computed: {
     nodeSelectLabel () {
-      if (this.$net.custom) {
-        return 'Custom Network'
-      }
-      if (this.$net.test) {
-        return 'XRPL Testnet (Change)'
-      }
-      if (this.$net.xahaulive) {
-        return 'Xahau Mainnet (Change)'
-      }
-      if (this.$net.xahautest) {
-        return 'Xahau Testnet (Change)'
-      }
+      if (this.$net.custom) return 'Custom Network'
+      if (this.$net.test) return 'XRPL Testnet (Change)'
+      if (this.$net.xahaulive) return 'Xahau Mainnet (Change)'
+      if (this.$net.xahautest) return 'Xahau Testnet (Change)'
+
       return 'XRPL Mainnet (Change)'
     },
     validQuery () {

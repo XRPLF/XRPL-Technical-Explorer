@@ -3,11 +3,22 @@ import { XrplClient } from 'xrpl-client'
 export default {
   async install (Vue, options) {
     let _endpoint = process?.env?.VUE_APP_WSS_ENDPOINT
-    const customEndpoint = String(options.router?.options?.endpoint || '')
-    if (customEndpoint !== '') {
-      _endpoint = options.router?.options?.endpoint
-    }
+    const customEndpoint = options.router?.options?.endpoint
+      ? options.router?.options?.endpoint
+      : typeof _endpoint === 'string' && _endpoint.match(/^\/[a-z0-9]/)
+        ? window.location.protocol.replace(/^http/, 'ws') + '//' + window.location.host + _endpoint
+        : typeof _endpoint === 'string' && _endpoint.match(/^:[0-9]+[/a-z0-9]{0,}/)
+          ? window.location.protocol.replace(/^http/, 'ws') + '//' + window.location.host.split(':')[0] + _endpoint
+          : ''
+
+    // console.log({
+    //   _endpoint,
+    //   customEndpoint
+    // })
+
+    if (customEndpoint !== '') _endpoint = options.router.options.endpoint = customEndpoint
     const endpoint = String(_endpoint || '')
+    console.log(endpoint)
     Vue.prototype.$ws = new XrplClient(endpoint)
 
     const net = {
