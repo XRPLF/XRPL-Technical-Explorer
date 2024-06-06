@@ -36,6 +36,13 @@ jobs:
         name: dist
         path: dist
 
+    - name: Archive
+      uses: thedoctor0/zip-release@0.7.5
+      with:
+        type: 'zip'
+        filename: 'explorer.zip'
+        directory: 'dist'
+
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
@@ -45,7 +52,5 @@ jobs:
         name: autorelease
         tag_name: autorelease
         files: |
-          dist/*
-          dist/js/*
-          dist/css/*
+          explorer.zip
         fail_on_unmatched_files: true
